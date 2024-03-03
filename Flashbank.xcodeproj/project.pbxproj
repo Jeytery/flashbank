@@ -7,23 +7,76 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3E28F7C72B9117B40005DE9C /* ViewDidLoadActionPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E28F7C62B9117B40005DE9C /* ViewDidLoadActionPlugin.swift */; };
+		3E28F7D12B9120680005DE9C /* MenuCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E28F7D02B9120680005DE9C /* MenuCoordinator.swift */; };
+		3E339DE32B91368E00C312E6 /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = 3E339DE22B91368E00C312E6 /* SwiftUIIntrospect */; };
+		3E700D3C2B90B0BB00F4B30D /* FlashbankCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E700D3B2B90B0BB00F4B30D /* FlashbankCoordinator.swift */; };
+		3E700D402B90B0DF00F4B30D /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E700D3F2B90B0DF00F4B30D /* Logger.swift */; };
+		3E700D432B90B0F600F4B30D /* Coordinatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E700D422B90B0F600F4B30D /* Coordinatable.swift */; };
+		3E700D512B90B10100F4B30D /* AddNavigationButtonsPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E700D462B90B10100F4B30D /* AddNavigationButtonsPlugin.swift */; };
+		3E700D522B90B10100F4B30D /* AddSmallTitlePlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E700D472B90B10100F4B30D /* AddSmallTitlePlugin.swift */; };
+		3E700D532B90B10100F4B30D /* AddEditButtonPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E700D482B90B10100F4B30D /* AddEditButtonPlugin.swift */; };
+		3E700D542B90B10100F4B30D /* SearchLogicPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E700D492B90B10100F4B30D /* SearchLogicPlugin.swift */; };
+		3E700D552B90B10100F4B30D /* NavigationBackButtonAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E700D4A2B90B10100F4B30D /* NavigationBackButtonAction.swift */; };
+		3E700D562B90B10100F4B30D /* AddSearchPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E700D4B2B90B10100F4B30D /* AddSearchPlugin.swift */; };
+		3E700D572B90B10100F4B30D /* AddSUIViewPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E700D4C2B90B10100F4B30D /* AddSUIViewPlugin.swift */; };
+		3E700D582B90B10100F4B30D /* AddLargeTitlePlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E700D4D2B90B10100F4B30D /* AddLargeTitlePlugin.swift */; };
+		3E700D592B90B10100F4B30D /* Pluginable+FacadePlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E700D4E2B90B10100F4B30D /* Pluginable+FacadePlugin.swift */; };
+		3E700D5A2B90B10100F4B30D /* PluginableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E700D4F2B90B10100F4B30D /* PluginableViewController.swift */; };
+		3E700D5B2B90B10100F4B30D /* PluginableHostingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E700D502B90B10100F4B30D /* PluginableHostingViewController.swift */; };
+		3E7C4DF62B9101A9006F5759 /* Flashbomb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7C4DF52B9101A9006F5759 /* Flashbomb.swift */; };
+		3E92FD252B933F30009BFCB6 /* FlashbombLocalRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E92FD242B933F30009BFCB6 /* FlashbombLocalRepository.swift */; };
+		3E92FD272B933F54009BFCB6 /* FlashbombLRActionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E92FD262B933F54009BFCB6 /* FlashbombLRActionProvider.swift */; };
+		3E92FD292B94B5E4009BFCB6 /* ColorPresetsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E92FD282B94B5E4009BFCB6 /* ColorPresetsView.swift */; };
+		3E92FD2B2B94C089009BFCB6 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E92FD2A2B94C089009BFCB6 /* MenuViewController.swift */; };
+		3E92FD2E2B94EA45009BFCB6 /* SliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E92FD2D2B94EA45009BFCB6 /* SliderView.swift */; };
+		3E92FD312B94EE38009BFCB6 /* ClosableNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E92FD302B94EE38009BFCB6 /* ClosableNavigationController.swift */; };
+		3E92FD332B94EF47009BFCB6 /* GlassTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E92FD322B94EF47009BFCB6 /* GlassTableViewCell.swift */; };
+		3E92FD352B951215009BFCB6 /* ColorPaletteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E92FD342B951215009BFCB6 /* ColorPaletteTableViewCell.swift */; };
+		3E92FD382B95131E009BFCB6 /* NamedColorsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E92FD372B95131E009BFCB6 /* NamedColorsRepository.swift */; };
+		3E92FD3A2B95132E009BFCB6 /* NamedColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E92FD392B95132E009BFCB6 /* NamedColor.swift */; };
 		3EDEF7962B8FBBB400D7BE5B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EDEF7952B8FBBB400D7BE5B /* AppDelegate.swift */; };
-		3EDEF7982B8FBBB400D7BE5B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EDEF7972B8FBBB400D7BE5B /* SceneDelegate.swift */; };
-		3EDEF79A2B8FBBB400D7BE5B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EDEF7992B8FBBB400D7BE5B /* ViewController.swift */; };
-		3EDEF79D2B8FBBB400D7BE5B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3EDEF79B2B8FBBB400D7BE5B /* Main.storyboard */; };
 		3EDEF79F2B8FBBB500D7BE5B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3EDEF79E2B8FBBB500D7BE5B /* Assets.xcassets */; };
 		3EDEF7A22B8FBBB500D7BE5B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3EDEF7A02B8FBBB500D7BE5B /* LaunchScreen.storyboard */; };
+		3EDEF7AA2B8FBED500D7BE5B /* FlashbankViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EDEF7A92B8FBED500D7BE5B /* FlashbankViewController.swift */; };
+		3EDEF7AC2B8FC0FA00D7BE5B /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EDEF7AB2B8FC0FA00D7BE5B /* MenuView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3E28F7C62B9117B40005DE9C /* ViewDidLoadActionPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewDidLoadActionPlugin.swift; sourceTree = "<group>"; };
+		3E28F7D02B9120680005DE9C /* MenuCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCoordinator.swift; sourceTree = "<group>"; };
+		3E700D3B2B90B0BB00F4B30D /* FlashbankCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashbankCoordinator.swift; sourceTree = "<group>"; };
+		3E700D3F2B90B0DF00F4B30D /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		3E700D422B90B0F600F4B30D /* Coordinatable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coordinatable.swift; sourceTree = "<group>"; };
+		3E700D462B90B10100F4B30D /* AddNavigationButtonsPlugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddNavigationButtonsPlugin.swift; sourceTree = "<group>"; };
+		3E700D472B90B10100F4B30D /* AddSmallTitlePlugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddSmallTitlePlugin.swift; sourceTree = "<group>"; };
+		3E700D482B90B10100F4B30D /* AddEditButtonPlugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddEditButtonPlugin.swift; sourceTree = "<group>"; };
+		3E700D492B90B10100F4B30D /* SearchLogicPlugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchLogicPlugin.swift; sourceTree = "<group>"; };
+		3E700D4A2B90B10100F4B30D /* NavigationBackButtonAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationBackButtonAction.swift; sourceTree = "<group>"; };
+		3E700D4B2B90B10100F4B30D /* AddSearchPlugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddSearchPlugin.swift; sourceTree = "<group>"; };
+		3E700D4C2B90B10100F4B30D /* AddSUIViewPlugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddSUIViewPlugin.swift; sourceTree = "<group>"; };
+		3E700D4D2B90B10100F4B30D /* AddLargeTitlePlugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddLargeTitlePlugin.swift; sourceTree = "<group>"; };
+		3E700D4E2B90B10100F4B30D /* Pluginable+FacadePlugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Pluginable+FacadePlugin.swift"; sourceTree = "<group>"; };
+		3E700D4F2B90B10100F4B30D /* PluginableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PluginableViewController.swift; sourceTree = "<group>"; };
+		3E700D502B90B10100F4B30D /* PluginableHostingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PluginableHostingViewController.swift; sourceTree = "<group>"; };
+		3E7C4DF52B9101A9006F5759 /* Flashbomb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Flashbomb.swift; sourceTree = "<group>"; };
+		3E92FD242B933F30009BFCB6 /* FlashbombLocalRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashbombLocalRepository.swift; sourceTree = "<group>"; };
+		3E92FD262B933F54009BFCB6 /* FlashbombLRActionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashbombLRActionProvider.swift; sourceTree = "<group>"; };
+		3E92FD282B94B5E4009BFCB6 /* ColorPresetsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPresetsView.swift; sourceTree = "<group>"; };
+		3E92FD2A2B94C089009BFCB6 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
+		3E92FD2D2B94EA45009BFCB6 /* SliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderView.swift; sourceTree = "<group>"; };
+		3E92FD302B94EE38009BFCB6 /* ClosableNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClosableNavigationController.swift; sourceTree = "<group>"; };
+		3E92FD322B94EF47009BFCB6 /* GlassTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlassTableViewCell.swift; sourceTree = "<group>"; };
+		3E92FD342B951215009BFCB6 /* ColorPaletteTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPaletteTableViewCell.swift; sourceTree = "<group>"; };
+		3E92FD372B95131E009BFCB6 /* NamedColorsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NamedColorsRepository.swift; sourceTree = "<group>"; };
+		3E92FD392B95132E009BFCB6 /* NamedColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NamedColor.swift; sourceTree = "<group>"; };
 		3EDEF7922B8FBBB400D7BE5B /* Flashbank.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Flashbank.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3EDEF7952B8FBBB400D7BE5B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		3EDEF7972B8FBBB400D7BE5B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		3EDEF7992B8FBBB400D7BE5B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		3EDEF79C2B8FBBB400D7BE5B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3EDEF79E2B8FBBB500D7BE5B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3EDEF7A12B8FBBB500D7BE5B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3EDEF7A32B8FBBB500D7BE5B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3EDEF7A92B8FBED500D7BE5B /* FlashbankViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashbankViewController.swift; sourceTree = "<group>"; };
+		3EDEF7AB2B8FC0FA00D7BE5B /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,17 +84,147 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3E339DE32B91368E00C312E6 /* SwiftUIIntrospect in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3E28F7CF2B91205B0005DE9C /* Coordinators */ = {
+			isa = PBXGroup;
+			children = (
+				3E700D3B2B90B0BB00F4B30D /* FlashbankCoordinator.swift */,
+				3E28F7D02B9120680005DE9C /* MenuCoordinator.swift */,
+			);
+			path = Coordinators;
+			sourceTree = "<group>";
+		};
+		3E339DD12B9133AD00C312E6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		3E700D3D2B90B0BE00F4B30D /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				3E92FD2F2B94EE2A009BFCB6 /* ClosableNavigationController */,
+				3E700D442B90B10100F4B30D /* Pluginable */,
+				3E700D412B90B0F600F4B30D /* Coordinatable */,
+				3E700D3E2B90B0DF00F4B30D /* Logger */,
+			);
+			path = Library;
+			sourceTree = "<group>";
+		};
+		3E700D3E2B90B0DF00F4B30D /* Logger */ = {
+			isa = PBXGroup;
+			children = (
+				3E700D3F2B90B0DF00F4B30D /* Logger.swift */,
+			);
+			path = Logger;
+			sourceTree = "<group>";
+		};
+		3E700D412B90B0F600F4B30D /* Coordinatable */ = {
+			isa = PBXGroup;
+			children = (
+				3E700D422B90B0F600F4B30D /* Coordinatable.swift */,
+			);
+			path = Coordinatable;
+			sourceTree = "<group>";
+		};
+		3E700D442B90B10100F4B30D /* Pluginable */ = {
+			isa = PBXGroup;
+			children = (
+				3E700D452B90B10100F4B30D /* Plugins */,
+				3E700D4E2B90B10100F4B30D /* Pluginable+FacadePlugin.swift */,
+				3E700D4F2B90B10100F4B30D /* PluginableViewController.swift */,
+				3E700D502B90B10100F4B30D /* PluginableHostingViewController.swift */,
+			);
+			path = Pluginable;
+			sourceTree = "<group>";
+		};
+		3E700D452B90B10100F4B30D /* Plugins */ = {
+			isa = PBXGroup;
+			children = (
+				3E700D462B90B10100F4B30D /* AddNavigationButtonsPlugin.swift */,
+				3E700D472B90B10100F4B30D /* AddSmallTitlePlugin.swift */,
+				3E700D482B90B10100F4B30D /* AddEditButtonPlugin.swift */,
+				3E700D492B90B10100F4B30D /* SearchLogicPlugin.swift */,
+				3E700D4A2B90B10100F4B30D /* NavigationBackButtonAction.swift */,
+				3E700D4B2B90B10100F4B30D /* AddSearchPlugin.swift */,
+				3E700D4C2B90B10100F4B30D /* AddSUIViewPlugin.swift */,
+				3E700D4D2B90B10100F4B30D /* AddLargeTitlePlugin.swift */,
+				3E28F7C62B9117B40005DE9C /* ViewDidLoadActionPlugin.swift */,
+			);
+			path = Plugins;
+			sourceTree = "<group>";
+		};
+		3E7C4DF92B91020E006F5759 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				3E92FD2C2B94C08B009BFCB6 /* Menu */,
+				3EDEF7A92B8FBED500D7BE5B /* FlashbankViewController.swift */,
+				3E92FD282B94B5E4009BFCB6 /* ColorPresetsView.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		3E92FD222B933F08009BFCB6 /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				3E92FD362B951310009BFCB6 /* NamedColors */,
+				3E92FD232B933F19009BFCB6 /* Flashbomb */,
+			);
+			path = Repository;
+			sourceTree = "<group>";
+		};
+		3E92FD232B933F19009BFCB6 /* Flashbomb */ = {
+			isa = PBXGroup;
+			children = (
+				3E92FD242B933F30009BFCB6 /* FlashbombLocalRepository.swift */,
+				3E92FD262B933F54009BFCB6 /* FlashbombLRActionProvider.swift */,
+				3E7C4DF52B9101A9006F5759 /* Flashbomb.swift */,
+			);
+			path = Flashbomb;
+			sourceTree = "<group>";
+		};
+		3E92FD2C2B94C08B009BFCB6 /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+				3E92FD2A2B94C089009BFCB6 /* MenuViewController.swift */,
+				3EDEF7AB2B8FC0FA00D7BE5B /* MenuView.swift */,
+				3E92FD2D2B94EA45009BFCB6 /* SliderView.swift */,
+				3E92FD322B94EF47009BFCB6 /* GlassTableViewCell.swift */,
+				3E92FD342B951215009BFCB6 /* ColorPaletteTableViewCell.swift */,
+			);
+			path = Menu;
+			sourceTree = "<group>";
+		};
+		3E92FD2F2B94EE2A009BFCB6 /* ClosableNavigationController */ = {
+			isa = PBXGroup;
+			children = (
+				3E92FD302B94EE38009BFCB6 /* ClosableNavigationController.swift */,
+			);
+			path = ClosableNavigationController;
+			sourceTree = "<group>";
+		};
+		3E92FD362B951310009BFCB6 /* NamedColors */ = {
+			isa = PBXGroup;
+			children = (
+				3E92FD372B95131E009BFCB6 /* NamedColorsRepository.swift */,
+				3E92FD392B95132E009BFCB6 /* NamedColor.swift */,
+			);
+			path = NamedColors;
+			sourceTree = "<group>";
+		};
 		3EDEF7892B8FBBB400D7BE5B = {
 			isa = PBXGroup;
 			children = (
 				3EDEF7942B8FBBB400D7BE5B /* Flashbank */,
 				3EDEF7932B8FBBB400D7BE5B /* Products */,
+				3E339DD12B9133AD00C312E6 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -56,10 +239,11 @@
 		3EDEF7942B8FBBB400D7BE5B /* Flashbank */ = {
 			isa = PBXGroup;
 			children = (
+				3E28F7CF2B91205B0005DE9C /* Coordinators */,
+				3E7C4DF92B91020E006F5759 /* Screens */,
+				3E92FD222B933F08009BFCB6 /* Repository */,
 				3EDEF7952B8FBBB400D7BE5B /* AppDelegate.swift */,
-				3EDEF7972B8FBBB400D7BE5B /* SceneDelegate.swift */,
-				3EDEF7992B8FBBB400D7BE5B /* ViewController.swift */,
-				3EDEF79B2B8FBBB400D7BE5B /* Main.storyboard */,
+				3E700D3D2B90B0BE00F4B30D /* Library */,
 				3EDEF79E2B8FBBB500D7BE5B /* Assets.xcassets */,
 				3EDEF7A02B8FBBB500D7BE5B /* LaunchScreen.storyboard */,
 				3EDEF7A32B8FBBB500D7BE5B /* Info.plist */,
@@ -83,6 +267,9 @@
 			dependencies = (
 			);
 			name = Flashbank;
+			packageProductDependencies = (
+				3E339DE22B91368E00C312E6 /* SwiftUIIntrospect */,
+			);
 			productName = Flashbank;
 			productReference = 3EDEF7922B8FBBB400D7BE5B /* Flashbank.app */;
 			productType = "com.apple.product-type.application";
@@ -111,6 +298,9 @@
 				Base,
 			);
 			mainGroup = 3EDEF7892B8FBBB400D7BE5B;
+			packageReferences = (
+				3E339DE12B91368E00C312E6 /* XCRemoteSwiftPackageReference "swiftui-introspect" */,
+			);
 			productRefGroup = 3EDEF7932B8FBBB400D7BE5B /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -127,7 +317,6 @@
 			files = (
 				3EDEF7A22B8FBBB500D7BE5B /* LaunchScreen.storyboard in Resources */,
 				3EDEF79F2B8FBBB500D7BE5B /* Assets.xcassets in Resources */,
-				3EDEF79D2B8FBBB400D7BE5B /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,23 +327,42 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3EDEF79A2B8FBBB400D7BE5B /* ViewController.swift in Sources */,
+				3E92FD332B94EF47009BFCB6 /* GlassTableViewCell.swift in Sources */,
+				3E92FD3A2B95132E009BFCB6 /* NamedColor.swift in Sources */,
+				3E92FD292B94B5E4009BFCB6 /* ColorPresetsView.swift in Sources */,
+				3E700D512B90B10100F4B30D /* AddNavigationButtonsPlugin.swift in Sources */,
+				3E92FD352B951215009BFCB6 /* ColorPaletteTableViewCell.swift in Sources */,
+				3E28F7C72B9117B40005DE9C /* ViewDidLoadActionPlugin.swift in Sources */,
+				3E700D5B2B90B10100F4B30D /* PluginableHostingViewController.swift in Sources */,
+				3E92FD2E2B94EA45009BFCB6 /* SliderView.swift in Sources */,
+				3E92FD272B933F54009BFCB6 /* FlashbombLRActionProvider.swift in Sources */,
+				3E700D402B90B0DF00F4B30D /* Logger.swift in Sources */,
+				3E700D532B90B10100F4B30D /* AddEditButtonPlugin.swift in Sources */,
+				3E92FD2B2B94C089009BFCB6 /* MenuViewController.swift in Sources */,
+				3E92FD382B95131E009BFCB6 /* NamedColorsRepository.swift in Sources */,
+				3E700D542B90B10100F4B30D /* SearchLogicPlugin.swift in Sources */,
 				3EDEF7962B8FBBB400D7BE5B /* AppDelegate.swift in Sources */,
-				3EDEF7982B8FBBB400D7BE5B /* SceneDelegate.swift in Sources */,
+				3E700D582B90B10100F4B30D /* AddLargeTitlePlugin.swift in Sources */,
+				3EDEF7AC2B8FC0FA00D7BE5B /* MenuView.swift in Sources */,
+				3E700D562B90B10100F4B30D /* AddSearchPlugin.swift in Sources */,
+				3EDEF7AA2B8FBED500D7BE5B /* FlashbankViewController.swift in Sources */,
+				3E700D3C2B90B0BB00F4B30D /* FlashbankCoordinator.swift in Sources */,
+				3E700D552B90B10100F4B30D /* NavigationBackButtonAction.swift in Sources */,
+				3E700D5A2B90B10100F4B30D /* PluginableViewController.swift in Sources */,
+				3E700D572B90B10100F4B30D /* AddSUIViewPlugin.swift in Sources */,
+				3E700D432B90B0F600F4B30D /* Coordinatable.swift in Sources */,
+				3E92FD312B94EE38009BFCB6 /* ClosableNavigationController.swift in Sources */,
+				3E92FD252B933F30009BFCB6 /* FlashbombLocalRepository.swift in Sources */,
+				3E700D592B90B10100F4B30D /* Pluginable+FacadePlugin.swift in Sources */,
+				3E7C4DF62B9101A9006F5759 /* Flashbomb.swift in Sources */,
+				3E28F7D12B9120680005DE9C /* MenuCoordinator.swift in Sources */,
+				3E700D522B90B10100F4B30D /* AddSmallTitlePlugin.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		3EDEF79B2B8FBBB400D7BE5B /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				3EDEF79C2B8FBBB400D7BE5B /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		3EDEF7A02B8FBBB500D7BE5B /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -297,16 +505,20 @@
 				INFOPLIST_FILE = Flashbank/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIMainStoryboardFile = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Jeytery.Flashbank.Flashbank;
+				PRODUCT_BUNDLE_IDENTIFIER = Jeytery.Flashbank;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -325,16 +537,20 @@
 				INFOPLIST_FILE = Flashbank/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIMainStoryboardFile = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Jeytery.Flashbank.Flashbank;
+				PRODUCT_BUNDLE_IDENTIFIER = Jeytery.Flashbank;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -363,6 +579,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3E339DE12B91368E00C312E6 /* XCRemoteSwiftPackageReference "swiftui-introspect" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/siteline/swiftui-introspect";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3E339DE22B91368E00C312E6 /* SwiftUIIntrospect */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3E339DE12B91368E00C312E6 /* XCRemoteSwiftPackageReference "swiftui-introspect" */;
+			productName = SwiftUIIntrospect;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 3EDEF78A2B8FBBB400D7BE5B /* Project object */;
 }
