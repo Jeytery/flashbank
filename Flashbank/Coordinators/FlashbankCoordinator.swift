@@ -49,7 +49,7 @@ private extension FlashbankCoordinator {
     
     func displayFlashbank() {
         navigationController.viewControllers = [flashbankViewController]
-        //flashbankViewController.displayFlashbomb(currentFlashbomb)
+        flashbankViewController.displayFlashbomb(currentFlashbomb)
     }
     
     func addTapGesture() {

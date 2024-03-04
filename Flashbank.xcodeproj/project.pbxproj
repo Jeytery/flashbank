@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3E0E15A12B9645D4005A9977 /* ColorPaletteSUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E0E15A02B9645D4005A9977 /* ColorPaletteSUI.swift */; };
 		3E28F7C72B9117B40005DE9C /* ViewDidLoadActionPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E28F7C62B9117B40005DE9C /* ViewDidLoadActionPlugin.swift */; };
 		3E28F7D12B9120680005DE9C /* MenuCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E28F7D02B9120680005DE9C /* MenuCoordinator.swift */; };
 		3E339DE32B91368E00C312E6 /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = 3E339DE22B91368E00C312E6 /* SwiftUIIntrospect */; };
@@ -35,6 +36,8 @@
 		3E92FD352B951215009BFCB6 /* ColorPaletteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E92FD342B951215009BFCB6 /* ColorPaletteTableViewCell.swift */; };
 		3E92FD382B95131E009BFCB6 /* NamedColorsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E92FD372B95131E009BFCB6 /* NamedColorsRepository.swift */; };
 		3E92FD3A2B95132E009BFCB6 /* NamedColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E92FD392B95132E009BFCB6 /* NamedColor.swift */; };
+		3EAE6F232B95BB1700E47A9D /* NativeHeaderCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EAE6F212B95BB1700E47A9D /* NativeHeaderCellView.swift */; };
+		3EAE6F242B95BB1700E47A9D /* NativeHeaderCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EAE6F222B95BB1700E47A9D /* NativeHeaderCollectionView.swift */; };
 		3EDEF7962B8FBBB400D7BE5B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EDEF7952B8FBBB400D7BE5B /* AppDelegate.swift */; };
 		3EDEF79F2B8FBBB500D7BE5B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3EDEF79E2B8FBBB500D7BE5B /* Assets.xcassets */; };
 		3EDEF7A22B8FBBB500D7BE5B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3EDEF7A02B8FBBB500D7BE5B /* LaunchScreen.storyboard */; };
@@ -43,6 +46,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3E0E15A02B9645D4005A9977 /* ColorPaletteSUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPaletteSUI.swift; sourceTree = "<group>"; };
 		3E28F7C62B9117B40005DE9C /* ViewDidLoadActionPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewDidLoadActionPlugin.swift; sourceTree = "<group>"; };
 		3E28F7D02B9120680005DE9C /* MenuCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCoordinator.swift; sourceTree = "<group>"; };
 		3E700D3B2B90B0BB00F4B30D /* FlashbankCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashbankCoordinator.swift; sourceTree = "<group>"; };
@@ -70,6 +74,8 @@
 		3E92FD342B951215009BFCB6 /* ColorPaletteTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPaletteTableViewCell.swift; sourceTree = "<group>"; };
 		3E92FD372B95131E009BFCB6 /* NamedColorsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NamedColorsRepository.swift; sourceTree = "<group>"; };
 		3E92FD392B95132E009BFCB6 /* NamedColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NamedColor.swift; sourceTree = "<group>"; };
+		3EAE6F212B95BB1700E47A9D /* NativeHeaderCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NativeHeaderCellView.swift; sourceTree = "<group>"; };
+		3EAE6F222B95BB1700E47A9D /* NativeHeaderCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NativeHeaderCollectionView.swift; sourceTree = "<group>"; };
 		3EDEF7922B8FBBB400D7BE5B /* Flashbank.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Flashbank.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3EDEF7952B8FBBB400D7BE5B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3EDEF79E2B8FBBB500D7BE5B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -110,6 +116,7 @@
 		3E700D3D2B90B0BE00F4B30D /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				3EAE6F202B95BB1700E47A9D /* NativeHeader */,
 				3E92FD2F2B94EE2A009BFCB6 /* ClosableNavigationController */,
 				3E700D442B90B10100F4B30D /* Pluginable */,
 				3E700D412B90B0F600F4B30D /* Coordinatable */,
@@ -198,6 +205,7 @@
 				3E92FD2D2B94EA45009BFCB6 /* SliderView.swift */,
 				3E92FD322B94EF47009BFCB6 /* GlassTableViewCell.swift */,
 				3E92FD342B951215009BFCB6 /* ColorPaletteTableViewCell.swift */,
+				3E0E15A02B9645D4005A9977 /* ColorPaletteSUI.swift */,
 			);
 			path = Menu;
 			sourceTree = "<group>";
@@ -217,6 +225,15 @@
 				3E92FD392B95132E009BFCB6 /* NamedColor.swift */,
 			);
 			path = NamedColors;
+			sourceTree = "<group>";
+		};
+		3EAE6F202B95BB1700E47A9D /* NativeHeader */ = {
+			isa = PBXGroup;
+			children = (
+				3EAE6F212B95BB1700E47A9D /* NativeHeaderCellView.swift */,
+				3EAE6F222B95BB1700E47A9D /* NativeHeaderCollectionView.swift */,
+			);
+			path = NativeHeader;
 			sourceTree = "<group>";
 		};
 		3EDEF7892B8FBBB400D7BE5B = {
@@ -331,6 +348,8 @@
 				3E92FD3A2B95132E009BFCB6 /* NamedColor.swift in Sources */,
 				3E92FD292B94B5E4009BFCB6 /* ColorPresetsView.swift in Sources */,
 				3E700D512B90B10100F4B30D /* AddNavigationButtonsPlugin.swift in Sources */,
+				3EAE6F242B95BB1700E47A9D /* NativeHeaderCollectionView.swift in Sources */,
+				3E0E15A12B9645D4005A9977 /* ColorPaletteSUI.swift in Sources */,
 				3E92FD352B951215009BFCB6 /* ColorPaletteTableViewCell.swift in Sources */,
 				3E28F7C72B9117B40005DE9C /* ViewDidLoadActionPlugin.swift in Sources */,
 				3E700D5B2B90B10100F4B30D /* PluginableHostingViewController.swift in Sources */,
@@ -357,6 +376,7 @@
 				3E7C4DF62B9101A9006F5759 /* Flashbomb.swift in Sources */,
 				3E28F7D12B9120680005DE9C /* MenuCoordinator.swift in Sources */,
 				3E700D522B90B10100F4B30D /* AddSmallTitlePlugin.swift in Sources */,
+				3EAE6F232B95BB1700E47A9D /* NativeHeaderCellView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

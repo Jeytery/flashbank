@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import SwiftUI
 
 class CustomTabBar: UIToolbar {
     override open func sizeThatFits(_ size: CGSize) -> CGSize {
@@ -20,7 +21,9 @@ class CustomTabBar: UIToolbar {
 final class __MenuViewController: UIViewController {
     private let data = ["Item 1", "Item 2", "Item 3", "Item 4", "Item 5"]
     private var tableView: UITableView!
-    private var colorPaletterCell: ColorPaletteTableViewCell!
+
+    private var activeColors: [NamedColor] = []
+    private var passiveColors: [NamedColor] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,37 +39,39 @@ final class __MenuViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(GlassTableViewCell.self, forCellReuseIdentifier: "cell")
-        tableView.register(ColorPaletteTableViewCell.self, forCellReuseIdentifier: "colorPaletterCell")
         view.addSubview(tableView)
     }
 }
 
+private extension __MenuViewController {
+    
+    
+    
+}
+
 extension __MenuViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch section {
-        case 0: return 1
-        case 1: return data.count
-        default: return 0
-        }
+        return data.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        switch indexPath.section {
-        case 0:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "colorPaletterCell", for: indexPath) as! ColorPaletteTableViewCell
-            colorPaletterCell = cell
-            return cell
-            
-        case 1:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-            cell.textLabel?.text = data[indexPath.row]
-            return cell
-        default: UITableViewCell()
-        }
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        cell.textLabel?.text = data[indexPath.row]
+        return cell
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 90
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let hosting = UIHostingController(rootView: ColorPaletteSUI(state: .init()))
+        hosting.view.backgroundColor = .clear
+        return hosting.view
     }
 }
 

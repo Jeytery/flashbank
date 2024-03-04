@@ -8,18 +8,21 @@
 import Foundation
 import UIKit
 
-class ColorPaletteTableViewCell: GlassTableViewCell {
+class ColorPaletteTableViewCell: UIView {
     private let stackView = UIStackView()
+    private var namedColors: [NamedColor] = []
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    init() {
+        super.init(frame: .zero)
         addSubview(stackView)
+        stackView.backgroundColor = .black.withAlphaComponent(0.2)
         stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.layer.cornerRadius = 13
         NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: topAnchor),
+            stackView.topAnchor.constraint(equalTo: topAnchor, constant: 10),
             stackView.leftAnchor.constraint(equalTo: leftAnchor),
             stackView.rightAnchor.constraint(equalTo: rightAnchor),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
         ])
     }
     
@@ -27,7 +30,7 @@ class ColorPaletteTableViewCell: GlassTableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func getCircleView(color: UIColor) -> UIView {
+    private func CircleView(color: UIColor) -> UIView {
         let view = UIView()
         view.layer.cornerRadius = 15
         view.backgroundColor = color
@@ -39,7 +42,12 @@ class ColorPaletteTableViewCell: GlassTableViewCell {
     }
     
     func addNamedColor(_ namedColor: NamedColor) {
-        
+        namedColors.append(namedColor)
+//        UIView.animate(withDuration: 0.4, animations: {
+//            stackView.arrangedSubviews.append(
+//                CircleView(color: namedColor.color)
+//            )
+//        })
     }
     
     func initalizeNamedColors(_ namedColors: [NamedColor]) {
