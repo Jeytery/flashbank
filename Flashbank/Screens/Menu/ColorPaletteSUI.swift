@@ -8,15 +8,21 @@
 import SwiftUI
 
 final class ColorPaletteSUIState: ObservableObject {
-    init(colors: [UIColor] = []) {
-        //self.colors = [.systemRed, .systemBlue, .systemGreen, .systemYellow, .black, .green]
-        self.colors = [
-            .init(name: "1", color: .green)
-        ]
+    init() {}
+    
+    @Published fileprivate var colors: [NamedColor] = []
+    
+    func initalizeColors(_ colors: [NamedColor]) {
+        self.colors = colors
     }
     
-    @Published 
-    var colors: [NamedColor]
+    func removeColor(_ color: NamedColor) {
+        self.colors = colors.filter({ $0.name == color.name })
+    }
+    
+    func addColor(_ color: NamedColor) {
+        colors.append(color)
+    }
 }
 
 struct ColorPaletteSUI: View {
@@ -27,26 +33,46 @@ struct ColorPaletteSUI: View {
     @ObservedObject private var state: ColorPaletteSUIState
     
     var body: some View {
-        ScrollView(.horizontal) {
-            LazyHStack {
-                ForEach(state.colors, id: \.name, content: { value in
-                    Circle()
-                        .foregroundStyle(Color(uiColor: value.color))
-                        .frame(width: 35, height: 35)
-                })
-                .onTapGesture {
-                    state.colors.append(.init(name: String((0 ... 1000).randomElement() ?? 0), color: .systemBlue))
+        if state.colors.isEmpty {
+            ZStack {
+                Color.black
+                    .opacity(0.2)
+                    .cornerRadius(11)
+                ZStack {
+                    Color.black.opacity(0.5)
+                        .clipShape(.capsule)
+                    Text("Empty")
+                        .padding(.all, 7)
+                        .foregroundStyle(.white.opacity(0.7))
                 }
+                .frame(width: 80, height: 10)
             }
-            .padding(.init(top: 10, leading: 10, bottom: 10, trailing: 10))
+            .padding(.bottom, 10)
+            .padding(.top, 10)
         }
-        .background(
-            Color.black
-                .opacity(0.2)
-                .cornerRadius(11)
-        )
-        .padding(.bottom, 10)
-        .padding(.top, 10)
+        else {
+            ScrollView(.horizontal) {
+                LazyHStack {
+                    ForEach(state.colors, id: \.name, content: { value in
+                        Circle()
+                            .foregroundStyle(Color(uiColor: value.color))
+                            .frame(width: 35, height: 35)
+                    })
+                    .onTapGesture {
+                        state.colors.append(.init(name: String((0 ... 1000).randomElement() ?? 0), color: .systemBlue))
+                    }
+                }
+                .padding(.init(top: 10, leading: 10, bottom: 10, trailing: 10))
+            }
+            .background(
+                Color.black
+                    .opacity(0.2)
+                    .cornerRadius(11)
+            )
+            .padding(.bottom, 10)
+            .padding(.top, 10)
+            .animation(.easeInOut, value: state.colors)
+        }
     }
     
     /*

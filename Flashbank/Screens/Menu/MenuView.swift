@@ -9,6 +9,7 @@ import SwiftUI
 import SwiftUIIntrospect
 import UIKit
 
+/*
 enum MenuViewOutputEvent {
     case tapAddColor
     case tapAddColorPreset
@@ -126,3 +127,4 @@ struct MenuView: View {
 #Preview {
     MenuView(state: .init(flashbomb: .init(intensity: 0.5, colors: [.red, .blue]), outputEventHandler: { _ in }))
 }
+*/

@@ -19,7 +19,7 @@ class FlashbombLocalRepository {
     var standardFlashbomb: Flashbomb {
         return .init(
             intensity: 3,
-            colors: [.systemOrange, .systemRed]
+            colors: [.red, .blue, .green]
         )
     }
 }

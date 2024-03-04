@@ -52,53 +52,5 @@
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "B757EE92-295C-4182-B118-3700B8BA7041"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Flashbank/Screens/Menu/MenuViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "68"
-            endingLineNumber = "68"
-            landmarkName = "tableView(_:heightForHeaderInSection:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "B757EE92-295C-4182-B118-3700B8BA7041 - 560b7da71597b9cc"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Flashbank.__MenuViewController.tableView(_: __C.UITableView, heightForHeaderInSection: Swift.Int) -&gt; CoreGraphics.CGFloat"
-                  moduleName = "Flashbank"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/dmytroostapchenko/Documents/programming/apple/Flashbank/Flashbank/Screens/Menu/MenuViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "62"
-                  endingLineNumber = "62"
-                  offsetFromSymbolStart = "44">
-               </Location>
-               <Location
-                  uuid = "B757EE92-295C-4182-B118-3700B8BA7041 - 560b7da71597b9cc"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Flashbank.__MenuViewController.tableView(_: __C.UITableView, heightForHeaderInSection: Swift.Int) -&gt; CoreGraphics.CGFloat"
-                  moduleName = "Flashbank"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/dmytroostapchenko/Documents/programming/apple/Flashbank/Flashbank/Screens/Menu/MenuViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "62"
-                  endingLineNumber = "62"
-                  offsetFromSymbolStart = "36">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

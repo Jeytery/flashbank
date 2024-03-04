@@ -11,9 +11,7 @@ import UIKit
 class NamedColorsRepository {
     func getAppNamedColors() -> [NamedColor] {
         return [
-            .init(name: "red", color: .red),
-            .init(name: "blue", color: .blue),
-            .init(name: "green", color: .green),
+            .red, .blue, .green
         ]
     }
 }

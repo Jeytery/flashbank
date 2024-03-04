@@ -8,7 +8,19 @@
 import Foundation
 import UIKit
 
-struct NamedColor {
+struct NamedColor: Equatable {
     let name: String
     let color: UIColor
+    
+    static var red: NamedColor {
+        return .init(name: "red", color: .systemRed)
+    }
+    
+    static var green: NamedColor {
+        return .init(name: "green", color: .systemGreen)
+    }
+    
+    static var blue: NamedColor {
+        return .init(name: UIColor.systemBlue.accessibilityName, color: .systemBlue)
+    }
 }

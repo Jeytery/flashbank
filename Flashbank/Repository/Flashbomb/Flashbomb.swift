@@ -10,7 +10,7 @@ import UIKit
 
 struct Flashbomb {
     let intensity: Double
-    let colors: [UIColor]
+    let colors: [NamedColor]
     
     static var empty: Flashbomb {
         return .init(intensity: 0, colors: [])
