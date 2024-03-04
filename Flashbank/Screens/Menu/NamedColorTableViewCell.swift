@@ -9,6 +9,8 @@ import Foundation
 import UIKit
 
 class NamedColorTableViewCell: GlassTableViewCell {
+    var didTapCross: (() -> Void)?
+    
     private let colorView = UIView()
     private let nameLabel = UILabel()
     private let removeImageView = UIImageView()
@@ -36,10 +38,19 @@ class NamedColorTableViewCell: GlassTableViewCell {
         removeImageView.heightAnchor.constraint(equalToConstant: 30).isActive = true
         removeImageView.widthAnchor.constraint(equalToConstant: 30).isActive = true
         removeImageView.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
+        
+        removeImageView.isUserInteractionEnabled = true
+        let tap = UITapGestureRecognizer(target: self, action: #selector(removeImageViewDidTap))
+        removeImageView.addGestureRecognizer(tap)
+      
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    @objc private func removeImageViewDidTap() {
+        didTapCross?()
     }
     
     func configure(namedColor: NamedColor) {

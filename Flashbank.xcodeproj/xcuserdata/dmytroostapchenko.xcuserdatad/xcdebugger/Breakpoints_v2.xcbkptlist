@@ -52,5 +52,53 @@
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "AF7161D2-E78E-490E-8904-12EC7BA83FA2"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Flashbank/Screens/Menu/NamedColorTableViewCell.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "53"
+            endingLineNumber = "53"
+            landmarkName = "removeImageViewDidTap()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "AF7161D2-E78E-490E-8904-12EC7BA83FA2 - 669e7199728fa4ac"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Flashbank.NamedColorTableViewCell.removeImageViewDidTap() -&gt; ()"
+                  moduleName = "Flashbank"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dmytroostapchenko/Documents/programming/apple/Flashbank/Flashbank/Screens/Menu/NamedColorTableViewCell.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "53"
+                  endingLineNumber = "53"
+                  offsetFromSymbolStart = "144">
+               </Location>
+               <Location
+                  uuid = "AF7161D2-E78E-490E-8904-12EC7BA83FA2 - 669e7199728fa4ac"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Flashbank.NamedColorTableViewCell.removeImageViewDidTap() -&gt; ()"
+                  moduleName = "Flashbank"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dmytroostapchenko/Documents/programming/apple/Flashbank/Flashbank/Screens/Menu/NamedColorTableViewCell.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "53"
+                  endingLineNumber = "53"
+                  offsetFromSymbolStart = "28">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

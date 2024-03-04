@@ -39,7 +39,7 @@ struct ColorPaletteSUI: View {
                     .opacity(0.2)
                     .cornerRadius(11)
                 ZStack {
-                    Color.black.opacity(0.5)
+                    Color.black.opacity(0.2)
                         .clipShape(.capsule)
                     Text("Empty")
                         .padding(.all, 7)

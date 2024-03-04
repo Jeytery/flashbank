@@ -74,10 +74,18 @@ extension __MenuViewController: UITableViewDataSource, UITableViewDelegate {
         return activeColors.count
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! NamedColorTableViewCell
         let color = activeColors[indexPath.row]
         cell.configure(namedColor: color)
+        cell.didTapCross = { [weak self] in
+            guard let self = self else { return }
+            self.moveActPassColor(color: color)
+        }
         return cell
     }
     
@@ -97,8 +105,19 @@ extension __MenuViewController: UITableViewDataSource, UITableViewDelegate {
 }
 
 private extension __MenuViewController {
-    func moveActPassColor(color: NamedColor) {
+    func removeAct(color: NamedColor) {
         
+    }
+    
+    func removePass(color: NamedColor) {
+        
+    }
+    
+    func moveActPassColor(color: NamedColor) {
+        colorPaletteState.addColor(color)
+        let index = activeColors.firstIndex(of: color) ?? 0
+        tableView.deleteRows(at: [.init(row: index, section: 0)], with: .automatic)
+        removeAct(color: color)
     }
     
     func movePassActColor(color: NamedColor) {
