@@ -73,12 +73,24 @@ private extension FlashbankCoordinator {
 //        UIView.animate(withDuration: 0.3, animations: { [weak self] in
 //            self?.menuCoordinator.navigationController.view.alpha = 0
 //        })
+        self.menuCoordinator.navigationController.dismiss(animated: true) {
+            [weak self] in
+        }
+        
+        
     }
     
     func setupMenu() {
         menuCoordinator.navigationController.modalTransitionStyle = .crossDissolve
         menuCoordinator.navigationController.modalPresentationStyle = .overCurrentContext
-        navigationController.view.addSubview(menuCoordinator.navigationController.view)
+        
+        menuCoordinator.didClose = {
+            [weak self] currentFlashbomb in
+            self?.isMenuShown = false
+            self?.menuCoordinator.navigationController.dismiss(animated: true)
+            self?.flashbankViewController.displayFlashbomb(currentFlashbomb)
+        }
+        //navigationController.view.addSubview(menuCoordinator.navigationController.view)
 //        menuCoordinator.navigationController.view.translatesAutoresizingMaskIntoConstraints = false
 //        menuCoordinator.navigationController.view.backgroundColor = .clear
 //        menuCoordinator.navigationController.view.topAnchor.constraint(equalTo:       navigationController.view.topAnchor).isActive = true

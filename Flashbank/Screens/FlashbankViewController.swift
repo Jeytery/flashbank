@@ -13,6 +13,8 @@ class __FlashbankViewController: PluginableViewController {
     private var loopTimer: Timer!
     
     private func startLoop(flashbomb: Flashbomb) {
+        self.loopTimer?.invalidate()
+        self.loopTimer = nil
         if flashbomb.colors.isEmpty {
             view.backgroundColor = .black
             return
@@ -23,11 +25,13 @@ class __FlashbankViewController: PluginableViewController {
             let randomColor = flashbomb.colors.randomElement() ?? flashbomb.colors.first!
             if randomColor.color == self.view.backgroundColor {
                 let index = flashbomb.colors.firstIndex(of: randomColor)!
-                if (index + 1) >= flashbomb.colors.count {
+                if (index + 1) >= flashbomb.colors.count, flashbomb.colors.count != 1 {
                     self.view.backgroundColor = flashbomb.colors[index - 1].color
                 }
                 else {
-                    self.view.backgroundColor = flashbomb.colors[index + 1].color
+                    if  flashbomb.colors.count != 1 {
+                        self.view.backgroundColor = flashbomb.colors[index + 1].color
+                    }
                 }
             }
             else {

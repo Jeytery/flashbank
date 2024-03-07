@@ -26,10 +26,13 @@ class ClosableNavigationController: UINavigationController {
     private func addCloseToViewController(_ viewController: UIViewController) {
         let item = UIBarButtonItem(
             systemItem: .close,
-            primaryAction: UIAction(handler: {
-                [weak self] _ in
-                self?.dismiss(animated: true)
-                self?.didTapCloseButton?(viewController)
+            primaryAction: UIAction(handler: { [weak self] _ in
+                if let closure = self?.didTapCloseButton {
+                    closure(viewController)
+                }
+                else {
+                    self?.dismiss(animated: true)
+                }
             }),
             menu: nil)
         if viewController.navigationItem.leftBarButtonItems == nil {

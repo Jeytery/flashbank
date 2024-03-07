@@ -10,9 +10,7 @@ import UIKit
 
 class NamedColorsRepository {
     func getAppNamedColors() -> [NamedColor] {
-        return [
-            .red, .blue, .green
-        ]
+        return NamedColor.allColors
     }
 }
  

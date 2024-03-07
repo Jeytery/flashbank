@@ -21,6 +21,20 @@ struct NamedColor: Equatable {
     }
     
     static var blue: NamedColor {
-        return .init(name: UIColor.systemBlue.accessibilityName, color: .systemBlue)
+        return .init(name: "blue", color: .systemBlue)
+    }
+    
+    static var white: NamedColor {
+        return .init(name: "white", color: .white)
+    }
+    
+    static var brightRed: NamedColor {
+        return .init(name: "bright red", color: .red)
+    }
+    
+    static var allColors: [NamedColor] {
+        return [
+            .red, .blue, .green, .brightRed, .white
+        ]
     }
 }

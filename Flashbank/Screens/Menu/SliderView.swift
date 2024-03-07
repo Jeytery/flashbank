@@ -13,6 +13,15 @@ class SliderView: UIView {
     private let slider = UISlider()
     private let valueLabel = UILabel()
     
+    var sliderValue: Float {
+        return slider.value
+    }
+    
+    func setSliderValue(_ value: Float) {
+        slider.value = value
+        valueLabel.text = String(format: "%.2f", slider.value)
+    }
+    
     init() {
         super.init(frame: .zero)
         intensityLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -20,23 +29,31 @@ class SliderView: UIView {
         
         addSubview(intensityLabel)
         intensityLabel.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        intensityLabel.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+        intensityLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 0).isActive = true
+        intensityLabel.font = .systemFont(ofSize: 14, weight: .regular)
+        intensityLabel.textColor = .white.withAlphaComponent(0.7)
         
+        addSubview(valueLabel)
+        valueLabel.text = "0.10"
+        valueLabel.translatesAutoresizingMaskIntoConstraints = false
+        valueLabel.topAnchor.constraint(equalTo: intensityLabel.bottomAnchor, constant: 12).isActive = true
+        valueLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -5).isActive = true
+        valueLabel.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        valueLabel.textAlignment = .right
         
         addSubview(slider)
         slider.translatesAutoresizingMaskIntoConstraints = false
-        
-        slider.topAnchor.constraint(equalTo: intensityLabel.bottomAnchor, constant: 8).isActive = true
+        slider.centerYAnchor.constraint(equalTo: valueLabel.centerYAnchor).isActive = true
         slider.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
         slider.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-        
-        
-        addSubview(valueLabel)
-        valueLabel.text = "0"
-        valueLabel.translatesAutoresizingMaskIntoConstraints = false
-        valueLabel.centerYAnchor.constraint(equalTo: slider.centerYAnchor).isActive = true
-        valueLabel.leftAnchor.constraint(equalTo: slider.rightAnchor, constant: 8).isActive = true
-        valueLabel.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+        slider.rightAnchor.constraint(equalTo: valueLabel.leftAnchor).isActive = true
+        slider.addTarget(self, action: #selector(sliderDidChangeValue), for: .valueChanged)
+        slider.minimumValue = 0.1
+        slider.maximumValue = 3
+    }
+    
+    @objc private func sliderDidChangeValue() {
+        valueLabel.text = String(format: "%.2f", slider.value)
     }
     
     required init?(coder: NSCoder) {

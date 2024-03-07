@@ -16,21 +16,25 @@ class CustomTabBar: UIToolbar {
         sizeThatFits.height = 85
         return sizeThatFits
     }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }
 
 final class __MenuViewController: UIViewController {
-    private var tableView: UITableView!
-    private let namedColorsRep = NamedColorsRepository()
+    var didTapView: (() -> Void)?
     
-    // late init
-    private let colorPaletteState = ColorPaletteSUIState()
+    func getCurrentFlashbomb() -> Flashbomb {
+        return .init(intensity: Double(self.sliderView.sliderValue), colors: self.activeColors)
+    }
     
-    // state
-    private var activeColors: [NamedColor] = []
-    private var passiveColors: [NamedColor] = []
-    
-    init(flashbomb: Flashbomb) {
-        super.init(nibName: nil, bundle: nil)
+    func updateFlashbomb(_ flashbomb: Flashbomb) {
+        self.currentFlashbomb = flashbomb
         let activeColors = flashbomb.colors
         let allPassiveColors = namedColorsRep.getAppNamedColors()
         let availablePassiveColors = allPassiveColors.filter({ passiveColor in
@@ -39,22 +43,52 @@ final class __MenuViewController: UIViewController {
             }).isEmpty
         })
         colorPaletteState.initalizeColors(availablePassiveColors)
+        self.passiveColors = availablePassiveColors
         self.activeColors = activeColors
+      
+    }
+    
+    private var tableView: UITableView!
+    private let namedColorsRep = NamedColorsRepository()
+    
+    // late init
+    private let colorPaletteState = ColorPaletteSUIState()
+    private lazy var sliderView = SliderView()
+    
+    private var currentFlashbomb: Flashbomb!
+    
+    // state
+    private var activeColors: [NamedColor] = []
+    private var passiveColors: [NamedColor] = []
+    
+    init(flashbomb: Flashbomb) {
+        super.init(nibName: nil, bundle: nil)
+        self.updateFlashbomb(flashbomb)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    @objc private func didTapTableView() {
+        didTapView?()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        let sliderView = SliderView()
+        colorPaletteState.didTapColor = { [weak self] color in
+            self?.movePassActColor(color: color)
+        }
+        self.sliderView = SliderView()
         toolbarItems = [
             UIBarButtonItem(customView: sliderView)
         ]
+        
         navigationController?.setToolbarHidden(false, animated: false)
         view.backgroundColor = .black.withAlphaComponent(0.75)
         configureTableView()
+        
+        self.sliderView.setSliderValue(Float(currentFlashbomb.intensity))
     }
 }
 
@@ -65,20 +99,30 @@ private extension __MenuViewController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(NamedColorTableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(EmptyTableViewCell.self, forCellReuseIdentifier: "emptyCell")
         view.addSubview(tableView)
+        let tapView = UIView()
+        let tap = UITapGestureRecognizer(target: self, action: #selector(didTapTableView))
+        tapView.addGestureRecognizer(tap)
+        tableView.backgroundView = tapView
+        tableView.allowsSelection = false
     }
 }
 
 extension __MenuViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return activeColors.count
+        return activeColors.isEmpty ? 1 : activeColors.count
     }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
+    func tableView(
+        _ tableView: UITableView,
+        cellForRowAt indexPath: IndexPath
+    ) -> UITableViewCell {
+        if activeColors.isEmpty {
+            let emptyCell = tableView.dequeueReusableCell(withIdentifier: "emptyCell", for: indexPath) as! EmptyTableViewCell
+            emptyCell.configure(config: .init(title1: "No active colors", title2: "Tap on colors above to add"))
+            return emptyCell
+        }
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! NamedColorTableViewCell
         let color = activeColors[indexPath.row]
         cell.configure(namedColor: color)
@@ -89,12 +133,8 @@ extension __MenuViewController: UITableViewDataSource, UITableViewDelegate {
         return cell
     }
     
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 90
+        return 125
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -106,21 +146,58 @@ extension __MenuViewController: UITableViewDataSource, UITableViewDelegate {
 
 private extension __MenuViewController {
     func removeAct(color: NamedColor) {
-        
+        if let index = activeColors.firstIndex(of: color) {
+            activeColors.remove(at: index)
+        }
+        else {
+            print("removeAct: hasn't found index")
+        }
     }
     
     func removePass(color: NamedColor) {
-        
+        if let index = passiveColors.firstIndex(of: color) {
+            passiveColors.remove(at: index)
+        }
+        else {
+            print("removeAct: hasn't found index")
+        }
     }
     
     func moveActPassColor(color: NamedColor) {
         colorPaletteState.addColor(color)
         let index = activeColors.firstIndex(of: color) ?? 0
-        tableView.deleteRows(at: [.init(row: index, section: 0)], with: .automatic)
         removeAct(color: color)
+        passiveColors.append(color)
+        if !activeColors.isEmpty {
+            tableView.deleteRows(at: [.init(row: index, section: 0)], with: .fade)
+        }
+        else {
+            UIView.transition(
+                with: tableView,
+                duration: 0.35,
+                options: .transitionCrossDissolve
+            ) {
+                self.tableView.reloadData()
+            }
+        }
     }
     
     func movePassActColor(color: NamedColor) {
+        colorPaletteState.removeColor(color)
+        removePass(color: color)
+        activeColors.append(color)
         
+        if activeColors.count == 1 {
+            UIView.transition(
+                with: tableView,
+                duration: 0.35,
+                options: .transitionCrossDissolve
+            ) {
+                self.tableView.reloadData()
+            }
+        }
+        else {
+            tableView.insertRows(at: [.init(row: activeColors.count - 1, section: 0)], with: .fade)
+        }
     }
 }

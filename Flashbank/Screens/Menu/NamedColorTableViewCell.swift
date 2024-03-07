@@ -17,27 +17,27 @@ class NamedColorTableViewCell: GlassTableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        addSubview(colorView)
+        contentView.addSubview(colorView)
         colorView.translatesAutoresizingMaskIntoConstraints = false
-        colorView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        colorView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
         colorView.heightAnchor.constraint(equalToConstant: 30).isActive = true
         colorView.widthAnchor.constraint(equalToConstant: 30).isActive = true
-        colorView.leftAnchor.constraint(equalTo: leftAnchor, constant: 10).isActive = true
+        colorView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 10).isActive = true
         colorView.layer.cornerRadius = 15
         
-        addSubview(nameLabel)
+        contentView.addSubview(nameLabel)
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
-        nameLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        nameLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
         nameLabel.leftAnchor.constraint(equalTo: colorView.rightAnchor, constant: 10).isActive = true
         
-        addSubview(removeImageView)
+        contentView.addSubview(removeImageView)
         let config = UIImage.SymbolConfiguration(hierarchicalColor: .gray)
         removeImageView.image = UIImage(systemName: "xmark.circle.fill", withConfiguration: config)
         removeImageView.translatesAutoresizingMaskIntoConstraints = false
-        removeImageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        removeImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
         removeImageView.heightAnchor.constraint(equalToConstant: 30).isActive = true
         removeImageView.widthAnchor.constraint(equalToConstant: 30).isActive = true
-        removeImageView.rightAnchor.constraint(equalTo: rightAnchor, constant: -10).isActive = true
+        removeImageView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -10).isActive = true
         
         removeImageView.isUserInteractionEnabled = true
         let tap = UITapGestureRecognizer(target: self, action: #selector(removeImageViewDidTap))

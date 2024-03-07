@@ -12,6 +12,7 @@
 		3E28F7C72B9117B40005DE9C /* ViewDidLoadActionPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E28F7C62B9117B40005DE9C /* ViewDidLoadActionPlugin.swift */; };
 		3E28F7D12B9120680005DE9C /* MenuCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E28F7D02B9120680005DE9C /* MenuCoordinator.swift */; };
 		3E339DE32B91368E00C312E6 /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = 3E339DE22B91368E00C312E6 /* SwiftUIIntrospect */; };
+		3E5120302B9A41BC0095A7B5 /* EmptyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E51202F2B9A41BC0095A7B5 /* EmptyTableViewCell.swift */; };
 		3E700D3C2B90B0BB00F4B30D /* FlashbankCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E700D3B2B90B0BB00F4B30D /* FlashbankCoordinator.swift */; };
 		3E700D402B90B0DF00F4B30D /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E700D3F2B90B0DF00F4B30D /* Logger.swift */; };
 		3E700D432B90B0F600F4B30D /* Coordinatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E700D422B90B0F600F4B30D /* Coordinatable.swift */; };
@@ -50,6 +51,7 @@
 		3E0E15A02B9645D4005A9977 /* ColorPaletteSUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPaletteSUI.swift; sourceTree = "<group>"; };
 		3E28F7C62B9117B40005DE9C /* ViewDidLoadActionPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewDidLoadActionPlugin.swift; sourceTree = "<group>"; };
 		3E28F7D02B9120680005DE9C /* MenuCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCoordinator.swift; sourceTree = "<group>"; };
+		3E51202F2B9A41BC0095A7B5 /* EmptyTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyTableViewCell.swift; sourceTree = "<group>"; };
 		3E700D3B2B90B0BB00F4B30D /* FlashbankCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashbankCoordinator.swift; sourceTree = "<group>"; };
 		3E700D3F2B90B0DF00F4B30D /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		3E700D422B90B0F600F4B30D /* Coordinatable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coordinatable.swift; sourceTree = "<group>"; };
@@ -206,6 +208,7 @@
 				3E92FD322B94EF47009BFCB6 /* GlassTableViewCell.swift */,
 				3E0E15A02B9645D4005A9977 /* ColorPaletteSUI.swift */,
 				3E012FE42B965AC0003FECA9 /* NamedColorTableViewCell.swift */,
+				3E51202F2B9A41BC0095A7B5 /* EmptyTableViewCell.swift */,
 			);
 			path = Menu;
 			sourceTree = "<group>";
@@ -371,6 +374,7 @@
 				3E700D572B90B10100F4B30D /* AddSUIViewPlugin.swift in Sources */,
 				3E700D432B90B0F600F4B30D /* Coordinatable.swift in Sources */,
 				3E92FD312B94EE38009BFCB6 /* ClosableNavigationController.swift in Sources */,
+				3E5120302B9A41BC0095A7B5 /* EmptyTableViewCell.swift in Sources */,
 				3E92FD252B933F30009BFCB6 /* FlashbombLocalRepository.swift in Sources */,
 				3E700D592B90B10100F4B30D /* Pluginable+FacadePlugin.swift in Sources */,
 				3E7C4DF62B9101A9006F5759 /* Flashbomb.swift in Sources */,
