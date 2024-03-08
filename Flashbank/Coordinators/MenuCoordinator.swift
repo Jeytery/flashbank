@@ -31,19 +31,13 @@ class MenuCoordinator: Coordinatable {
     
     private let flashbomb: Flashbomb
     
-    private var menuViewController: __MenuViewController
+    private var menuViewController: MenuViewController
 
     init(flashbomb: Flashbomb) {
         self.flashbomb = flashbomb
-        self.menuViewController = __MenuViewController(flashbomb: flashbomb)
+        self.menuViewController = MenuViewController(flashbomb: flashbomb)
         super.init()
         navigationController.pushViewController(menuViewController, animated: false)
-//        let tap = UITapGestureRecognizer(target: self, action: #selector(didTapMenuView))
-//        menuViewController.view.addGestureRecognizer(tap)
-    }
-    
-    @objc private func didTapMenuView() {
-        //didClose?()
     }
 
     override func startCoordinator() {

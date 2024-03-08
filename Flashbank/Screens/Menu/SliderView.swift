@@ -34,11 +34,11 @@ class SliderView: UIView {
         intensityLabel.textColor = .white.withAlphaComponent(0.7)
         
         addSubview(valueLabel)
-        valueLabel.text = "0.10"
+        valueLabel.text = String(format: "%.2f", slider.value)
         valueLabel.translatesAutoresizingMaskIntoConstraints = false
         valueLabel.topAnchor.constraint(equalTo: intensityLabel.bottomAnchor, constant: 12).isActive = true
         valueLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -5).isActive = true
-        valueLabel.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        valueLabel.widthAnchor.constraint(equalToConstant: 50).isActive = true
         valueLabel.textAlignment = .right
         
         addSubview(slider)
@@ -48,12 +48,12 @@ class SliderView: UIView {
         slider.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         slider.rightAnchor.constraint(equalTo: valueLabel.leftAnchor).isActive = true
         slider.addTarget(self, action: #selector(sliderDidChangeValue), for: .valueChanged)
-        slider.minimumValue = 0.1
-        slider.maximumValue = 3
+        slider.minimumValue = 0.001
+        slider.maximumValue = 0.4
     }
     
     @objc private func sliderDidChangeValue() {
-        valueLabel.text = String(format: "%.2f", slider.value)
+        valueLabel.text = String(format: "%.3f", slider.value)
     }
     
     required init?(coder: NSCoder) {

@@ -13,7 +13,7 @@ class FlashbankCoordinator: Coordinatable {
     private(set) lazy var navigationController = UINavigationController(
         rootViewController: flashbankViewController
     )
-    private lazy var flashbankViewController = __FlashbankViewController()
+    private lazy var flashbankViewController = FlashbankViewController()
     private unowned var menuCoordinator: MenuCoordinator!
     
     private let flashbombRep = FlashbombLocalRepository()
@@ -64,41 +64,21 @@ private extension FlashbankCoordinator {
   
     func showMenu() {
         self.navigationController.present(menuCoordinator.navigationController, animated: true)
-//        UIView.animate(withDuration: 0.3, animations: { [weak self] in
-//            self?.menuCoordinator.navigationController.view.alpha = 1
-//        })
     }
     
     func hideMenu() {
-//        UIView.animate(withDuration: 0.3, animations: { [weak self] in
-//            self?.menuCoordinator.navigationController.view.alpha = 0
-//        })
-        self.menuCoordinator.navigationController.dismiss(animated: true) {
-            [weak self] in
-        }
-        
-        
+        self.menuCoordinator.navigationController.dismiss(animated: true)
     }
     
     func setupMenu() {
         menuCoordinator.navigationController.modalTransitionStyle = .crossDissolve
         menuCoordinator.navigationController.modalPresentationStyle = .overCurrentContext
-        
         menuCoordinator.didClose = {
             [weak self] currentFlashbomb in
             self?.isMenuShown = false
             self?.menuCoordinator.navigationController.dismiss(animated: true)
             self?.flashbankViewController.displayFlashbomb(currentFlashbomb)
         }
-        //navigationController.view.addSubview(menuCoordinator.navigationController.view)
-//        menuCoordinator.navigationController.view.translatesAutoresizingMaskIntoConstraints = false
-//        menuCoordinator.navigationController.view.backgroundColor = .clear
-//        menuCoordinator.navigationController.view.topAnchor.constraint(equalTo:       navigationController.view.topAnchor).isActive = true
-//        menuCoordinator.navigationController.view.bottomAnchor.constraint(equalTo:    navigationController.view.bottomAnchor).isActive = true
-//        menuCoordinator.navigationController.view.leftAnchor.constraint(equalTo:      navigationController.view.leftAnchor).isActive = true
-//        menuCoordinator.navigationController.view.rightAnchor.constraint(equalTo:     navigationController.view.rightAnchor).isActive = true
-//        menuCoordinator.navigationController.view.alpha = 0
-       
     }
 }
 

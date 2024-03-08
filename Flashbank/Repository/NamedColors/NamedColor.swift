@@ -32,9 +32,13 @@ struct NamedColor: Equatable {
         return .init(name: "bright red", color: .red)
     }
     
+    static var black: NamedColor {
+        return .init(name: "black", color: .black)
+    }
+    
     static var allColors: [NamedColor] {
         return [
-            .red, .blue, .green, .brightRed, .white
+            .red, .blue, .green, .brightRed, .white, .black
         ]
     }
 }

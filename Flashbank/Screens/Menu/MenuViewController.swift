@@ -26,7 +26,7 @@ class CustomTabBar: UIToolbar {
     }
 }
 
-final class __MenuViewController: UIViewController {
+final class MenuViewController: UIViewController {
     var didTapView: (() -> Void)?
     
     func getCurrentFlashbomb() -> Flashbomb {
@@ -92,7 +92,7 @@ final class __MenuViewController: UIViewController {
     }
 }
 
-private extension __MenuViewController {
+private extension MenuViewController {
     func configureTableView() {
         tableView = UITableView(frame: view.bounds, style: .insetGrouped)
         tableView.backgroundColor = .clear
@@ -109,7 +109,7 @@ private extension __MenuViewController {
     }
 }
 
-extension __MenuViewController: UITableViewDataSource, UITableViewDelegate {
+extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return activeColors.isEmpty ? 1 : activeColors.count
     }
@@ -144,7 +144,7 @@ extension __MenuViewController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
-private extension __MenuViewController {
+private extension MenuViewController {
     func removeAct(color: NamedColor) {
         if let index = activeColors.firstIndex(of: color) {
             activeColors.remove(at: index)

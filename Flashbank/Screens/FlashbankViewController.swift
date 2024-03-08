@@ -9,35 +9,32 @@ import Foundation
 import UIKit
 import SwiftUI
 
-class __FlashbankViewController: PluginableViewController {
+class FlashbankViewController: PluginableViewController {
     private var loopTimer: Timer!
+    private var currentIndex: Int = 0
     
     private func startLoop(flashbomb: Flashbomb) {
         self.loopTimer?.invalidate()
         self.loopTimer = nil
+        self.currentIndex = 0
         if flashbomb.colors.isEmpty {
             view.backgroundColor = .black
             return
         }
-        self.loopTimer = .scheduledTimer(withTimeInterval: flashbomb.intensity, repeats: true) {
-            [weak self] _ in
-            guard let self = self else { return }
-            let randomColor = flashbomb.colors.randomElement() ?? flashbomb.colors.first!
-            if randomColor.color == self.view.backgroundColor {
-                let index = flashbomb.colors.firstIndex(of: randomColor)!
-                if (index + 1) >= flashbomb.colors.count, flashbomb.colors.count != 1 {
-                    self.view.backgroundColor = flashbomb.colors[index - 1].color
-                }
-                else {
-                    if  flashbomb.colors.count != 1 {
-                        self.view.backgroundColor = flashbomb.colors[index + 1].color
-                    }
-                }
-            }
-            else {
-                self.view.backgroundColor = randomColor.color
-            }
+        self.loopTimer = .scheduledTimer(
+            withTimeInterval: flashbomb.intensity,
+            repeats: true
+        ) { [unowned self] _ in
+            self.nextColor(flashbomb: flashbomb)
         }
+    }
+    
+    private func nextColor(flashbomb: Flashbomb) {
+        currentIndex += 1
+        if currentIndex >= flashbomb.colors.count {
+            currentIndex = 0
+        }
+        view.backgroundColor = flashbomb.colors[currentIndex].color
     }
     
     private func stopLoop() {
@@ -51,17 +48,12 @@ class __FlashbankViewController: PluginableViewController {
     }
 }
 
-
-extension __FlashbankViewController {
+extension FlashbankViewController {
     func displayFlashbomb(_ flashbomb: Flashbomb) {
+        if flashbomb.colors.isEmpty {
+            return
+        }
+        self.view.backgroundColor = flashbomb.colors.first!.color
         startLoop(flashbomb: flashbomb)
-    }
-    
-    func pause() {
-        
-    }
-    
-    func play() {
-        
     }
 }
