@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-struct Flashbomb {
+struct Flashbomb: Codable {
     let intensity: Double
     let colors: [NamedColor]
     

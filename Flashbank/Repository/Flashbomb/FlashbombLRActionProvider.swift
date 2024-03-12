@@ -8,11 +8,20 @@
 import Foundation
  
 class FlashbombLRActionProvider {
-    enum StoreFlashbombError {
-        
+    enum StoreFlashbombError: Error {
+        case encodingFailed
     }
     
+    private let key = "FlashbombLRActionProvider.key"
+    
     func storeFlashbomb(_ flashbomb: Flashbomb) -> StoreFlashbombError? {
-        return nil 
+        let encoder = JSONEncoder()
+        do {
+            let jsonData = try encoder.encode(flashbomb)
+            UserDefaults.standard.set(jsonData, forKey: key)
+        } catch {
+            return .encodingFailed
+        }
+        return nil
     }
 }

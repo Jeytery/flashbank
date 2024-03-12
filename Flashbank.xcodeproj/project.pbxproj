@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3E012FE52B965AC0003FECA9 /* NamedColorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E012FE42B965AC0003FECA9 /* NamedColorTableViewCell.swift */; };
+		3E0AFF4A2B9C48C8009971C8 /* AlertKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3E0AFF492B9C48C8009971C8 /* AlertKit */; };
 		3E0E15A12B9645D4005A9977 /* ColorPaletteSUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E0E15A02B9645D4005A9977 /* ColorPaletteSUI.swift */; };
 		3E28F7C72B9117B40005DE9C /* ViewDidLoadActionPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E28F7C62B9117B40005DE9C /* ViewDidLoadActionPlugin.swift */; };
 		3E28F7D12B9120680005DE9C /* MenuCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E28F7D02B9120680005DE9C /* MenuCoordinator.swift */; };
@@ -92,6 +93,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3E0AFF4A2B9C48C8009971C8 /* AlertKit in Frameworks */,
 				3E339DE32B91368E00C312E6 /* SwiftUIIntrospect in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -289,6 +291,7 @@
 			name = Flashbank;
 			packageProductDependencies = (
 				3E339DE22B91368E00C312E6 /* SwiftUIIntrospect */,
+				3E0AFF492B9C48C8009971C8 /* AlertKit */,
 			);
 			productName = Flashbank;
 			productReference = 3EDEF7922B8FBBB400D7BE5B /* Flashbank.app */;
@@ -320,6 +323,7 @@
 			mainGroup = 3EDEF7892B8FBBB400D7BE5B;
 			packageReferences = (
 				3E339DE12B91368E00C312E6 /* XCRemoteSwiftPackageReference "swiftui-introspect" */,
+				3E0AFF482B9C48C8009971C8 /* XCRemoteSwiftPackageReference "AlertKit" */,
 			);
 			productRefGroup = 3EDEF7932B8FBBB400D7BE5B /* Products */;
 			projectDirPath = "";
@@ -605,6 +609,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		3E0AFF482B9C48C8009971C8 /* XCRemoteSwiftPackageReference "AlertKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sparrowcode/AlertKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.1.8;
+			};
+		};
 		3E339DE12B91368E00C312E6 /* XCRemoteSwiftPackageReference "swiftui-introspect" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/siteline/swiftui-introspect";
@@ -616,6 +628,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		3E0AFF492B9C48C8009971C8 /* AlertKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3E0AFF482B9C48C8009971C8 /* XCRemoteSwiftPackageReference "AlertKit" */;
+			productName = AlertKit;
+		};
 		3E339DE22B91368E00C312E6 /* SwiftUIIntrospect */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 3E339DE12B91368E00C312E6 /* XCRemoteSwiftPackageReference "swiftui-introspect" */;

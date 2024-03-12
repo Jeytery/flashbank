@@ -8,12 +8,24 @@
 import Foundation
 
 class FlashbombLocalRepository {
-    enum GetFlashbombError: Error {
-        case error1
+    enum LoadFlashBombError: Error {
+        case dataNotFound(key: String)
+        case decodingFailed(underlyingError: Error)
     }
     
-    func getFlashbomb() -> Result<Flashbomb, GetFlashbombError> {
-        return .failure(.error1)
+    private let key = "FlashbombLRActionProvider.key"
+    
+    func loadFlashbomb() -> Result<Flashbomb, LoadFlashBombError> {
+        guard let jsonData = UserDefaults.standard.data(forKey: key) else {
+            return .failure(.dataNotFound(key: key))
+        }
+        let decoder = JSONDecoder()
+        do {
+            let flashbomb = try decoder.decode(Flashbomb.self, from: jsonData)
+            return .success(flashbomb)
+        } catch {
+            return .failure(.decodingFailed(underlyingError: error))
+        }
     }
     
     var standardFlashbomb: Flashbomb {

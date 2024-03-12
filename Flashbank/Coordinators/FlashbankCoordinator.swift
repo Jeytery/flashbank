@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import SwiftUI
+import AlertKit
 
 class FlashbankCoordinator: Coordinatable {
     private(set) lazy var navigationController = UINavigationController(
@@ -17,6 +18,7 @@ class FlashbankCoordinator: Coordinatable {
     private unowned var menuCoordinator: MenuCoordinator!
     
     private let flashbombRep = FlashbombLocalRepository()
+    private let flashbombRepProvider = FlashbombLRActionProvider()
     
     // state
     private var isMenuShown = false
@@ -39,7 +41,7 @@ private extension FlashbankCoordinator {
     }
     
     func initCurrentFlashbomb() {
-        switch flashbombRep.getFlashbomb() {
+        switch flashbombRep.loadFlashbomb() {
         case .success(let flashbomb):
             self.currentFlashbomb = flashbomb
         case .failure(_):
@@ -73,11 +75,20 @@ private extension FlashbankCoordinator {
     func setupMenu() {
         menuCoordinator.navigationController.modalTransitionStyle = .crossDissolve
         menuCoordinator.navigationController.modalPresentationStyle = .overCurrentContext
-        menuCoordinator.didClose = {
-            [weak self] currentFlashbomb in
-            self?.isMenuShown = false
-            self?.menuCoordinator.navigationController.dismiss(animated: true)
-            self?.flashbankViewController.displayFlashbomb(currentFlashbomb)
+        menuCoordinator.didClose = { [weak self] currentFlashbomb in
+            guard let self = self else { return }
+            self.isMenuShown = false
+            self.menuCoordinator.navigationController.dismiss(animated: true)
+            self.flashbankViewController.displayFlashbomb(currentFlashbomb)
+            if let error = self.flashbombRepProvider.storeFlashbomb(currentFlashbomb) {
+                AlertKitAPI.present(
+                    title: error.localizedDescription,
+                    subtitle: nil,
+                    icon: .error,
+                    style: .iOS17AppleMusic,
+                    haptic: .error
+                )
+            }
         }
     }
 }
