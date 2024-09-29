@@ -110,6 +110,10 @@ private extension MenuViewController {
 }
 
 extension MenuViewController: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return "Active colors"
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return activeColors.isEmpty ? 1 : activeColors.count
     }

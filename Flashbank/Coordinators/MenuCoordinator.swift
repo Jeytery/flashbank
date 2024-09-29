@@ -31,11 +31,11 @@ class MenuCoordinator: Coordinatable {
     
     private let flashbomb: Flashbomb
     
-    private var menuViewController: MenuViewController
+    private var menuViewController: MenuViewController_v2
 
     init(flashbomb: Flashbomb) {
         self.flashbomb = flashbomb
-        self.menuViewController = MenuViewController(flashbomb: flashbomb)
+        self.menuViewController = MenuViewController_v2(flashbomb: flashbomb)
         super.init()
         navigationController.pushViewController(menuViewController, animated: false)
     }

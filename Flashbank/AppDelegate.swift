@@ -22,6 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = flashbankCoordinator.navigationController
         window?.makeKeyAndVisible()
         flashbankCoordinator.startCoordinator()
+        UIApplication.shared.isIdleTimerDisabled = true
         return true
     }
 }

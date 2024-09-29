@@ -25,13 +25,14 @@ class SliderView: UIView {
     init() {
         super.init(frame: .zero)
         intensityLabel.translatesAutoresizingMaskIntoConstraints = false
-        intensityLabel.text = "Intensity"
+        intensityLabel.text = "BPM"
         
         addSubview(intensityLabel)
         intensityLabel.topAnchor.constraint(equalTo: topAnchor).isActive = true
         intensityLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 0).isActive = true
         intensityLabel.font = .systemFont(ofSize: 14, weight: .regular)
         intensityLabel.textColor = .white.withAlphaComponent(0.7)
+        intensityLabel.heightAnchor.constraint(equalToConstant: 22).isActive = true
         
         addSubview(valueLabel)
         valueLabel.text = String(format: "%.2f", slider.value)
