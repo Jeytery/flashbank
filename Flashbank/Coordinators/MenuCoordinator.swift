@@ -22,7 +22,7 @@ fileprivate class GetColorAdapter: NSObject, UIColorPickerViewControllerDelegate
     }
 }
 
-class MenuCoordinator: Coordinatable {
+final class MenuCoordinator: Coordinatable {
     var didClose: ((Flashbomb) -> Void)?
     
     private(set) lazy var navigationController = ClosableNavigationController
@@ -32,6 +32,7 @@ class MenuCoordinator: Coordinatable {
     private let flashbomb: Flashbomb
     
     private var menuViewController: MenuViewController_v2
+    private lazy var getColorAdapter = GetColorAdapter()
 
     init(flashbomb: Flashbomb) {
         self.flashbomb = flashbomb
@@ -53,10 +54,21 @@ class MenuCoordinator: Coordinatable {
             guard let self = self else { return }
             self.didClose?(self.menuViewController.getCurrentFlashbomb())
         }
+        menuViewController.eventOutputHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .didTapAddColor:
+                let colorPicker = UIColorPickerViewController()
+                colorPicker.delegate = getColorAdapter
+                self.navigationController.present(colorPicker, animated: true, completion: nil)
+            default: break
+            }
+        }
     }
-    
+        
     func getFlashbomb() -> Flashbomb {
-        return .init(intensity: 0, colors: [])
+        return .empty
     }
 }
 

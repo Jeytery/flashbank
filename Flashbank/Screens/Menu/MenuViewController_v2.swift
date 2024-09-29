@@ -23,41 +23,50 @@ class MenuViewController_v2: UIViewController {
     var eventOutputHandler: ((OutputEvent) -> Void)?
     
     func getCurrentFlashbomb() -> Flashbomb {
-        return .init(intensity: 0, colors: [])
+        return .empty
     }
     
     func updateFlashbomb(_ flashbomb: Flashbomb) {
         
     }
+    
+    func addColor(_ color: UIColor) {
+        
+    }
     //
     
+    // state
+    private var colors: [UIColor] = []
+    
+    // const
     private let bottomToolBarHeight: CGFloat = 100
     
+    // ui
     private let tableView = UITableView(frame: .zero, style: .insetGrouped)
     private let bottomToolBar = FakeToolBar(
         frame: .zero,
         blurStyle: .systemChromeMaterial,
         style: .native
     )
-    //private let sliderView = SliderView()
     private lazy var sliderViewState = BPMSliderViewModel()
     private lazy var sliderView = UIHostingController(rootView: BPMSliderView(viewModel: sliderViewState)).view!
-    
+    private lazy var emptyView = UIHostingController(rootView: MenuEmptyView()).view!
     
     init(flashbomb: Flashbomb) {
         super.init(nibName: nil, bundle: nil)
         configureBottomToolBar()
         view.backgroundColor = .black.withAlphaComponent(0.75)
     }
-    
+     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureTableView()
-        
-        navigationItem.setRightBarButton(.init(title: "Add Color", style: .done, target: self, action: #selector(didTapAddColorButton)), animated: false)
+        setupNavButtons()
     }
     
-    @objc private func didTapAddColorButton() {}
+    @objc private func didTapAddColorButton() {
+        eventOutputHandler?(.didTapAddColor)
+    }
     
     @objc private func didTapTableView() {
         didTapView?()
@@ -67,6 +76,10 @@ class MenuViewController_v2: UIViewController {
         didTapView?()
     }
     
+    @objc private func pauseButtonTapped() {
+        
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -74,6 +87,18 @@ class MenuViewController_v2: UIViewController {
 
 // MARK: - ui configuration
 private extension MenuViewController_v2 {
+    func setupNavButtons() {
+        let addColorItem = UIBarButtonItem(
+            image: UIImage(systemName: "plus"),
+            style: .done,
+            target: self,
+            action: #selector(didTapAddColorButton)
+        )
+        let pauseButton = UIBarButtonItem(image: UIImage(systemName: "play.fill"), style: .plain, target: self, action: #selector(pauseButtonTapped))
+        let settingsButton = UIBarButtonItem(image: UIImage(systemName: "gear"), style: .plain, target: self, action: #selector(pauseButtonTapped))
+        navigationItem.rightBarButtonItems = [addColorItem, pauseButton, settingsButton]
+    }
+    
     func configureTableView() {
         tableView.backgroundColor = .clear
         tableView.dataSource = self
@@ -106,11 +131,12 @@ private extension MenuViewController_v2 {
         let tap = UITapGestureRecognizer(target: self, action: #selector(didTapTableView))
         tapView.addGestureRecognizer(tap)
         tableView.backgroundView = tapView
-        tableView.allowsSelection = false
+        tableView.allowsSelection = true
         let tap2 = UITapGestureRecognizer(target: self, action: #selector(didTapTableView2))
+        tap2.delegate = self
         self.view.addGestureRecognizer(tap2)
     }
-    
+        
     func configureBottomToolBar() {
         view.addSubview(bottomToolBar)
         bottomToolBar.translatesAutoresizingMaskIntoConstraints = false
@@ -137,13 +163,14 @@ private extension MenuViewController_v2 {
     }
 }
 
+//MARK: - table view del
 extension MenuViewController_v2: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return colors.count
     }
 
     func tableView(
@@ -181,7 +208,35 @@ extension MenuViewController_v2: UITableViewDelegate, UITableViewDataSource {
         )
     }
     
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if section == 0 {
+            let _header = emptyView
+            emptyView.backgroundColor = .clear
+            let headerView = UIView()
+            headerView.addSubview(_header)
+            _header.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                _header.topAnchor.constraint(equalTo: headerView.topAnchor),
+                _header.leftAnchor.constraint(equalTo: headerView.leftAnchor, constant: 0),
+                _header.rightAnchor.constraint(equalTo: headerView.rightAnchor, constant: 0),
+                _header.bottomAnchor.constraint(equalTo: headerView.bottomAnchor),
+            ])
+            return headerView
+        }
+        else {
+            return UIView()
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 0 {
+            return 100
+        }
+        return 0
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print(indexPath)
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
@@ -204,3 +259,11 @@ extension MenuViewController_v2: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
+extension MenuViewController_v2: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if touch.view?.isDescendant(of: self.tableView) == true {
+            return false
+        }
+        return true
+    }
+}

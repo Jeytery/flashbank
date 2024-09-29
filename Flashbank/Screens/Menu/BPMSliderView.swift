@@ -31,7 +31,7 @@ struct BPMSliderView: View {
                 _ in
             })
             ZStack {
-                Color(uiColor: .secondarySystemBackground)
+                Color(uiColor: .black.withAlphaComponent(0.1))
                     .frame(width: 80, height: 50, alignment: .center)
                     .clipShape(.capsule)
                 Text("\(Int(viewModel.sliderValue))")

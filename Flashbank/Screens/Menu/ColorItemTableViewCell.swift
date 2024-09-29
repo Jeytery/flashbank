@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 
+/*
 class ColorItemTableViewCell: GlassTableViewCell {
     var didTapCross: (() -> Void)?
     
@@ -16,6 +17,7 @@ class ColorItemTableViewCell: GlassTableViewCell {
     private let editImageView = UIImageView()
     private let tickImageView = UIImageView()
     
+    /*
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.addSubview(removeImageView)
@@ -50,15 +52,18 @@ class ColorItemTableViewCell: GlassTableViewCell {
         contentView.addSubview(colorView)
         colorView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            //colorView.widthAnchor.constraint(equalToConstant: 200),
             colorView.topAnchor.constraint(equalTo: topAnchor, constant: 15),
             colorView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -15),
             colorView.leftAnchor.constraint(equalTo: tickImageView.rightAnchor, constant: 10),
             colorView.rightAnchor.constraint(equalTo: editImageView.leftAnchor, constant: -10)
-            //colorView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            //colorView.centerYAnchor.constraint(equalTo: centerYAnchor),
         ])
         colorView.layer.cornerRadius = 15
+    }
+     */
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
     }
     
     required init?(coder: NSCoder) {
@@ -67,6 +72,52 @@ class ColorItemTableViewCell: GlassTableViewCell {
     
     @objc private func removeImageViewDidTap() {
         didTapCross?()
+    }
+    
+    func configure(color: UIColor) {
+        colorView.backgroundColor = color
+    }
+}
+*/
+
+class ColorItemTableViewCell: GlassTableViewCell {
+    
+    private let colorViewHeight: CGFloat = 27
+    private lazy var colorView: UIView = {
+        let view = UIView()
+        view.layer.cornerRadius = colorViewHeight / 2
+        view.layer.masksToBounds = true
+        return view
+    }()
+    
+    let toggleSwitch: UISwitch = {
+        let switchControl = UISwitch()
+        switchControl.tintColor = .systemBlue
+        return switchControl
+    }()
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupViews()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setupViews() {
+        contentView.addSubview(colorView)
+        contentView.addSubview(toggleSwitch)
+        colorView.translatesAutoresizingMaskIntoConstraints = false
+        toggleSwitch.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            colorView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            colorView.widthAnchor.constraint(equalToConstant: colorViewHeight),
+            colorView.heightAnchor.constraint(equalToConstant: colorViewHeight),
+            colorView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 15),
+            toggleSwitch.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15),
+            toggleSwitch.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
+        ])
     }
     
     func configure(color: UIColor) {

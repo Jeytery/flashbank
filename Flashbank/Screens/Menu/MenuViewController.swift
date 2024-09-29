@@ -30,7 +30,7 @@ final class MenuViewController: UIViewController {
     var didTapView: (() -> Void)?
     
     func getCurrentFlashbomb() -> Flashbomb {
-        return .init(intensity: Double(self.sliderView.sliderValue), colors: self.activeColors)
+        return .init(intensity: Double(self.sliderView.sliderValue), colors: self.activeColors, isPaused: false)
     }
     
     func updateFlashbomb(_ flashbomb: Flashbomb) {

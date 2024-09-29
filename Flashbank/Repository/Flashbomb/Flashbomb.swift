@@ -9,10 +9,11 @@ import Foundation
 import UIKit
 
 struct Flashbomb: Codable {
-    let intensity: Double
+    let intensity: Double // BPM
     let colors: [NamedColor]
+    let isPaused: Bool
     
     static var empty: Flashbomb {
-        return .init(intensity: 0, colors: [])
+        return .init(intensity: 0, colors: [], isPaused: false)
     }
 }
