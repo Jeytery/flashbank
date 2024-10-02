@@ -14,15 +14,12 @@ struct MenuEmptyView: View {
             HStack {
                 Image(systemName: "plus")
                     .foregroundStyle(.blue)
-                Text("New Color")
+                Text("New color")
                     .font(.system(size: 22, weight: .medium, design: .monospaced))
                     .foregroundStyle(.blue)
             }
         }
         .clipShape(.capsule)
-        .onTapGesture {
-            print("11")
-        }
     }
 }
 

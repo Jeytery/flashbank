@@ -18,28 +18,71 @@ class MenuViewController_v2: UIViewController {
         case didTapTableView
         case didTapAddColor
         case didTapColorItemCell
+        case didTapEditWithIndexPath(IndexPath)
     }
     
     var eventOutputHandler: ((OutputEvent) -> Void)?
     
     func getCurrentFlashbomb() -> Flashbomb {
-        return .empty
+        let selectedColors = zip(colors, isSelectedCells)
+            //.compactMap { $1 ? $0 : nil }
+        return .init(
+            bpm: Int(self.sliderViewState.sliderValue),
+            colors: selectedColors
+                .map({
+                    return .init(name: "", color: $0, isActive: $1)
+                })
+        )
     }
     
     func updateFlashbomb(_ flashbomb: Flashbomb) {
-        
+        self.isSelectedCells.removeAll()
+        self.colors = flashbomb.colors.map({ return $0.color })
+        self.isSelectedCells = flashbomb.colors.map({ return $0.isActive })
+        self.sliderViewState.sliderValue = Float(flashbomb.bpm)
+        self.reloadTableView()
     }
     
     func addColor(_ color: UIColor) {
-        
+        hideEmptyView()
+        tableView.reloadData()
+        self.colors.append(color)
+        self.isSelectedCells.append(false)
+        tableView.insertRows(at: [.init(row: colors.count - 1, section: 0)], with: .fade)
+    }
+    
+    func removeColor(at indexPath: IndexPath) {
+        self.colors.remove(at: indexPath.row)
+        self.isSelectedCells.remove(at: indexPath.row)
+        if colors.isEmpty {
+            emptyView.alpha = 1
+            self.tableView.reloadData()
+            emptyView.alpha = 0
+            UIView.animate(withDuration: 0.3, animations: {
+                self.emptyView.alpha = 1
+            })
+        }
+        else {
+            self.tableView.deleteRows(at: [indexPath], with: .fade)
+        }
+    }
+    
+    func updateColor(_ color: UIColor, at indexPath: IndexPath) {
+        self.colors.remove(at: indexPath.row)
+        self.colors.insert(color, at: indexPath.row)
+        self.isSelectedCells.remove(at: indexPath.row)
+        self.isSelectedCells.insert(false, at: indexPath.row)
+        self.tableView.reloadRows(at: [indexPath], with: .none)
     }
     //
     
     // state
     private var colors: [UIColor] = []
+    private var isSelectedCells: [Bool] = []
     
     // const
-    private let bottomToolBarHeight: CGFloat = 100
+    private let bottomToolBarHeight: CGFloat = 90
+    private let emptyViewHeaderHeightValue: CGFloat = 80
     
     // ui
     private let tableView = UITableView(frame: .zero, style: .insetGrouped)
@@ -50,12 +93,16 @@ class MenuViewController_v2: UIViewController {
     )
     private lazy var sliderViewState = BPMSliderViewModel()
     private lazy var sliderView = UIHostingController(rootView: BPMSliderView(viewModel: sliderViewState)).view!
-    private lazy var emptyView = UIHostingController(rootView: MenuEmptyView()).view!
+    private lazy var emptyView = UIHostingController(rootView: MenuEmptyView().onTapGesture {
+        [weak self] in
+        self?.eventOutputHandler?(.didTapAddColor)
+    }).view!
     
     init(flashbomb: Flashbomb) {
         super.init(nibName: nil, bundle: nil)
         configureBottomToolBar()
         view.backgroundColor = .black.withAlphaComponent(0.75)
+        updateFlashbomb(flashbomb)
     }
      
     override func viewDidLoad() {
@@ -85,6 +132,22 @@ class MenuViewController_v2: UIViewController {
     }
 }
 
+// MARK: - ui tools
+private extension MenuViewController_v2 {
+    func reloadTableView() {
+        colors.isEmpty ? showEmptyView() : hideEmptyView()
+        tableView.reloadData()
+    }
+    
+    func showEmptyView() {
+        emptyView.alpha = 1
+    }
+    
+    func hideEmptyView() {
+        emptyView.alpha = 0
+    }
+}
+
 // MARK: - ui configuration
 private extension MenuViewController_v2 {
     func setupNavButtons() {
@@ -94,9 +157,11 @@ private extension MenuViewController_v2 {
             target: self,
             action: #selector(didTapAddColorButton)
         )
+        /*
         let pauseButton = UIBarButtonItem(image: UIImage(systemName: "play.fill"), style: .plain, target: self, action: #selector(pauseButtonTapped))
+         */
         let settingsButton = UIBarButtonItem(image: UIImage(systemName: "gear"), style: .plain, target: self, action: #selector(pauseButtonTapped))
-        navigationItem.rightBarButtonItems = [addColorItem, pauseButton, settingsButton]
+        navigationItem.rightBarButtonItems = [addColorItem, settingsButton]
     }
     
     func configureTableView() {
@@ -135,6 +200,7 @@ private extension MenuViewController_v2 {
         let tap2 = UITapGestureRecognizer(target: self, action: #selector(didTapTableView2))
         tap2.delegate = self
         self.view.addGestureRecognizer(tap2)
+        tableView.contentInset = .init(top: 20, left: 0, bottom: 110, right: 0)
     }
         
     func configureBottomToolBar() {
@@ -178,8 +244,12 @@ extension MenuViewController_v2: UITableViewDelegate, UITableViewDataSource {
         cellForRowAt indexPath: IndexPath
     ) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ColorItemTableViewCell", for: indexPath) as! ColorItemTableViewCell
-        cell.configure(color: .systemRed)
-        cell.selectionStyle = .blue
+        cell.configure(color: colors[indexPath.row])
+        cell.didChangeToggleValue = {
+            [weak self] value in
+            self?.isSelectedCells[indexPath.row] = value
+        }
+        isSelectedCells[indexPath.row] ? cell.turnOnToggle() : cell.turnOffToggle()
         return cell
     }
     
@@ -197,7 +267,7 @@ extension MenuViewController_v2: UITableViewDelegate, UITableViewDataSource {
                     image: UIImage(systemName: "trash.fill"),
                     attributes: .destructive,
                     handler: { [weak self] _ in
-
+                        
                     })
             ])
         }
@@ -216,7 +286,7 @@ extension MenuViewController_v2: UITableViewDelegate, UITableViewDataSource {
             headerView.addSubview(_header)
             _header.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
-                _header.topAnchor.constraint(equalTo: headerView.topAnchor),
+                _header.topAnchor.constraint(equalTo: headerView.topAnchor, constant: 0),
                 _header.leftAnchor.constraint(equalTo: headerView.leftAnchor, constant: 0),
                 _header.rightAnchor.constraint(equalTo: headerView.rightAnchor, constant: 0),
                 _header.bottomAnchor.constraint(equalTo: headerView.bottomAnchor),
@@ -230,29 +300,28 @@ extension MenuViewController_v2: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == 0 {
-            return 100
+            return emptyView.alpha == 0 ? 0 : 100
         }
         return 0
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(indexPath)
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let action1 = UIContextualAction(style: .normal, title: "Edit") { (action, view, handler) in
-            print("Action 1 tapped from swipe")
-            handler(true)
+        let action1 = UIContextualAction(style: .normal, title: "Edit") { 
+            [weak self] (action, view, handler) in
+            let cell = tableView.cellForRow(at: indexPath)
+            tableView.isEditing = false
+            self?.eventOutputHandler?(.didTapEditWithIndexPath(indexPath))
         }
         action1.backgroundColor = .systemBlue
-        
-        let action2 = UIContextualAction(style: .destructive, title: "Delete") { (action, view, handler) in
-            print("Action 2 tapped from swipe")
-            handler(true)
+        let action2 = UIContextualAction(style: .destructive, title: "Delete") { 
+            [weak self] (action, view, handler) in
+            self?.removeColor(at: indexPath)
         }
         action2.backgroundColor = .systemRed
-        
         let swipeActions = UISwipeActionsConfiguration(actions: [action2, action1])
         swipeActions.performsFirstActionWithFullSwipe = false
         return swipeActions

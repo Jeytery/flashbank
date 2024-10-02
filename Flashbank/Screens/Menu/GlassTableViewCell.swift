@@ -11,7 +11,7 @@ import UIKit
 class GlassTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        backgroundColor = .black.withAlphaComponent(0.2)
+        backgroundColor = .black.withAlphaComponent(0.1)
     }
     
     required init?(coder: NSCoder) {

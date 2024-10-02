@@ -12,15 +12,18 @@ import UIKit
 struct NamedColor: Equatable, Codable {
     let name: String
     let color: UIColor
+    let isActive: Bool
     
     enum CodingKeys: String, CodingKey {
         case name
         case color
+        case isActive
     }
     
-    init(name: String, color: UIColor) {
+    init(name: String, color: UIColor, isActive: Bool = false) {
         self.name = name
         self.color = color
+        self.isActive = isActive
     }
     
     init(from decoder: Decoder) throws {
@@ -32,6 +35,7 @@ struct NamedColor: Equatable, Codable {
         } else {
             color = UIColor.clear
         }
+        self.isActive = try container.decode(Bool.self, forKey: .isActive)
     }
     
     func encode(to encoder: Encoder) throws {
@@ -40,6 +44,7 @@ struct NamedColor: Equatable, Codable {
         
         let colorData = try NSKeyedArchiver.archivedData(withRootObject: color, requiringSecureCoding: false)
         try container.encode(colorData, forKey: .color)
+        try container.encode(isActive, forKey: .isActive)
     }
     
     static var red: NamedColor {

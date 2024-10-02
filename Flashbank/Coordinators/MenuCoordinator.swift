@@ -33,6 +33,10 @@ final class MenuCoordinator: Coordinatable {
     
     private var menuViewController: MenuViewController_v2
     private lazy var getColorAdapter = GetColorAdapter()
+    
+    private var pickerCoordinator: CustomPickerCoordinator!
+    
+    private var isUserSelectedColoInPicker = false
 
     init(flashbomb: Flashbomb) {
         self.flashbomb = flashbomb
@@ -59,16 +63,93 @@ final class MenuCoordinator: Coordinatable {
             guard let self = self else { return }
             switch event {
             case .didTapAddColor:
-                let colorPicker = UIColorPickerViewController()
-                colorPicker.delegate = getColorAdapter
-                self.navigationController.present(colorPicker, animated: true, completion: nil)
+                if ProcessInfo.processInfo.isiOSAppOnMac {
+                    self.pickerCoordinator = CustomPickerCoordinator(parentNavigationController: self.navigationController)
+                    add(coordinatable: pickerCoordinator)
+                    pickerCoordinator.tapDoneWithColorHandler = {
+                        [weak self] color in
+                        guard let self = self else { return }
+                        self.menuViewController.addColor(color)
+                        pickerCoordinator.coreNavigationController.dismiss(animated: true)
+                        self.remove(coordinatable: pickerCoordinator)
+                        self.pickerCoordinator = nil
+                    }
+                }
+                else {
+                    let colorPicker = UIColorPickerViewController()
+                    colorPicker.delegate = getColorAdapter
+                    self.navigationController.present(colorPicker, animated: true, completion: nil)
+                    getColorAdapter.didSelectColorHandler = {
+                        [weak self] picker in
+                        guard let self = self else { return }
+                        if ProcessInfo.processInfo.isiOSAppOnMac {
+                            startCoordinator()
+                            self.menuViewController.addColor(picker.selectedColor)
+                            picker.dismiss(animated: true)
+                        }
+                        else {
+                            self.isUserSelectedColoInPicker = true
+                        }
+                    }
+                    getColorAdapter.didFinishHandler = {
+                        [weak self] picker in
+                        if ProcessInfo.processInfo.isiOSAppOnMac {
+                            self?.menuViewController.addColor(picker.selectedColor)
+                            picker.dismiss(animated: true)
+                        }
+                        else {
+                            if self?.isUserSelectedColoInPicker ?? false {
+                                self?.menuViewController.addColor(picker.selectedColor)
+                            }
+                            self?.isUserSelectedColoInPicker = false
+                        }
+                    }
+                }
+
+            case .didTapEditWithIndexPath(let indexPath):
+                if ProcessInfo.processInfo.isiOSAppOnMac {
+                    self.pickerCoordinator = CustomPickerCoordinator(parentNavigationController: self.navigationController)
+                    add(coordinatable: pickerCoordinator)
+                    pickerCoordinator.tapDoneWithColorHandler = {
+                        [weak self] color in
+                        guard let self = self else { return }
+                        self.menuViewController.updateColor(color, at: indexPath)
+                        pickerCoordinator.coreNavigationController.dismiss(animated: true)
+                        self.remove(coordinatable: pickerCoordinator)
+                        self.pickerCoordinator = nil
+                    }
+                }
+                else {
+                    let colorPicker = UIColorPickerViewController()
+                    colorPicker.delegate = getColorAdapter
+                    self.navigationController.present(colorPicker, animated: true, completion: nil)
+                    getColorAdapter.didSelectColorHandler = {
+                        [weak self] picker in
+                        if ProcessInfo.processInfo.isiOSAppOnMac {
+                            self?.menuViewController.updateColor(picker.selectedColor, at: indexPath)
+                            picker.dismiss(animated: true)
+                        }
+                        else {
+                            self?.isUserSelectedColoInPicker = true
+                        }
+                    }
+                    getColorAdapter.didFinishHandler = {
+                        [weak self] picker in
+                        if ProcessInfo.processInfo.isiOSAppOnMac {
+                            self?.menuViewController.updateColor(picker.selectedColor, at: indexPath)
+                            picker.dismiss(animated: true)
+                        }
+                        else {
+                            if self?.isUserSelectedColoInPicker ?? false {
+                                self?.menuViewController.updateColor(picker.selectedColor, at: indexPath)
+                            }
+                        }
+                        self?.isUserSelectedColoInPicker = false
+                    }
+                }
             default: break
             }
         }
-    }
-        
-    func getFlashbomb() -> Flashbomb {
-        return .empty
     }
 }
 

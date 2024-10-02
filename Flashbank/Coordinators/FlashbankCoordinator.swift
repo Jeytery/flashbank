@@ -66,10 +66,12 @@ private extension FlashbankCoordinator {
   
     func showMenu() {
         self.navigationController.present(menuCoordinator.navigationController, animated: true)
+        self.flashbankViewController.stopLoop()
     }
     
     func hideMenu() {
         self.menuCoordinator.navigationController.dismiss(animated: true)
+        self.flashbankViewController.startLoop(flashbomb: self.currentFlashbomb)
     }
     
     func setupMenu() {

@@ -29,10 +29,10 @@ class CustomTabBar: UIToolbar {
 final class MenuViewController: UIViewController {
     var didTapView: (() -> Void)?
     
-    func getCurrentFlashbomb() -> Flashbomb {
-        return .init(intensity: Double(self.sliderView.sliderValue), colors: self.activeColors, isPaused: false)
-    }
-    
+//    func getCurrentFlashbomb() -> Flashbomb {
+//        return .init(bpm: self.sliderView.sliderValue, colors: self.activeColors, isPaused: false)
+//    }
+//    
     func updateFlashbomb(_ flashbomb: Flashbomb) {
         self.currentFlashbomb = flashbomb
         let activeColors = flashbomb.colors

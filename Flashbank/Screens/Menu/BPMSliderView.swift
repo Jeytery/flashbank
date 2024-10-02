@@ -27,7 +27,7 @@ struct BPMSliderView: View {
                 .padding(.trailing, 10)
                 .font(.system(size: mainElementsTextSize, weight: .medium, design: .monospaced))
                 .foregroundStyle(.blue)
-            Slider(value: $viewModel.sliderValue, in: 0...255, step: 1, onEditingChanged: {
+            Slider(value: $viewModel.sliderValue, in: 0...600, step: 1, onEditingChanged: {
                 _ in
             })
             ZStack {

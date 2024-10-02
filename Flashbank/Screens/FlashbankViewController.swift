@@ -13,7 +13,18 @@ class FlashbankViewController: PluginableViewController {
     private var loopTimer: Timer!
     private var currentIndex: Int = 0
     
-    private func startLoop(flashbomb: Flashbomb) {
+    private func nextColor(flashbomb: Flashbomb) {
+        currentIndex += 1
+        if currentIndex >= currentActiveColors.count {
+            currentIndex = 0
+        }
+        view.backgroundColor = currentActiveColors[currentIndex]
+    }
+    
+    private var currentFlashbomb: Flashbomb = .empty
+    private var currentActiveColors: [UIColor] = []
+    
+    func startLoop(flashbomb: Flashbomb) {
         self.loopTimer?.invalidate()
         self.loopTimer = nil
         self.currentIndex = 0
@@ -29,16 +40,8 @@ class FlashbankViewController: PluginableViewController {
         }
     }
     
-    private func nextColor(flashbomb: Flashbomb) {
-        currentIndex += 1
-        if currentIndex >= flashbomb.colors.count {
-            currentIndex = 0
-        }
-        view.backgroundColor = flashbomb.colors[currentIndex].color
-    }
-    
-    private func stopLoop() {
-        loopTimer.invalidate()
+    func stopLoop() {
+        loopTimer?.invalidate()
         loopTimer = nil
     }
     
@@ -53,7 +56,14 @@ extension FlashbankViewController {
         if flashbomb.colors.isEmpty {
             return
         }
-        self.view.backgroundColor = flashbomb.colors.first!.color
+        currentFlashbomb = flashbomb
+        currentActiveColors = flashbomb.colors
+            .filter({ $0.isActive })
+            .map({ $0.color })
+        self.view.backgroundColor = currentActiveColors.first ?? .white
+        if flashbomb.bpm == 0 {
+            return
+        }
         startLoop(flashbomb: flashbomb)
     }
 }

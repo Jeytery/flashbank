@@ -81,6 +81,7 @@ class ColorItemTableViewCell: GlassTableViewCell {
 */
 
 class ColorItemTableViewCell: GlassTableViewCell {
+    var didChangeToggleValue: ((Bool) -> Void)?
     
     private let colorViewHeight: CGFloat = 27
     private lazy var colorView: UIView = {
@@ -90,11 +91,24 @@ class ColorItemTableViewCell: GlassTableViewCell {
         return view
     }()
     
-    let toggleSwitch: UISwitch = {
+    private lazy var toggleSwitch: UISwitch = {
         let switchControl = UISwitch()
         switchControl.tintColor = .systemBlue
+        switchControl.addTarget(self, action: #selector(toggleDidChangeValue), for: .valueChanged)
         return switchControl
     }()
+    
+    @objc private func toggleDidChangeValue() {
+        didChangeToggleValue?(toggleSwitch.isOn)
+    }
+    
+    func turnOnToggle() {
+        toggleSwitch.isOn = true
+    }
+    
+    func turnOffToggle() {
+        toggleSwitch.isOn = false
+    }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
