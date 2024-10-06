@@ -12,6 +12,8 @@
 		3E0CA76A2CAB285D007E09CD /* Pikko in Frameworks */ = {isa = PBXBuildFile; productRef = 3E0CA7692CAB285D007E09CD /* Pikko */; };
 		3E0CA76C2CAB287F007E09CD /* CustomColorPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E0CA76B2CAB287F007E09CD /* CustomColorPickerViewController.swift */; };
 		3E0E15A12B9645D4005A9977 /* ColorPaletteSUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E0E15A02B9645D4005A9977 /* ColorPaletteSUI.swift */; };
+		3E0EE4B42CAD9BD300B22621 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E0EE4B32CAD9BD300B22621 /* SettingsView.swift */; };
+		3E0EE4B72CAD9C7300B22621 /* SettingsIconGenerator in Frameworks */ = {isa = PBXBuildFile; productRef = 3E0EE4B62CAD9C7300B22621 /* SettingsIconGenerator */; };
 		3E28F7C72B9117B40005DE9C /* ViewDidLoadActionPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E28F7C62B9117B40005DE9C /* ViewDidLoadActionPlugin.swift */; };
 		3E28F7D12B9120680005DE9C /* MenuCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E28F7D02B9120680005DE9C /* MenuCoordinator.swift */; };
 		3E339DE32B91368E00C312E6 /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = 3E339DE22B91368E00C312E6 /* SwiftUIIntrospect */; };
@@ -58,6 +60,7 @@
 		3E012FE42B965AC0003FECA9 /* NamedColorTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NamedColorTableViewCell.swift; sourceTree = "<group>"; };
 		3E0CA76B2CAB287F007E09CD /* CustomColorPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColorPickerViewController.swift; sourceTree = "<group>"; };
 		3E0E15A02B9645D4005A9977 /* ColorPaletteSUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPaletteSUI.swift; sourceTree = "<group>"; };
+		3E0EE4B32CAD9BD300B22621 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		3E28F7C62B9117B40005DE9C /* ViewDidLoadActionPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewDidLoadActionPlugin.swift; sourceTree = "<group>"; };
 		3E28F7D02B9120680005DE9C /* MenuCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCoordinator.swift; sourceTree = "<group>"; };
 		3E45D1E92CA8554D0057ED19 /* MenuViewController_v2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController_v2.swift; sourceTree = "<group>"; };
@@ -108,6 +111,7 @@
 			files = (
 				3E0CA76A2CAB285D007E09CD /* Pikko in Frameworks */,
 				3E0AFF4A2B9C48C8009971C8 /* AlertKit in Frameworks */,
+				3E0EE4B72CAD9C7300B22621 /* SettingsIconGenerator in Frameworks */,
 				3E339DE32B91368E00C312E6 /* SwiftUIIntrospect in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -115,6 +119,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3E0EE4B22CAD9BC400B22621 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				3E0EE4B32CAD9BD300B22621 /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
 		3E28F7CF2B91205B0005DE9C /* Coordinators */ = {
 			isa = PBXGroup;
 			children = (
@@ -214,6 +226,7 @@
 		3E7C4DF92B91020E006F5759 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				3E0EE4B22CAD9BC400B22621 /* Settings */,
 				3E92FD2C2B94C08B009BFCB6 /* Menu */,
 				3EDEF7A92B8FBED500D7BE5B /* FlashbankViewController.swift */,
 				3E92FD282B94B5E4009BFCB6 /* ColorPresetsView.swift */,
@@ -337,6 +350,7 @@
 				3E339DE22B91368E00C312E6 /* SwiftUIIntrospect */,
 				3E0AFF492B9C48C8009971C8 /* AlertKit */,
 				3E0CA7692CAB285D007E09CD /* Pikko */,
+				3E0EE4B62CAD9C7300B22621 /* SettingsIconGenerator */,
 			);
 			productName = Flashbank;
 			productReference = 3EDEF7922B8FBBB400D7BE5B /* Flashbank.app */;
@@ -370,6 +384,7 @@
 				3E339DE12B91368E00C312E6 /* XCRemoteSwiftPackageReference "swiftui-introspect" */,
 				3E0AFF482B9C48C8009971C8 /* XCRemoteSwiftPackageReference "AlertKit" */,
 				3E0CA7682CAB285D007E09CD /* XCRemoteSwiftPackageReference "pikko" */,
+				3E0EE4B52CAD9C7300B22621 /* XCRemoteSwiftPackageReference "SettingsIconGenerator" */,
 			);
 			productRefGroup = 3EDEF7932B8FBBB400D7BE5B /* Products */;
 			projectDirPath = "";
@@ -402,6 +417,7 @@
 				3E92FD332B94EF47009BFCB6 /* GlassTableViewCell.swift in Sources */,
 				3E92FD3A2B95132E009BFCB6 /* NamedColor.swift in Sources */,
 				3E92FD292B94B5E4009BFCB6 /* ColorPresetsView.swift in Sources */,
+				3E0EE4B42CAD9BD300B22621 /* SettingsView.swift in Sources */,
 				3E700D512B90B10100F4B30D /* AddNavigationButtonsPlugin.swift in Sources */,
 				3EAE6F242B95BB1700E47A9D /* NativeHeaderCollectionView.swift in Sources */,
 				3E0E15A12B9645D4005A9977 /* ColorPaletteSUI.swift in Sources */,
@@ -677,6 +693,14 @@
 				minimumVersion = 1.0.5;
 			};
 		};
+		3E0EE4B52CAD9C7300B22621 /* XCRemoteSwiftPackageReference "SettingsIconGenerator" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sparrowcode/SettingsIconGenerator";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.2;
+			};
+		};
 		3E339DE12B91368E00C312E6 /* XCRemoteSwiftPackageReference "swiftui-introspect" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/siteline/swiftui-introspect";
@@ -697,6 +721,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3E0CA7682CAB285D007E09CD /* XCRemoteSwiftPackageReference "pikko" */;
 			productName = Pikko;
+		};
+		3E0EE4B62CAD9C7300B22621 /* SettingsIconGenerator */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3E0EE4B52CAD9C7300B22621 /* XCRemoteSwiftPackageReference "SettingsIconGenerator" */;
+			productName = SettingsIconGenerator;
 		};
 		3E339DE22B91368E00C312E6 /* SwiftUIIntrospect */ = {
 			isa = XCSwiftPackageProductDependency;

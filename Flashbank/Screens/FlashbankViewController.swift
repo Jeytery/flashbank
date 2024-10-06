@@ -9,9 +9,27 @@ import Foundation
 import UIKit
 import SwiftUI
 
+class StatusBarHiddenNavigationController: UINavigationController {
+    override var childForStatusBarHidden: UIViewController? {
+        return self.topViewController
+    }
+    
+    override var childForStatusBarStyle: UIViewController? {
+        return self.topViewController
+    }
+}
+
 class FlashbankViewController: PluginableViewController {
     private var loopTimer: Timer!
     private var currentIndex: Int = 0
+    
+    override var prefersHomeIndicatorAutoHidden: Bool {
+        return true
+    }
+    
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
     
     private func nextColor(flashbomb: Flashbomb) {
         currentIndex += 1
@@ -48,7 +66,16 @@ class FlashbankViewController: PluginableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
+        
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        self.modalPresentationCapturesStatusBarAppearance = true
+        UIApplication.shared.isStatusBarHidden = true
+        setNeedsStatusBarAppearanceUpdate()
+    }
+
 }
 
 extension FlashbankViewController {
@@ -61,9 +88,16 @@ extension FlashbankViewController {
             .filter({ $0.isActive })
             .map({ $0.color })
         self.view.backgroundColor = currentActiveColors.first ?? .white
+        if currentActiveColors.isEmpty {
+            return
+        }
         if flashbomb.bpm == 0 {
             return
         }
+        if currentActiveColors.count == 1 {
+            return 
+        }
+        currentIndex = 0
         startLoop(flashbomb: flashbomb)
     }
 }

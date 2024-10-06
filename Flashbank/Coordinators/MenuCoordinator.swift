@@ -62,6 +62,12 @@ final class MenuCoordinator: Coordinatable {
             [weak self] event in
             guard let self = self else { return }
             switch event {
+            case .didTapSettings:
+                let settingsViewController = UIHostingController(rootView: SettingsView())
+                let closeNav = ClosableNavigationController(rootViewController: settingsViewController).onlyFirst()
+                closeNav.modalPresentationStyle = .fullScreen
+                navigationController.present(closeNav, animated: true)
+                
             case .didTapAddColor:
                 if ProcessInfo.processInfo.isiOSAppOnMac {
                     self.pickerCoordinator = CustomPickerCoordinator(parentNavigationController: self.navigationController)
@@ -106,48 +112,52 @@ final class MenuCoordinator: Coordinatable {
                     }
                 }
 
-            case .didTapEditWithIndexPath(let indexPath):
+            case .didTapEditWithIndexPath(let indexPath): showColorPickerLogic(indexPath: indexPath)
+            case .didSelectCellWithIndexPath(let indexPath): showColorPickerLogic(indexPath: indexPath)
+            default: break
+            }
+        }
+    }
+    
+    private func showColorPickerLogic(indexPath: IndexPath) {
+        if ProcessInfo.processInfo.isiOSAppOnMac {
+            self.pickerCoordinator = CustomPickerCoordinator(parentNavigationController: self.navigationController)
+            add(coordinatable: pickerCoordinator)
+            pickerCoordinator.tapDoneWithColorHandler = {
+                [weak self] color in
+                guard let self = self else { return }
+                self.menuViewController.updateColor(color, at: indexPath)
+                pickerCoordinator.coreNavigationController.dismiss(animated: true)
+                self.remove(coordinatable: pickerCoordinator)
+                self.pickerCoordinator = nil
+            }
+        }
+        else {
+            let colorPicker = UIColorPickerViewController()
+            colorPicker.delegate = getColorAdapter
+            self.navigationController.present(colorPicker, animated: true, completion: nil)
+            getColorAdapter.didSelectColorHandler = {
+                [weak self] picker in
                 if ProcessInfo.processInfo.isiOSAppOnMac {
-                    self.pickerCoordinator = CustomPickerCoordinator(parentNavigationController: self.navigationController)
-                    add(coordinatable: pickerCoordinator)
-                    pickerCoordinator.tapDoneWithColorHandler = {
-                        [weak self] color in
-                        guard let self = self else { return }
-                        self.menuViewController.updateColor(color, at: indexPath)
-                        pickerCoordinator.coreNavigationController.dismiss(animated: true)
-                        self.remove(coordinatable: pickerCoordinator)
-                        self.pickerCoordinator = nil
-                    }
+                    self?.menuViewController.updateColor(picker.selectedColor, at: indexPath)
+                    picker.dismiss(animated: true)
                 }
                 else {
-                    let colorPicker = UIColorPickerViewController()
-                    colorPicker.delegate = getColorAdapter
-                    self.navigationController.present(colorPicker, animated: true, completion: nil)
-                    getColorAdapter.didSelectColorHandler = {
-                        [weak self] picker in
-                        if ProcessInfo.processInfo.isiOSAppOnMac {
-                            self?.menuViewController.updateColor(picker.selectedColor, at: indexPath)
-                            picker.dismiss(animated: true)
-                        }
-                        else {
-                            self?.isUserSelectedColoInPicker = true
-                        }
-                    }
-                    getColorAdapter.didFinishHandler = {
-                        [weak self] picker in
-                        if ProcessInfo.processInfo.isiOSAppOnMac {
-                            self?.menuViewController.updateColor(picker.selectedColor, at: indexPath)
-                            picker.dismiss(animated: true)
-                        }
-                        else {
-                            if self?.isUserSelectedColoInPicker ?? false {
-                                self?.menuViewController.updateColor(picker.selectedColor, at: indexPath)
-                            }
-                        }
-                        self?.isUserSelectedColoInPicker = false
+                    self?.isUserSelectedColoInPicker = true
+                }
+            }
+            getColorAdapter.didFinishHandler = {
+                [weak self] picker in
+                if ProcessInfo.processInfo.isiOSAppOnMac {
+                    self?.menuViewController.updateColor(picker.selectedColor, at: indexPath)
+                    picker.dismiss(animated: true)
+                }
+                else {
+                    if self?.isUserSelectedColoInPicker ?? false {
+                        self?.menuViewController.updateColor(picker.selectedColor, at: indexPath)
                     }
                 }
-            default: break
+                self?.isUserSelectedColoInPicker = false
             }
         }
     }

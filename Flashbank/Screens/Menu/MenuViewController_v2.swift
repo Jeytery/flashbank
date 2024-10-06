@@ -19,13 +19,14 @@ class MenuViewController_v2: UIViewController {
         case didTapAddColor
         case didTapColorItemCell
         case didTapEditWithIndexPath(IndexPath)
+        case didTapSettings
+        case didSelectCellWithIndexPath(IndexPath)
     }
     
     var eventOutputHandler: ((OutputEvent) -> Void)?
     
     func getCurrentFlashbomb() -> Flashbomb {
         let selectedColors = zip(colors, isSelectedCells)
-            //.compactMap { $1 ? $0 : nil }
         return .init(
             bpm: Int(self.sliderViewState.sliderValue),
             colors: selectedColors
@@ -47,7 +48,7 @@ class MenuViewController_v2: UIViewController {
         hideEmptyView()
         tableView.reloadData()
         self.colors.append(color)
-        self.isSelectedCells.append(false)
+        self.isSelectedCells.append(true)
         tableView.insertRows(at: [.init(row: colors.count - 1, section: 0)], with: .fade)
     }
     
@@ -160,8 +161,12 @@ private extension MenuViewController_v2 {
         /*
         let pauseButton = UIBarButtonItem(image: UIImage(systemName: "play.fill"), style: .plain, target: self, action: #selector(pauseButtonTapped))
          */
-        let settingsButton = UIBarButtonItem(image: UIImage(systemName: "gear"), style: .plain, target: self, action: #selector(pauseButtonTapped))
+        let settingsButton = UIBarButtonItem(image: UIImage(systemName: "gear"), style: .plain, target: self, action: #selector(settingsDidTapButton))
         navigationItem.rightBarButtonItems = [addColorItem, settingsButton]
+    }
+    
+    @objc func settingsDidTapButton() {
+        self.eventOutputHandler?(.didTapSettings)
     }
     
     func configureTableView() {
@@ -253,6 +258,7 @@ extension MenuViewController_v2: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
+    /*
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         let actionProvider: UIContextMenuActionProvider = { _ in
             return UIMenu(title: "", children: [
@@ -277,6 +283,7 @@ extension MenuViewController_v2: UITableViewDelegate, UITableViewDataSource {
             actionProvider: actionProvider
         )
     }
+    */
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section == 0 {
@@ -306,8 +313,10 @@ extension MenuViewController_v2: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.eventOutputHandler?(.didSelectCellWithIndexPath(indexPath))
         tableView.deselectRow(at: indexPath, animated: true)
     }
+    
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let action1 = UIContextualAction(style: .normal, title: "Edit") { 
@@ -326,6 +335,7 @@ extension MenuViewController_v2: UITableViewDelegate, UITableViewDataSource {
         swipeActions.performsFirstActionWithFullSwipe = false
         return swipeActions
     }
+    
 }
 
 extension MenuViewController_v2: UIGestureRecognizerDelegate {

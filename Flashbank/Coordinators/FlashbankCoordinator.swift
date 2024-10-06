@@ -11,7 +11,7 @@ import SwiftUI
 import AlertKit
 
 class FlashbankCoordinator: Coordinatable {
-    private(set) lazy var navigationController = UINavigationController(
+    private(set) lazy var navigationController = StatusBarHiddenNavigationController(
         rootViewController: flashbankViewController
     )
     private lazy var flashbankViewController = FlashbankViewController()
@@ -67,11 +67,13 @@ private extension FlashbankCoordinator {
     func showMenu() {
         self.navigationController.present(menuCoordinator.navigationController, animated: true)
         self.flashbankViewController.stopLoop()
+        UIApplication.shared.isIdleTimerDisabled = false
     }
     
     func hideMenu() {
         self.menuCoordinator.navigationController.dismiss(animated: true)
         self.flashbankViewController.startLoop(flashbomb: self.currentFlashbomb)
+        UIApplication.shared.isIdleTimerDisabled = true
     }
     
     func setupMenu() {
