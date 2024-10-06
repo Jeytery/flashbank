@@ -599,6 +599,8 @@
 				DEVELOPMENT_TEAM = R24W57U338;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Flashbank/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = PartyColors;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = "";
@@ -631,6 +633,8 @@
 				DEVELOPMENT_TEAM = R24W57U338;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Flashbank/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = PartyColors;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = "";
