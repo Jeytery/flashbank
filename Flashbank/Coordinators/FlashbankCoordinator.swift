@@ -30,6 +30,9 @@ class FlashbankCoordinator: Coordinatable {
         displayFlashbank()
         addTapGesture()
         setupMenu()
+        
+        showMenu(animated: false)
+        isMenuShown = true
     }
 }
 
@@ -64,8 +67,8 @@ private extension FlashbankCoordinator {
         isMenuShown.toggle()
     }
   
-    func showMenu() {
-        self.navigationController.present(menuCoordinator.navigationController, animated: true)
+    func showMenu(animated: Bool = true) {
+        self.navigationController.present(menuCoordinator.navigationController, animated: animated)
         self.flashbankViewController.stopLoop()
         UIApplication.shared.isIdleTimerDisabled = false
     }

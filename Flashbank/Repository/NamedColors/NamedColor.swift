@@ -48,15 +48,15 @@ struct NamedColor: Equatable, Codable {
     }
     
     static var red: NamedColor {
-        return .init(name: "red", color: .systemRed)
+        return .init(name: "red", color: .systemRed, isActive: true)
     }
     
     static var green: NamedColor {
-        return .init(name: "green", color: .systemGreen)
+        return .init(name: "green", color: .systemGreen, isActive: true)
     }
     
     static var blue: NamedColor {
-        return .init(name: "blue", color: .systemBlue)
+        return .init(name: "blue", color: .systemBlue, isActive: true)
     }
     
     static var white: NamedColor {

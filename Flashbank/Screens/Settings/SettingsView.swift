@@ -7,9 +7,13 @@
 
 import SwiftUI
 import SettingsIconGenerator
+import MessageUI
 
 struct SettingsView: View {
+    
     @State private var isVersionToggled: Bool = false
+    @State private var isShowingMailView: Bool = false
+    
     private func infoCell(
         title1: String,
         title2: String,
@@ -43,32 +47,31 @@ struct SettingsView: View {
     }
     var body: some View {
         List {
+            Section {
+                infoCell(title1: "Version", title2: isVersionToggled ? "Disco! Disco! Disco!" : "Flashbank 1.0", disclosureIndicator: false, imageName: "1.circle.fill", imageColor: .darkGray, didTap: {
+                    isVersionToggled.toggle()
+                })
+            }
             Section(header: Text("Support")) {
-                infoCell(title1: "Ask a question", title2: "Telegram", disclosureIndicator: true, imageName: "bubble.left.fill", imageColor: .orange, didTap: {
+                infoCell(title1: "Ask a question", title2: "Telegram", disclosureIndicator: true, imageName: "bubble.left.fill", imageColor: .systemPink, didTap: {
                     if let url = URL(string: "https://t.me/Jeytery") {
                         UIApplication.shared.open(url)
                     }
                 })
-                infoCell(title1: "Ask a question", title2: "Mail", disclosureIndicator: true, imageName: "bubble.left.fill", imageColor: .purple, didTap: {
-//                    state.tapItem?(.sendEmailToDeveloper)
-//                    if MFMailComposeViewController.canSendMail() {
-//                        isShowingMailView = true
-//                    }
-//                    else {
-//                        let email = "dimaostapchenko@gmail.com"
-//                        if let url = URL(string: "mailto:\(email)") {
-//                            if #available(iOS 10.0, *) {
-//                                UIApplication.shared.open(url)
-//                            } else {
-//                                UIApplication.shared.openURL(url)
-//                            }
-//                        }
-//                    }
-                })
-            }
-            Section {
-                infoCell(title1: "Version", title2: isVersionToggled ? "Disco! Disco! Discko!" : "Flashbank 1.0", disclosureIndicator: false, imageName: "1.circle.fill", imageColor: .darkGray, didTap: {
-                    isVersionToggled.toggle()
+                infoCell(title1: "Ask a question", title2: "Mail", disclosureIndicator: true, imageName: "bubble.left.fill", imageColor: .systemOrange, didTap: {
+                    if MFMailComposeViewController.canSendMail() {
+                        isShowingMailView = true
+                    }
+                    else {
+                        let email = "dimaostapchenko@gmail.com"
+                        if let url = URL(string: "mailto:\(email)") {
+                            if #available(iOS 10.0, *) {
+                                UIApplication.shared.open(url)
+                            } else {
+                                UIApplication.shared.openURL(url)
+                            }
+                        }
+                    }
                 })
             }
             Section {

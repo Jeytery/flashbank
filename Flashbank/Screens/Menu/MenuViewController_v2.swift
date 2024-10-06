@@ -336,6 +336,13 @@ extension MenuViewController_v2: UITableViewDelegate, UITableViewDataSource {
         return swipeActions
     }
     
+    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        if ProcessInfo.processInfo.isiOSAppOnMac {
+            return "Try two fingers for swipe"
+        }
+        return "Try left swipe"
+    }
+    
 }
 
 extension MenuViewController_v2: UIGestureRecognizerDelegate {

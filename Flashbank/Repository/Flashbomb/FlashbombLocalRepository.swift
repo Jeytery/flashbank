@@ -30,7 +30,7 @@ class FlashbombLocalRepository {
     
     var standardFlashbomb: Flashbomb {
         return .init(
-            bpm: 3,
+            bpm: 120,
             colors: [.red, .blue, .green]
         )
     }
