@@ -13,15 +13,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     private let flashbankCoordinator = FlashbankCoordinator()
+    private let mainCoordinator = MainCoordinator()
     
     func application(
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
-        window?.rootViewController = flashbankCoordinator.navigationController
+        window?.rootViewController = mainCoordinator.navigationController
         window?.makeKeyAndVisible()
-        flashbankCoordinator.startCoordinator()
+        mainCoordinator.startCoordinator()
         UIApplication.shared.isIdleTimerDisabled = true
         return true
     }

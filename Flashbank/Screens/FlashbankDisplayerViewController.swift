@@ -19,7 +19,7 @@ class StatusBarHiddenNavigationController: UINavigationController {
     }
 }
 
-class FlashbankViewController: PluginableViewController {
+final class FlashbankDisplayerViewController: PluginableViewController {
     private var loopTimer: Timer!
     private var currentIndex: Int = 0
     
@@ -66,7 +66,6 @@ class FlashbankViewController: PluginableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -75,10 +74,9 @@ class FlashbankViewController: PluginableViewController {
         UIApplication.shared.isStatusBarHidden = true
         setNeedsStatusBarAppearanceUpdate()
     }
-
 }
 
-extension FlashbankViewController {
+extension FlashbankDisplayerViewController {
     func displayFlashbomb(_ flashbomb: Flashbomb) {
         if flashbomb.colors.isEmpty {
             return

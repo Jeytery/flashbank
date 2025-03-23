@@ -216,7 +216,7 @@ private extension MenuViewController_v2 {
         let bottomPadding: CGFloat = view.safeAreaInsets.bottom == 0 ? bottomPaddingValue : 0
         let topSliderPadding: CGFloat = 5
         NSLayoutConstraint.activate([
-            bottomToolBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            bottomToolBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             bottomToolBar.leftAnchor.constraint(equalTo: view.leftAnchor),
             bottomToolBar.rightAnchor.constraint(equalTo: view.rightAnchor),
             bottomToolBar.heightAnchor.constraint(equalToConstant: bottomToolBarHeight + bottomPadding)

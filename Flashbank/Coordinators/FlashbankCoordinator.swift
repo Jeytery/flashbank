@@ -14,7 +14,7 @@ class FlashbankCoordinator: Coordinatable {
     private(set) lazy var navigationController = StatusBarHiddenNavigationController(
         rootViewController: flashbankViewController
     )
-    private lazy var flashbankViewController = FlashbankViewController()
+    private lazy var flashbankViewController = FlashbankDisplayerViewController()
     private unowned var menuCoordinator: MenuCoordinator!
     
     private let flashbombRep = FlashbombLocalRepository()

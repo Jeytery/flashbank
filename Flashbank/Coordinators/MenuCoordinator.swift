@@ -166,3 +166,65 @@ final class MenuCoordinator: Coordinatable {
 private extension MenuCoordinator {
    
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+final class __MenuCoordinator: Coordinatable {
+    private(set) var tabbarViewController = UITabBarController()
+    private let flashbankMenuCoordinator = FlashbankMenuCoordinator()
+    
+    override func startCoordinator() {
+        super.startCoordinator()
+        flashbankMenuCoordinator.menuViewController.tabBarItem = .init(title: "Flashbank", image: UIImage(systemName: "01.circle.fill"), tag: 0)
+        let autoflashViewController = AutoflashMenuViewController()
+        autoflashViewController.tabBarItem = .init(title: "Autoflash", image: UIImage(systemName: "02.circle.fill"), tag: 1)
+        add(coordinatable: flashbankMenuCoordinator)
+        tabbarViewController.viewControllers = [
+            flashbankMenuCoordinator.menuViewController, autoflashViewController
+        ]
+    }
+}
+
+

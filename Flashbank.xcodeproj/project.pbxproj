@@ -40,7 +40,6 @@
 		3E7C4DF62B9101A9006F5759 /* Flashbomb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7C4DF52B9101A9006F5759 /* Flashbomb.swift */; };
 		3E92FD252B933F30009BFCB6 /* FlashbombLocalRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E92FD242B933F30009BFCB6 /* FlashbombLocalRepository.swift */; };
 		3E92FD272B933F54009BFCB6 /* FlashbombLRActionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E92FD262B933F54009BFCB6 /* FlashbombLRActionProvider.swift */; };
-		3E92FD292B94B5E4009BFCB6 /* ColorPresetsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E92FD282B94B5E4009BFCB6 /* ColorPresetsView.swift */; };
 		3E92FD2B2B94C089009BFCB6 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E92FD2A2B94C089009BFCB6 /* MenuViewController.swift */; };
 		3E92FD2E2B94EA45009BFCB6 /* SliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E92FD2D2B94EA45009BFCB6 /* SliderView.swift */; };
 		3E92FD312B94EE38009BFCB6 /* ClosableNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E92FD302B94EE38009BFCB6 /* ClosableNavigationController.swift */; };
@@ -49,10 +48,15 @@
 		3E92FD3A2B95132E009BFCB6 /* NamedColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E92FD392B95132E009BFCB6 /* NamedColor.swift */; };
 		3EAE6F232B95BB1700E47A9D /* NativeHeaderCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EAE6F212B95BB1700E47A9D /* NativeHeaderCellView.swift */; };
 		3EAE6F242B95BB1700E47A9D /* NativeHeaderCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EAE6F222B95BB1700E47A9D /* NativeHeaderCollectionView.swift */; };
+		3EBD787E2D90359F0059E2F0 /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD787D2D90359F0059E2F0 /* MainCoordinator.swift */; };
+		3EBD78822D906AE80059E2F0 /* FlashbankMenuCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD78812D906AE80059E2F0 /* FlashbankMenuCoordinator.swift */; };
+		3EBD78842D906DE60059E2F0 /* AutoflashDisplayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD78832D906DE60059E2F0 /* AutoflashDisplayerViewController.swift */; };
+		3EBD78862D906EA50059E2F0 /* AutoflashMenuCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD78852D906EA50059E2F0 /* AutoflashMenuCoordinator.swift */; };
+		3EBD788A2D906EE00059E2F0 /* AutoflashMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD78892D906EE00059E2F0 /* AutoflashMenuViewController.swift */; };
 		3EDEF7962B8FBBB400D7BE5B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EDEF7952B8FBBB400D7BE5B /* AppDelegate.swift */; };
 		3EDEF79F2B8FBBB500D7BE5B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3EDEF79E2B8FBBB500D7BE5B /* Assets.xcassets */; };
 		3EDEF7A22B8FBBB500D7BE5B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3EDEF7A02B8FBBB500D7BE5B /* LaunchScreen.storyboard */; };
-		3EDEF7AA2B8FBED500D7BE5B /* FlashbankViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EDEF7A92B8FBED500D7BE5B /* FlashbankViewController.swift */; };
+		3EDEF7AA2B8FBED500D7BE5B /* FlashbankDisplayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EDEF7A92B8FBED500D7BE5B /* FlashbankDisplayerViewController.swift */; };
 		3EDEF7AC2B8FC0FA00D7BE5B /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EDEF7AB2B8FC0FA00D7BE5B /* MenuView.swift */; };
 /* End PBXBuildFile section */
 
@@ -86,7 +90,6 @@
 		3E7C4DF52B9101A9006F5759 /* Flashbomb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Flashbomb.swift; sourceTree = "<group>"; };
 		3E92FD242B933F30009BFCB6 /* FlashbombLocalRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashbombLocalRepository.swift; sourceTree = "<group>"; };
 		3E92FD262B933F54009BFCB6 /* FlashbombLRActionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashbombLRActionProvider.swift; sourceTree = "<group>"; };
-		3E92FD282B94B5E4009BFCB6 /* ColorPresetsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPresetsView.swift; sourceTree = "<group>"; };
 		3E92FD2A2B94C089009BFCB6 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		3E92FD2D2B94EA45009BFCB6 /* SliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderView.swift; sourceTree = "<group>"; };
 		3E92FD302B94EE38009BFCB6 /* ClosableNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClosableNavigationController.swift; sourceTree = "<group>"; };
@@ -95,12 +98,17 @@
 		3E92FD392B95132E009BFCB6 /* NamedColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NamedColor.swift; sourceTree = "<group>"; };
 		3EAE6F212B95BB1700E47A9D /* NativeHeaderCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NativeHeaderCellView.swift; sourceTree = "<group>"; };
 		3EAE6F222B95BB1700E47A9D /* NativeHeaderCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NativeHeaderCollectionView.swift; sourceTree = "<group>"; };
+		3EBD787D2D90359F0059E2F0 /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
+		3EBD78812D906AE80059E2F0 /* FlashbankMenuCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashbankMenuCoordinator.swift; sourceTree = "<group>"; };
+		3EBD78832D906DE60059E2F0 /* AutoflashDisplayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoflashDisplayerViewController.swift; sourceTree = "<group>"; };
+		3EBD78852D906EA50059E2F0 /* AutoflashMenuCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoflashMenuCoordinator.swift; sourceTree = "<group>"; };
+		3EBD78892D906EE00059E2F0 /* AutoflashMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoflashMenuViewController.swift; sourceTree = "<group>"; };
 		3EDEF7922B8FBBB400D7BE5B /* Flashbank.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Flashbank.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3EDEF7952B8FBBB400D7BE5B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3EDEF79E2B8FBBB500D7BE5B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3EDEF7A12B8FBBB500D7BE5B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3EDEF7A32B8FBBB500D7BE5B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		3EDEF7A92B8FBED500D7BE5B /* FlashbankViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashbankViewController.swift; sourceTree = "<group>"; };
+		3EDEF7A92B8FBED500D7BE5B /* FlashbankDisplayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashbankDisplayerViewController.swift; sourceTree = "<group>"; };
 		3EDEF7AB2B8FC0FA00D7BE5B /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -132,6 +140,9 @@
 			children = (
 				3E700D3B2B90B0BB00F4B30D /* FlashbankCoordinator.swift */,
 				3E28F7D02B9120680005DE9C /* MenuCoordinator.swift */,
+				3EBD787D2D90359F0059E2F0 /* MainCoordinator.swift */,
+				3EBD78812D906AE80059E2F0 /* FlashbankMenuCoordinator.swift */,
+				3EBD78852D906EA50059E2F0 /* AutoflashMenuCoordinator.swift */,
 			);
 			path = Coordinators;
 			sourceTree = "<group>";
@@ -228,8 +239,9 @@
 			children = (
 				3E0EE4B22CAD9BC400B22621 /* Settings */,
 				3E92FD2C2B94C08B009BFCB6 /* Menu */,
-				3EDEF7A92B8FBED500D7BE5B /* FlashbankViewController.swift */,
-				3E92FD282B94B5E4009BFCB6 /* ColorPresetsView.swift */,
+				3EDEF7A92B8FBED500D7BE5B /* FlashbankDisplayerViewController.swift */,
+				3EBD78832D906DE60059E2F0 /* AutoflashDisplayerViewController.swift */,
+				3EBD78892D906EE00059E2F0 /* AutoflashMenuViewController.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -412,11 +424,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3EBD78822D906AE80059E2F0 /* FlashbankMenuCoordinator.swift in Sources */,
 				3E45D1F12CA85BB30057ED19 /* ColorItemTableViewCell.swift in Sources */,
+				3EBD788A2D906EE00059E2F0 /* AutoflashMenuViewController.swift in Sources */,
+				3EBD787E2D90359F0059E2F0 /* MainCoordinator.swift in Sources */,
 				3E45D2182CA9B43B0057ED19 /* BPMSliderView.swift in Sources */,
 				3E92FD332B94EF47009BFCB6 /* GlassTableViewCell.swift in Sources */,
 				3E92FD3A2B95132E009BFCB6 /* NamedColor.swift in Sources */,
-				3E92FD292B94B5E4009BFCB6 /* ColorPresetsView.swift in Sources */,
 				3E0EE4B42CAD9BD300B22621 /* SettingsView.swift in Sources */,
 				3E700D512B90B10100F4B30D /* AddNavigationButtonsPlugin.swift in Sources */,
 				3EAE6F242B95BB1700E47A9D /* NativeHeaderCollectionView.swift in Sources */,
@@ -424,6 +438,7 @@
 				3E28F7C72B9117B40005DE9C /* ViewDidLoadActionPlugin.swift in Sources */,
 				3E700D5B2B90B10100F4B30D /* PluginableHostingViewController.swift in Sources */,
 				3E45D1EA2CA8554D0057ED19 /* MenuViewController_v2.swift in Sources */,
+				3EBD78842D906DE60059E2F0 /* AutoflashDisplayerViewController.swift in Sources */,
 				3E92FD2E2B94EA45009BFCB6 /* SliderView.swift in Sources */,
 				3E92FD272B933F54009BFCB6 /* FlashbombLRActionProvider.swift in Sources */,
 				3E700D402B90B0DF00F4B30D /* Logger.swift in Sources */,
@@ -435,8 +450,9 @@
 				3EDEF7962B8FBBB400D7BE5B /* AppDelegate.swift in Sources */,
 				3E700D582B90B10100F4B30D /* AddLargeTitlePlugin.swift in Sources */,
 				3EDEF7AC2B8FC0FA00D7BE5B /* MenuView.swift in Sources */,
+				3EBD78862D906EA50059E2F0 /* AutoflashMenuCoordinator.swift in Sources */,
 				3E700D562B90B10100F4B30D /* AddSearchPlugin.swift in Sources */,
-				3EDEF7AA2B8FBED500D7BE5B /* FlashbankViewController.swift in Sources */,
+				3EDEF7AA2B8FBED500D7BE5B /* FlashbankDisplayerViewController.swift in Sources */,
 				3E700D3C2B90B0BB00F4B30D /* FlashbankCoordinator.swift in Sources */,
 				3E700D552B90B10100F4B30D /* NavigationBackButtonAction.swift in Sources */,
 				3E012FE52B965AC0003FECA9 /* NamedColorTableViewCell.swift in Sources */,
