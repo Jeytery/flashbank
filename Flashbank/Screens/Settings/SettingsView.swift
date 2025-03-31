@@ -48,7 +48,7 @@ struct SettingsView: View {
     var body: some View {
         List {
             Section {
-                infoCell(title1: "Version", title2: isVersionToggled ? "Disco! Disco! Disco!" : "Flashbank 1.0", disclosureIndicator: false, imageName: "1.circle.fill", imageColor: .darkGray, didTap: {
+                infoCell(title1: "Version", title2: isVersionToggled ? "Disco! Disco! Disco!" : "PartyColors 1.1", disclosureIndicator: false, imageName: "1.circle.fill", imageColor: .darkGray, didTap: {
                     isVersionToggled.toggle()
                 })
             }

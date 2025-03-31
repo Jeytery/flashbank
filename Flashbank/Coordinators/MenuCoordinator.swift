@@ -213,16 +213,21 @@ private extension MenuCoordinator {
 
 final class __MenuCoordinator: Coordinatable {
     private(set) var tabbarViewController = UITabBarController()
-    private let flashbankMenuCoordinator = FlashbankMenuCoordinator()
+    private let flashbankMenuCoordinator = FlashbankCoordinator()//FlashbankMenuCoordinator()
     
     override func startCoordinator() {
         super.startCoordinator()
-        flashbankMenuCoordinator.menuViewController.tabBarItem = .init(title: "Flashbank", image: UIImage(systemName: "01.circle.fill"), tag: 0)
+        add(coordinatable: flashbankMenuCoordinator)
+        flashbankMenuCoordinator.navigationController.tabBarItem = .init(
+            title: "Flashbank",
+            image: UIImage(systemName: "01.circle.fill"),
+            tag: 0
+        )
         let autoflashViewController = AutoflashMenuViewController()
         autoflashViewController.tabBarItem = .init(title: "Autoflash", image: UIImage(systemName: "02.circle.fill"), tag: 1)
-        add(coordinatable: flashbankMenuCoordinator)
+        //add(coordinatable: flashbankMenuCoordinator)
         tabbarViewController.viewControllers = [
-            flashbankMenuCoordinator.menuViewController, autoflashViewController
+            flashbankMenuCoordinator.navigationController, autoflashViewController
         ]
     }
 }

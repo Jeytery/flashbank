@@ -16,6 +16,11 @@ final class MainCoordinator: Coordinatable {
     override func startCoordinator() {
         super.startCoordinator()
         setupMenu()
+        
+        let testVC = UIViewController()
+        testVC.view.backgroundColor = .systemBlue
+        self.navigationController.setViewControllers([testVC], animated: false)
+        
         showMenu(animated: false)
     }
     
@@ -24,23 +29,24 @@ final class MainCoordinator: Coordinatable {
             menuCoordinator.tabbarViewController,
             animated: animated
         )
-        self.flashbankDispalyerViewController.stopLoop()
+        //self.flashbankDispalyerViewController.stopLoop()
         UIApplication.shared.isIdleTimerDisabled = false
     }
     
     private func setupMenu() {
         add(coordinatable: menuCoordinator)
         menuCoordinator.tabbarViewController.modalTransitionStyle = .crossDissolve
+        menuCoordinator.tabbarViewController.view.backgroundColor = .clear
         menuCoordinator.tabbarViewController.modalPresentationStyle = .overCurrentContext
-        let tabBar = menuCoordinator.tabbarViewController.tabBar
-        let appearance = UITabBarAppearance()
-        appearance.configureWithDefaultBackground() // adds blur by default
-        appearance.backgroundEffect = UIBlurEffect(style: .systemMaterial) // You can change the style
-        appearance.backgroundColor = .clear // Keep it transparent so blur shows
-        tabBar.standardAppearance = appearance
-        if #available(iOS 15.0, *) {
-            tabBar.scrollEdgeAppearance = appearance
-        }
+        //let tabBar = menuCoordinator.tabbarViewController.tabBar
+        //let appearance = UITabBarAppearance()
+        //appearance.configureWithDefaultBackground() // adds blur by default
+        //appearance.backgroundEffect = UIBlurEffect(style: .systemChromeMaterial) // You can change the style
+        //appearance.backgroundColor = .clear // Keep it transparent so blur shows
+        //tabBar.standardAppearance = appearance
+//        if #available(iOS 15.0, *) {
+//            tabBar.scrollEdgeAppearance = appearance
+//        }
     }
     
     private func presentAutoflashDisplayer() {
