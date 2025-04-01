@@ -90,7 +90,7 @@ class MenuViewController_v2: UIViewController {
     private let bottomToolBar = FakeToolBar(
         frame: .zero,
         blurStyle: .systemChromeMaterial,
-        style: .flyingCapsule
+        style: .native
     )
     private lazy var sliderViewState = BPMSliderViewModel()
     private lazy var sliderView = UIHostingController(rootView: BPMSliderView(viewModel: sliderViewState)).view!

@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
-        window?.rootViewController = mainCoordinator.navigationController
+        window?.rootViewController = mainCoordinator.tabbarViewController
         window?.makeKeyAndVisible()
         mainCoordinator.startCoordinator()
         UIApplication.shared.isIdleTimerDisabled = true

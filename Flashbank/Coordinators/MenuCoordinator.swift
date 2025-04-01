@@ -220,11 +220,11 @@ final class __MenuCoordinator: Coordinatable {
         add(coordinatable: flashbankMenuCoordinator)
         flashbankMenuCoordinator.navigationController.tabBarItem = .init(
             title: "Flashbank",
-            image: UIImage(systemName: "01.circle.fill"),
+            image: UIImage(systemName: "flashlight.on.fill"),
             tag: 0
         )
         let autoflashViewController = AutoflashMenuViewController()
-        autoflashViewController.tabBarItem = .init(title: "Autoflash", image: UIImage(systemName: "02.circle.fill"), tag: 1)
+        autoflashViewController.tabBarItem = .init(title: "Autoflash", image: UIImage(systemName: "microphone.fill"), tag: 1)
         //add(coordinatable: flashbankMenuCoordinator)
         tabbarViewController.viewControllers = [
             flashbankMenuCoordinator.navigationController, autoflashViewController
