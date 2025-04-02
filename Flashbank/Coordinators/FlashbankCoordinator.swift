@@ -11,6 +11,8 @@ import SwiftUI
 import AlertKit
 
 class FlashbankCoordinator: Coordinatable {
+    var menuBeingShowingStatusHandler: ((Bool) -> Void)?
+    
     private(set) lazy var navigationController = StatusBarHiddenNavigationController(
         rootViewController: flashbankViewController
     )
@@ -21,7 +23,11 @@ class FlashbankCoordinator: Coordinatable {
     private let flashbombRepProvider = FlashbombLRActionProvider()
     
     // state
-    private var isMenuShown = false
+    private var isMenuShown = false {
+        didSet {
+            menuBeingShowingStatusHandler?(isMenuShown)
+        }
+    }
     private var currentFlashbomb: Flashbomb!
     
     override func startCoordinator() {
@@ -31,12 +37,13 @@ class FlashbankCoordinator: Coordinatable {
         addTapGesture()
         setupMenu()
         
-        //showMenu(animated: false)
+        showMenu(animated: false)
         isMenuShown = true
     }
     
     func showMenu(animated: Bool = true) {
-        self.navigationController.present(menuCoordinator.navigationController, animated: animated)
+        self.menuCoordinator.navigationController.view.alpha = 1
+        //self.navigationController.present(menuCoordinator.navigationController, animated: animated)
         self.flashbankViewController.stopLoop()
         UIApplication.shared.isIdleTimerDisabled = false
     }
@@ -73,21 +80,34 @@ private extension FlashbankCoordinator {
         isMenuShown.toggle()
     }
   
-    
-    
     func hideMenu() {
-        self.menuCoordinator.navigationController.dismiss(animated: true)
+        //self.menuCoordinator.navigationController.dismiss(animated: true)
+        self.menuCoordinator.navigationController.view.alpha = 0
         self.flashbankViewController.startLoop(flashbomb: self.currentFlashbomb)
         UIApplication.shared.isIdleTimerDisabled = true
     }
     
     func setupMenu() {
-        menuCoordinator.navigationController.modalTransitionStyle = .crossDissolve
-        menuCoordinator.navigationController.modalPresentationStyle = .overCurrentContext
+        //menuCoordinator.navigationController.modalTransitionStyle = .crossDissolve
+        //menuCoordinator.navigationController.modalPresentationStyle = .overCurrentContext
+        menuCoordinator.navigationController.view.translatesAutoresizingMaskIntoConstraints = false
+//        navigationController.addChild(menuCoordinator.navigationController)
+//        menuCoordinator.navigationController.didMove(toParent: navigationController)
+        navigationController.view.addSubview(menuCoordinator.navigationController.view)
+
+        NSLayoutConstraint.activate([
+            menuCoordinator.navigationController.view.topAnchor.constraint(equalTo: navigationController.view.topAnchor),
+            menuCoordinator.navigationController.view.bottomAnchor.constraint(equalTo: navigationController.view.bottomAnchor),
+            menuCoordinator.navigationController.view.rightAnchor.constraint(equalTo: navigationController.view.safeAreaLayoutGuide.rightAnchor),
+            menuCoordinator.navigationController.view.leftAnchor.constraint(equalTo: navigationController.view.safeAreaLayoutGuide.leftAnchor)
+        ])
+        menuCoordinator.navigationController.view.alpha = 1
+        
         menuCoordinator.didClose = { [weak self] currentFlashbomb in
             guard let self = self else { return }
             self.isMenuShown = false
-            self.menuCoordinator.navigationController.dismiss(animated: true)
+            //self.menuCoordinator.navigationController.dismiss(animated: true)
+            self.menuCoordinator.navigationController.view.alpha = 0
             self.flashbankViewController.displayFlashbomb(currentFlashbomb)
             if let error = self.flashbombRepProvider.storeFlashbomb(currentFlashbomb) {
                 AlertKitAPI.present(

@@ -90,7 +90,7 @@ class MenuViewController_v2: UIViewController {
     private let bottomToolBar = FakeToolBar(
         frame: .zero,
         blurStyle: .systemChromeMaterial,
-        style: .native
+        style: .flyingCapsule
     )
     private lazy var sliderViewState = BPMSliderViewModel()
     private lazy var sliderView = UIHostingController(rootView: BPMSliderView(viewModel: sliderViewState)).view!
@@ -216,7 +216,7 @@ private extension MenuViewController_v2 {
         let bottomPadding: CGFloat = view.safeAreaInsets.bottom == 0 ? bottomPaddingValue : 0
         let topSliderPadding: CGFloat = 5
         NSLayoutConstraint.activate([
-            bottomToolBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            bottomToolBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -70),
             bottomToolBar.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 10),
             bottomToolBar.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10),
             bottomToolBar.heightAnchor.constraint(equalToConstant: bottomToolBarHeight)
