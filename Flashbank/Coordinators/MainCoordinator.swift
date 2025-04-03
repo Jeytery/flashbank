@@ -79,9 +79,8 @@ final class MainCoordinator: Coordinatable {
     override func startCoordinator() {
         super.startCoordinator()
         let flashbankMenuCoordinator = FlashbankCoordinator()
+        let autoflashCoordinator = AutoflashCoordinator()
         setupTabbar()
-        let autoflashViewController = UIViewController()
-        autoflashViewController.view.backgroundColor = .cyan
         flashbankMenuCoordinator.navigationController.tabBarItem = .init(
             title: "Flashbank",
             image: UIImage(systemName: "flashlight.on.fill"),
@@ -92,11 +91,17 @@ final class MainCoordinator: Coordinatable {
             guard let self = self else { return }
             self.tabbarViewController.tabBar.isHidden = !status
         }
-        autoflashViewController.tabBarItem = .init(title: "Autoflash", image: UIImage(systemName: "microphone.fill"), tag: 1)
+        autoflashCoordinator.menuBeingShowingStatusHandler = {
+            [weak self] status in
+            guard let self = self else { return }
+            self.tabbarViewController.tabBar.isHidden = !status
+        }
+        autoflashCoordinator.navigationController.tabBarItem = .init(title: "Autoflash", image: UIImage(systemName: "microphone.fill"), tag: 1)
         tabbarViewController.viewControllers = [
-            flashbankMenuCoordinator.navigationController, autoflashViewController
+            flashbankMenuCoordinator.navigationController, autoflashCoordinator.navigationController
         ]
         add(coordinatable: flashbankMenuCoordinator)
+        add(coordinatable: autoflashCoordinator)
         //flashbankMenuCoordinator.showMenu(animated: true)
         
     }

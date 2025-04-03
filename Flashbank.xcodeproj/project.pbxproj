@@ -58,6 +58,7 @@
 		3EDEF7A22B8FBBB500D7BE5B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3EDEF7A02B8FBBB500D7BE5B /* LaunchScreen.storyboard */; };
 		3EDEF7AA2B8FBED500D7BE5B /* FlashbankDisplayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EDEF7A92B8FBED500D7BE5B /* FlashbankDisplayerViewController.swift */; };
 		3EDEF7AC2B8FC0FA00D7BE5B /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EDEF7AB2B8FC0FA00D7BE5B /* MenuView.swift */; };
+		3EED35DE2D9EFA76003E30E6 /* AutflashMenuViewSUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EED35DD2D9EFA76003E30E6 /* AutflashMenuViewSUI.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -110,6 +111,7 @@
 		3EDEF7A32B8FBBB500D7BE5B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3EDEF7A92B8FBED500D7BE5B /* FlashbankDisplayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashbankDisplayerViewController.swift; sourceTree = "<group>"; };
 		3EDEF7AB2B8FC0FA00D7BE5B /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
+		3EED35DD2D9EFA76003E30E6 /* AutflashMenuViewSUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutflashMenuViewSUI.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -242,6 +244,7 @@
 				3EDEF7A92B8FBED500D7BE5B /* FlashbankDisplayerViewController.swift */,
 				3EBD78832D906DE60059E2F0 /* AutoflashDisplayerViewController.swift */,
 				3EBD78892D906EE00059E2F0 /* AutoflashMenuViewController.swift */,
+				3EED35DD2D9EFA76003E30E6 /* AutflashMenuViewSUI.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -461,6 +464,7 @@
 				3E700D432B90B0F600F4B30D /* Coordinatable.swift in Sources */,
 				3E92FD312B94EE38009BFCB6 /* ClosableNavigationController.swift in Sources */,
 				3E45D21A2CA9C9F60057ED19 /* MenuEmptyView.swift in Sources */,
+				3EED35DE2D9EFA76003E30E6 /* AutflashMenuViewSUI.swift in Sources */,
 				3E5120302B9A41BC0095A7B5 /* EmptyTableViewCell.swift in Sources */,
 				3E92FD252B933F30009BFCB6 /* FlashbombLocalRepository.swift in Sources */,
 				3E700D592B90B10100F4B30D /* Pluginable+FacadePlugin.swift in Sources */,
@@ -622,7 +626,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -656,7 +660,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

@@ -7,10 +7,18 @@
 
 import Foundation
 import UIKit
+import SwiftUI
 
 final class AutoflashMenuViewController: UIViewController {
+    private let hostingViewController = UIHostingController(rootView: AutflashMenuViewSUI())
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .red
+        addChild(hostingViewController)
+        hostingViewController.view.frame = view.bounds
+        view.addSubview(hostingViewController.view)
+        hostingViewController.didMove(toParent: self)
+        self.view.backgroundColor = .clear
+        hostingViewController.view.backgroundColor = .clear
     }
 }
