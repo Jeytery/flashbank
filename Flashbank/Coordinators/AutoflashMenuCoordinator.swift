@@ -43,6 +43,7 @@ final class AutoflashCoordinator: Coordinatable {
 
 private extension AutoflashCoordinator {
     func setupMenu() {
+        menuNavigationController.overrideUserInterfaceStyle = .dark
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapMenu))
         menuViewController.view.addGestureRecognizer(tapGesture)
         menuNavigationController.viewControllers = [menuViewController]

@@ -64,20 +64,50 @@ import UIKit
 //    
 //}
 
+final class NoAnimationTabbarImpl: NSObject, UITabBarControllerDelegate, UIViewControllerAnimatedTransitioning {
+    func transitionDuration(using transitionContext: (any UIViewControllerContextTransitioning)?) -> TimeInterval {
+        return .zero
+    }
+    
+    func animateTransition(using transitionContext: any UIViewControllerContextTransitioning) {
+        guard let view = transitionContext.view(forKey: .to)
+        else {
+            return
+        }
+        
+        let container = transitionContext.containerView
+        container.addSubview(view)
+        
+        transitionContext.completeTransition(true)
+    }
+    
+    func tabBarController(_ tabBarController: UITabBarController, animationControllerForTransitionFrom fromVC: UIViewController,
+                          to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return self
+    }
+}
+
 final class MainCoordinator: Coordinatable {
     private(set) var tabbarViewController: UITabBarController = UITabBarController()
     
     private func setupTabbar() {
-       let tabBarAppearance = UITabBarAppearance()
-       tabBarAppearance.configureWithTransparentBackground()
-       tabBarAppearance.backgroundEffect = UIBlurEffect(style: .systemChromeMaterialDark)
-       tabBarAppearance.backgroundColor = .clear
-       UITabBar.appearance().standardAppearance = tabBarAppearance
-       UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
+        let tabBarAppearance = UITabBarAppearance()
+        tabBarAppearance.configureWithTransparentBackground()
+        tabBarAppearance.backgroundEffect = UIBlurEffect(style: .systemChromeMaterialDark)
+        tabBarAppearance.backgroundColor = .clear
+        UITabBar.appearance().standardAppearance = tabBarAppearance
+        UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
+        UITabBar.appearance().overrideUserInterfaceStyle = .dark
    }
+    
+    private let noAnimationTabbarImpl = NoAnimationTabbarImpl()
     
     override func startCoordinator() {
         super.startCoordinator()
+        if #available(iOS 18.0, *) {
+            tabbarViewController.delegate = noAnimationTabbarImpl
+        }
+        
         let flashbankMenuCoordinator = FlashbankCoordinator()
         let autoflashCoordinator = AutoflashCoordinator()
         setupTabbar()
@@ -105,4 +135,6 @@ final class MainCoordinator: Coordinatable {
         //flashbankMenuCoordinator.showMenu(animated: true)
         
     }
+   
 }
+
