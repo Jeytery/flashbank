@@ -58,6 +58,7 @@
 		3EDEF7AA2B8FBED500D7BE5B /* FlashbankDisplayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EDEF7A92B8FBED500D7BE5B /* FlashbankDisplayerViewController.swift */; };
 		3EDEF7AC2B8FC0FA00D7BE5B /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EDEF7AB2B8FC0FA00D7BE5B /* MenuView.swift */; };
 		3EED35DE2D9EFA76003E30E6 /* AutflashMenuViewSUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EED35DD2D9EFA76003E30E6 /* AutflashMenuViewSUI.swift */; };
+		3EED35E02DA2C804003E30E6 /* AudioAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EED35DF2DA2C804003E30E6 /* AudioAnalyzer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -110,6 +111,7 @@
 		3EDEF7A92B8FBED500D7BE5B /* FlashbankDisplayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashbankDisplayerViewController.swift; sourceTree = "<group>"; };
 		3EDEF7AB2B8FC0FA00D7BE5B /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
 		3EED35DD2D9EFA76003E30E6 /* AutflashMenuViewSUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutflashMenuViewSUI.swift; sourceTree = "<group>"; };
+		3EED35DF2DA2C804003E30E6 /* AudioAnalyzer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioAnalyzer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -330,10 +332,11 @@
 		3EDEF7942B8FBBB400D7BE5B /* Flashbank */ = {
 			isa = PBXGroup;
 			children = (
+				3EDEF7952B8FBBB400D7BE5B /* AppDelegate.swift */,
+				3EED35DF2DA2C804003E30E6 /* AudioAnalyzer.swift */,
 				3E28F7CF2B91205B0005DE9C /* Coordinators */,
 				3E7C4DF92B91020E006F5759 /* Screens */,
 				3E92FD222B933F08009BFCB6 /* Repository */,
-				3EDEF7952B8FBBB400D7BE5B /* AppDelegate.swift */,
 				3E700D3D2B90B0BE00F4B30D /* Library */,
 				3EDEF79E2B8FBBB500D7BE5B /* Assets.xcassets */,
 				3EDEF7A02B8FBBB500D7BE5B /* LaunchScreen.storyboard */,
@@ -454,6 +457,7 @@
 				3EDEF7AA2B8FBED500D7BE5B /* FlashbankDisplayerViewController.swift in Sources */,
 				3E700D3C2B90B0BB00F4B30D /* FlashbankCoordinator.swift in Sources */,
 				3E700D552B90B10100F4B30D /* NavigationBackButtonAction.swift in Sources */,
+				3EED35E02DA2C804003E30E6 /* AudioAnalyzer.swift in Sources */,
 				3E012FE52B965AC0003FECA9 /* NamedColorTableViewCell.swift in Sources */,
 				3E700D5A2B90B10100F4B30D /* PluginableViewController.swift in Sources */,
 				3E700D572B90B10100F4B30D /* AddSUIViewPlugin.swift in Sources */,

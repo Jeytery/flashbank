@@ -51,7 +51,6 @@ final class MainCoordinator: Coordinatable {
         if #available(iOS 18.0, *) {
             tabbarViewController.delegate = noAnimationTabbarImpl
         }
-        
         let flashbankMenuCoordinator = FlashbankCoordinator()
         let autoflashCoordinator = AutoflashCoordinator()
         setupTabbar()
@@ -75,7 +74,6 @@ final class MainCoordinator: Coordinatable {
         } else {
             autoflashCoordinator.navigationController.tabBarItem = .init(title: "Autoflash", image: UIImage(systemName: "camera.filters"), tag: 1)
         }
-        
         tabbarViewController.viewControllers = [
             flashbankMenuCoordinator.navigationController, autoflashCoordinator.navigationController
         ]

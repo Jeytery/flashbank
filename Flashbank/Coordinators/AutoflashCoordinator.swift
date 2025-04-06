@@ -95,7 +95,7 @@ private extension AutoflashCoordinator {
         }
         menuNavigationController.overrideUserInterfaceStyle = .dark
         menuNavigationController.viewControllers = [menuViewController]
-        menuViewController.view.backgroundColor = .black.withAlphaComponent(0.8)
+        menuViewController.view.backgroundColor = .systemGray5.withAlphaComponent(0.6)
         let tap = UITapGestureRecognizer(target: self, action: #selector(didTapMenu))
         tap.delegate = tapTableViewInmpl
         menuViewController.view.addGestureRecognizer(tap)
@@ -118,15 +118,16 @@ private extension AutoflashCoordinator {
                 self?.hideMenu()
                 self?.isMenuShown = false
             })
-            
         menuViewController.addPlugin(addButtonPlug)
     }
     
     func showMenu(animated: Bool = true) {
         menuNavigationController.view.alpha = 1
+        displayerViewController.stopLoop()
     }
     
     func hideMenu(animated: Bool = true) {
         menuNavigationController.view.alpha = 0
+        displayerViewController.startLoop()
     }
 }
