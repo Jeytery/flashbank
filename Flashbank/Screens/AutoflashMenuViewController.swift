@@ -9,16 +9,19 @@ import Foundation
 import UIKit
 import SwiftUI
 
-final class AutoflashMenuViewController: UIViewController {
-    private let hostingViewController = UIHostingController(rootView: AutflashMenuViewSUI())
+final class AutoflashMenuViewController: PluginableViewController {
+    init() {
+        super.init()
+        addPlugin(AddSUIViewPlugin(rootView: AutflashMenuViewSUI(), parentViewController: self))
+    }
+    
+    @MainActor required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        addChild(hostingViewController)
-        hostingViewController.view.frame = view.bounds
-        view.addSubview(hostingViewController.view)
-        hostingViewController.didMove(toParent: self)
+        
         self.view.backgroundColor = .clear
-        hostingViewController.view.backgroundColor = .clear
     }
 }

@@ -130,6 +130,42 @@ extension AddNavigationButtonsPlugin {
         }
         return self
     }
+    
+    func close(
+        side: ButtonSideArgless,
+        insertType: InsertType = .append,
+        action: @escaping () -> Void
+    ) -> Self {
+        let item = UIBarButtonItem(
+            systemItem: .close,
+            primaryAction: UIAction(handler: { _ in action() }),
+            menu: nil)
+        switch side {
+        case .left:
+            switch insertType {
+            case .append:
+                viewController.navigationItem.leftBarButtonItems?.append(
+                    item
+                )
+            case .insert(let index):
+                viewController.navigationItem.leftBarButtonItems?.insert(
+                    item,
+                    at: index)
+            }
+        case .right:
+            switch insertType {
+            case .append:
+                viewController.navigationItem.rightBarButtonItems?.append(
+                    item
+                )
+            case .insert(let index):
+                viewController.navigationItem.rightBarButtonItems?.insert(
+                    item,
+                    at: index)
+            }
+        }
+        return self
+    }
 }
 
 // MARK: - internal funcs

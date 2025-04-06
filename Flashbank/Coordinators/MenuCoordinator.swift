@@ -25,9 +25,7 @@ fileprivate class GetColorAdapter: NSObject, UIColorPickerViewControllerDelegate
 final class MenuCoordinator: Coordinatable {
     var didClose: ((Flashbomb) -> Void)?
     
-    private(set) lazy var navigationController = ClosableNavigationController
-        .init(navigationBarClass: nil, toolbarClass: CustomTabBar.self)
-        .onlyFirst()
+    private(set) lazy var navigationController = UINavigationController()
     
     private let flashbomb: Flashbomb
     
@@ -48,11 +46,11 @@ final class MenuCoordinator: Coordinatable {
     override func startCoordinator() {
         navigationController.view.backgroundColor = .clear
         navigationController.overrideUserInterfaceStyle = .dark
-        navigationController.didTapCloseButton = {
-            [weak self] _ in
-            guard let self = self else { return }
-            self.didClose?(self.menuViewController.getCurrentFlashbomb())
-        }
+//        navigationController.didTapCloseButton = {
+//            [weak self] _ in
+//            guard let self = self else { return }
+//            self.didClose?(self.menuViewController.getCurrentFlashbomb())
+//        }
         menuViewController.didTapView = {
             [weak self] in
             guard let self = self else { return }
@@ -64,9 +62,10 @@ final class MenuCoordinator: Coordinatable {
             switch event {
             case .didTapSettings:
                 let settingsViewController = UIHostingController(rootView: SettingsView())
-                let closeNav = ClosableNavigationController(rootViewController: settingsViewController).onlyFirst()
-                closeNav.modalPresentationStyle = .fullScreen
-                navigationController.present(closeNav, animated: true)
+//                let closeNav = ClosableNavigationController(rootViewController: settingsViewController).onlyFirst()
+                //closeNav.modalPresentationStyle = .fullScreen
+                //navigationController.present(closeNav, animated: true)
+                navigationController.pushViewController(settingsViewController, animated: true)
                 
             case .didTapAddColor:
                 if ProcessInfo.processInfo.isiOSAppOnMac {
@@ -114,6 +113,8 @@ final class MenuCoordinator: Coordinatable {
 
             case .didTapEditWithIndexPath(let indexPath): showColorPickerLogic(indexPath: indexPath)
             case .didSelectCellWithIndexPath(let indexPath): showColorPickerLogic(indexPath: indexPath)
+            case .didTapCloseButton:
+                self.didClose?(self.menuViewController.getCurrentFlashbomb())
             default: break
             }
         }
@@ -162,14 +163,6 @@ final class MenuCoordinator: Coordinatable {
         }
     }
 }
-
-private extension MenuCoordinator {
-   
-}
-
-
-
-
 
 
 

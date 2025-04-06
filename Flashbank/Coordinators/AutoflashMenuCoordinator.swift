@@ -13,8 +13,13 @@ final class AutoflashCoordinator: Coordinatable {
     var menuBeingShowingStatusHandler: ((Bool) -> Void)?
     
     private let menuNavigationController = UINavigationController()
-    private let menuViewController = UIHostingController(
-        rootView: AutflashMenuViewSUI()
+    private let tapTableViewInmpl = TapTableViewInmpl()
+    private let autoflashSUIViewModel = AutflashMenuViewModel()
+    private lazy var autoflashSUI: AutflashMenuViewSUI = AutflashMenuViewSUI(viewModel: autoflashSUIViewModel)
+//    private let menuViewController = AutoflashMenuViewController()
+    
+    private lazy var menuViewController = PluginableHostingViewController(
+        rootView: autoflashSUI
     )
     private var isMenuShown = true {
         didSet {
@@ -24,11 +29,15 @@ final class AutoflashCoordinator: Coordinatable {
     
     //AutoflashMenuViewController()
     private let displayerViewController = AutoflashDisplayerViewController()
-    private(set) var navigationController = UINavigationController()
+    private(set) var navigationController = StatusBarHiddenNavigationController()
     
     override func startCoordinator() {
         super.startCoordinator()
         navigationController.viewControllers = [displayerViewController]
+        autoflashSUIViewModel.didTapViewHandler = {
+            [weak self] in
+            self?.didTapMenu()
+        }
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapMenu))
         displayerViewController.view.addGestureRecognizer(tapGesture)
         setupMenu()
@@ -44,10 +53,11 @@ final class AutoflashCoordinator: Coordinatable {
 private extension AutoflashCoordinator {
     func setupMenu() {
         menuNavigationController.overrideUserInterfaceStyle = .dark
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapMenu))
-        menuViewController.view.addGestureRecognizer(tapGesture)
         menuNavigationController.viewControllers = [menuViewController]
-        menuViewController.view.backgroundColor = .clear
+        menuViewController.view.backgroundColor = .black.withAlphaComponent(0.8)
+        let tap = UITapGestureRecognizer(target: self, action: #selector(didTapMenu))
+        tap.delegate = tapTableViewInmpl
+        menuViewController.view.addGestureRecognizer(tap)
         menuNavigationController.view.translatesAutoresizingMaskIntoConstraints = false
         navigationController.view.addSubview(menuNavigationController.view)
         NSLayoutConstraint.activate([
@@ -57,6 +67,18 @@ private extension AutoflashCoordinator {
             menuNavigationController.view.leftAnchor.constraint(equalTo: navigationController.view.safeAreaLayoutGuide.leftAnchor)
         ])
         menuNavigationController.view.alpha = 0
+        let addButtonPlug = AddNavigationButtonsPlugin(viewController: menuViewController)
+            .systemImageButton(side: .right, imageName: "gear", action: {
+                let settingsViewController = UIHostingController(rootView: SettingsView())
+                self.menuNavigationController.pushViewController(settingsViewController, animated: true)
+            })
+            .close(side: .left, action: {
+                [weak self] in
+                self?.hideMenu()
+                self?.isMenuShown = false
+            })
+            
+        menuViewController.addPlugin(addButtonPlug)
     }
     
     func showMenu(animated: Bool = true) {
@@ -67,3 +89,24 @@ private extension AutoflashCoordinator {
         menuNavigationController.view.alpha = 0
     }
 }
+
+final class TapTableViewInmpl: NSObject, UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        let touchedView = touch.view
+        var currentView = touchedView
+        while let view = currentView {
+            if view is UITableViewCell {
+                return false
+            }
+            if view is UICollectionViewCell {
+                return false
+            }
+            if view is UIButton {
+                return false
+            }
+            currentView = view.superview
+        }
+        return true
+    }
+}
+

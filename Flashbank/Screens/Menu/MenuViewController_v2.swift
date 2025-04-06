@@ -21,6 +21,7 @@ class MenuViewController_v2: UIViewController {
         case didTapEditWithIndexPath(IndexPath)
         case didTapSettings
         case didSelectCellWithIndexPath(IndexPath)
+        case didTapCloseButton
     }
     
     var eventOutputHandler: ((OutputEvent) -> Void)?
@@ -163,6 +164,13 @@ private extension MenuViewController_v2 {
          */
         let settingsButton = UIBarButtonItem(image: UIImage(systemName: "gear"), style: .plain, target: self, action: #selector(settingsDidTapButton))
         navigationItem.rightBarButtonItems = [addColorItem, settingsButton]
+        let item = UIBarButtonItem(
+            systemItem: .close,
+            primaryAction: UIAction(handler: { _ in
+                self.eventOutputHandler?(.didTapCloseButton)
+            }),
+            menu: nil)
+        navigationItem.leftBarButtonItem = item
     }
     
     @objc func settingsDidTapButton() {
