@@ -10,6 +10,26 @@ import UIKit
 import SwiftUI
 import AVFoundation
 
+fileprivate final class TapTableViewInmpl: NSObject, UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        let touchedView = touch.view
+        var currentView = touchedView
+        while let view = currentView {
+            if view is UITableViewCell {
+                return false
+            }
+            if view is UICollectionViewCell {
+                return false
+            }
+            if view is UIButton {
+                return false
+            }
+            currentView = view.superview
+        }
+        return true
+    }
+}
+
 final class AutoflashCoordinator: Coordinatable {
     var menuBeingShowingStatusHandler: ((Bool) -> Void)?
     
@@ -110,24 +130,3 @@ private extension AutoflashCoordinator {
         menuNavigationController.view.alpha = 0
     }
 }
-
-fileprivate final class TapTableViewInmpl: NSObject, UIGestureRecognizerDelegate {
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        let touchedView = touch.view
-        var currentView = touchedView
-        while let view = currentView {
-            if view is UITableViewCell {
-                return false
-            }
-            if view is UICollectionViewCell {
-                return false
-            }
-            if view is UIButton {
-                return false
-            }
-            currentView = view.superview
-        }
-        return true
-    }
-}
-

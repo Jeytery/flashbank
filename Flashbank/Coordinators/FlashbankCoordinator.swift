@@ -17,7 +17,7 @@ class FlashbankCoordinator: Coordinatable {
         rootViewController: flashbankViewController
     )
     private lazy var flashbankViewController = FlashbankDisplayerViewController()
-    private unowned var menuCoordinator: MenuCoordinator!
+    private unowned var menuCoordinator: FlashbankMenuCoordinator!
     
     private let flashbombRep = FlashbombLocalRepository()
     private let flashbombRepProvider = FlashbombLRActionProvider()
@@ -43,7 +43,6 @@ class FlashbankCoordinator: Coordinatable {
     
     func showMenu(animated: Bool = true) {
         self.menuCoordinator.navigationController.view.alpha = 1
-        
         self.flashbankViewController.stopLoop()
         UIApplication.shared.isIdleTimerDisabled = false
     }
@@ -51,7 +50,7 @@ class FlashbankCoordinator: Coordinatable {
 
 private extension FlashbankCoordinator {
     func initMenuCoordinator() {
-        let menuCoordinator = MenuCoordinator.init(flashbomb: currentFlashbomb)
+        let menuCoordinator = FlashbankMenuCoordinator.init(flashbomb: currentFlashbomb)
         self.menuCoordinator = menuCoordinator
         add(coordinatable: menuCoordinator)
     }
@@ -81,20 +80,14 @@ private extension FlashbankCoordinator {
     }
   
     func hideMenu() {
-        //self.menuCoordinator.navigationController.dismiss(animated: true)
         self.menuCoordinator.navigationController.view.alpha = 0
         self.flashbankViewController.startLoop(flashbomb: self.currentFlashbomb)
         UIApplication.shared.isIdleTimerDisabled = true
     }
     
     func setupMenu() {
-        //menuCoordinator.navigationController.modalTransitionStyle = .crossDissolve
-        //menuCoordinator.navigationController.modalPresentationStyle = .overCurrentContext
         menuCoordinator.navigationController.view.translatesAutoresizingMaskIntoConstraints = false
-//        navigationController.addChild(menuCoordinator.navigationController)
-//        menuCoordinator.navigationController.didMove(toParent: navigationController)
         navigationController.view.addSubview(menuCoordinator.navigationController.view)
-
         NSLayoutConstraint.activate([
             menuCoordinator.navigationController.view.topAnchor.constraint(equalTo: navigationController.view.topAnchor),
             menuCoordinator.navigationController.view.bottomAnchor.constraint(equalTo: navigationController.view.bottomAnchor),
@@ -102,11 +95,9 @@ private extension FlashbankCoordinator {
             menuCoordinator.navigationController.view.leftAnchor.constraint(equalTo: navigationController.view.safeAreaLayoutGuide.leftAnchor)
         ])
         menuCoordinator.navigationController.view.alpha = 1
-        
         menuCoordinator.didClose = { [weak self] currentFlashbomb in
             guard let self = self else { return }
             self.isMenuShown = false
-            //self.menuCoordinator.navigationController.dismiss(animated: true)
             self.menuCoordinator.navigationController.view.alpha = 0
             self.flashbankViewController.displayFlashbomb(currentFlashbomb)
             if let error = self.flashbombRepProvider.storeFlashbomb(currentFlashbomb) {

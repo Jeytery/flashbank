@@ -15,7 +15,7 @@
 		3E0EE4B42CAD9BD300B22621 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E0EE4B32CAD9BD300B22621 /* SettingsView.swift */; };
 		3E0EE4B72CAD9C7300B22621 /* SettingsIconGenerator in Frameworks */ = {isa = PBXBuildFile; productRef = 3E0EE4B62CAD9C7300B22621 /* SettingsIconGenerator */; };
 		3E28F7C72B9117B40005DE9C /* ViewDidLoadActionPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E28F7C62B9117B40005DE9C /* ViewDidLoadActionPlugin.swift */; };
-		3E28F7D12B9120680005DE9C /* MenuCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E28F7D02B9120680005DE9C /* MenuCoordinator.swift */; };
+		3E28F7D12B9120680005DE9C /* FlashbankMenuCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E28F7D02B9120680005DE9C /* FlashbankMenuCoordinator.swift */; };
 		3E339DE32B91368E00C312E6 /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = 3E339DE22B91368E00C312E6 /* SwiftUIIntrospect */; };
 		3E45D1EA2CA8554D0057ED19 /* MenuViewController_v2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E45D1E92CA8554D0057ED19 /* MenuViewController_v2.swift */; };
 		3E45D1EF2CA8562F0057ED19 /* FakeToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E45D1EE2CA8562F0057ED19 /* FakeToolBar.swift */; };
@@ -49,9 +49,8 @@
 		3EAE6F232B95BB1700E47A9D /* NativeHeaderCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EAE6F212B95BB1700E47A9D /* NativeHeaderCellView.swift */; };
 		3EAE6F242B95BB1700E47A9D /* NativeHeaderCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EAE6F222B95BB1700E47A9D /* NativeHeaderCollectionView.swift */; };
 		3EBD787E2D90359F0059E2F0 /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD787D2D90359F0059E2F0 /* MainCoordinator.swift */; };
-		3EBD78822D906AE80059E2F0 /* FlashbankMenuCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD78812D906AE80059E2F0 /* FlashbankMenuCoordinator.swift */; };
 		3EBD78842D906DE60059E2F0 /* AutoflashDisplayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD78832D906DE60059E2F0 /* AutoflashDisplayerViewController.swift */; };
-		3EBD78862D906EA50059E2F0 /* AutoflashMenuCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD78852D906EA50059E2F0 /* AutoflashMenuCoordinator.swift */; };
+		3EBD78862D906EA50059E2F0 /* AutoflashCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD78852D906EA50059E2F0 /* AutoflashCoordinator.swift */; };
 		3EBD788A2D906EE00059E2F0 /* AutoflashMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBD78892D906EE00059E2F0 /* AutoflashMenuViewController.swift */; };
 		3EDEF7962B8FBBB400D7BE5B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EDEF7952B8FBBB400D7BE5B /* AppDelegate.swift */; };
 		3EDEF79F2B8FBBB500D7BE5B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3EDEF79E2B8FBBB500D7BE5B /* Assets.xcassets */; };
@@ -67,7 +66,7 @@
 		3E0E15A02B9645D4005A9977 /* ColorPaletteSUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPaletteSUI.swift; sourceTree = "<group>"; };
 		3E0EE4B32CAD9BD300B22621 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		3E28F7C62B9117B40005DE9C /* ViewDidLoadActionPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewDidLoadActionPlugin.swift; sourceTree = "<group>"; };
-		3E28F7D02B9120680005DE9C /* MenuCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCoordinator.swift; sourceTree = "<group>"; };
+		3E28F7D02B9120680005DE9C /* FlashbankMenuCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashbankMenuCoordinator.swift; sourceTree = "<group>"; };
 		3E45D1E92CA8554D0057ED19 /* MenuViewController_v2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController_v2.swift; sourceTree = "<group>"; };
 		3E45D1EE2CA8562F0057ED19 /* FakeToolBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeToolBar.swift; sourceTree = "<group>"; };
 		3E45D1F02CA85BB30057ED19 /* ColorItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorItemTableViewCell.swift; sourceTree = "<group>"; };
@@ -100,9 +99,8 @@
 		3EAE6F212B95BB1700E47A9D /* NativeHeaderCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NativeHeaderCellView.swift; sourceTree = "<group>"; };
 		3EAE6F222B95BB1700E47A9D /* NativeHeaderCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NativeHeaderCollectionView.swift; sourceTree = "<group>"; };
 		3EBD787D2D90359F0059E2F0 /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
-		3EBD78812D906AE80059E2F0 /* FlashbankMenuCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashbankMenuCoordinator.swift; sourceTree = "<group>"; };
 		3EBD78832D906DE60059E2F0 /* AutoflashDisplayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoflashDisplayerViewController.swift; sourceTree = "<group>"; };
-		3EBD78852D906EA50059E2F0 /* AutoflashMenuCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoflashMenuCoordinator.swift; sourceTree = "<group>"; };
+		3EBD78852D906EA50059E2F0 /* AutoflashCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoflashCoordinator.swift; sourceTree = "<group>"; };
 		3EBD78892D906EE00059E2F0 /* AutoflashMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoflashMenuViewController.swift; sourceTree = "<group>"; };
 		3EDEF7922B8FBBB400D7BE5B /* Flashbank.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Flashbank.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3EDEF7952B8FBBB400D7BE5B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -141,10 +139,9 @@
 			isa = PBXGroup;
 			children = (
 				3E700D3B2B90B0BB00F4B30D /* FlashbankCoordinator.swift */,
-				3E28F7D02B9120680005DE9C /* MenuCoordinator.swift */,
+				3E28F7D02B9120680005DE9C /* FlashbankMenuCoordinator.swift */,
 				3EBD787D2D90359F0059E2F0 /* MainCoordinator.swift */,
-				3EBD78812D906AE80059E2F0 /* FlashbankMenuCoordinator.swift */,
-				3EBD78852D906EA50059E2F0 /* AutoflashMenuCoordinator.swift */,
+				3EBD78852D906EA50059E2F0 /* AutoflashCoordinator.swift */,
 			);
 			path = Coordinators;
 			sourceTree = "<group>";
@@ -427,7 +424,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3EBD78822D906AE80059E2F0 /* FlashbankMenuCoordinator.swift in Sources */,
 				3E45D1F12CA85BB30057ED19 /* ColorItemTableViewCell.swift in Sources */,
 				3EBD788A2D906EE00059E2F0 /* AutoflashMenuViewController.swift in Sources */,
 				3EBD787E2D90359F0059E2F0 /* MainCoordinator.swift in Sources */,
@@ -453,7 +449,7 @@
 				3EDEF7962B8FBBB400D7BE5B /* AppDelegate.swift in Sources */,
 				3E700D582B90B10100F4B30D /* AddLargeTitlePlugin.swift in Sources */,
 				3EDEF7AC2B8FC0FA00D7BE5B /* MenuView.swift in Sources */,
-				3EBD78862D906EA50059E2F0 /* AutoflashMenuCoordinator.swift in Sources */,
+				3EBD78862D906EA50059E2F0 /* AutoflashCoordinator.swift in Sources */,
 				3E700D562B90B10100F4B30D /* AddSearchPlugin.swift in Sources */,
 				3EDEF7AA2B8FBED500D7BE5B /* FlashbankDisplayerViewController.swift in Sources */,
 				3E700D3C2B90B0BB00F4B30D /* FlashbankCoordinator.swift in Sources */,
@@ -469,7 +465,7 @@
 				3E92FD252B933F30009BFCB6 /* FlashbombLocalRepository.swift in Sources */,
 				3E700D592B90B10100F4B30D /* Pluginable+FacadePlugin.swift in Sources */,
 				3E7C4DF62B9101A9006F5759 /* Flashbomb.swift in Sources */,
-				3E28F7D12B9120680005DE9C /* MenuCoordinator.swift in Sources */,
+				3E28F7D12B9120680005DE9C /* FlashbankMenuCoordinator.swift in Sources */,
 				3E700D522B90B10100F4B30D /* AddSmallTitlePlugin.swift in Sources */,
 				3E45D1EF2CA8562F0057ED19 /* FakeToolBar.swift in Sources */,
 				3EAE6F232B95BB1700E47A9D /* NativeHeaderCellView.swift in Sources */,
