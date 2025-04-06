@@ -43,7 +43,7 @@ class FlashbankCoordinator: Coordinatable {
     
     func showMenu(animated: Bool = true) {
         self.menuCoordinator.navigationController.view.alpha = 1
-        //self.navigationController.present(menuCoordinator.navigationController, animated: animated)
+        
         self.flashbankViewController.stopLoop()
         UIApplication.shared.isIdleTimerDisabled = false
     }

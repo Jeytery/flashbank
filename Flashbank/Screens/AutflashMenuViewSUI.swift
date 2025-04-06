@@ -10,28 +10,38 @@ import UIKit
 import SwiftUIIntrospect
 
 final class AutflashMenuViewModel: ObservableObject {
+    enum MirphoneAccessState {
+        case notProvided
+        case provided
+    }
+    
+    @Published var mirphoneAccessState: MirphoneAccessState = .notProvided
+    @Published var shouldPresentBetatestAlert = true
     var didTapViewHandler: (() -> Void)?
+    var didTapMircophoneAccessButtonHandler: (() -> Void)?
 }
 
 struct AutflashMenuViewSUI: View {
-    @ObservedObject private var viewModel = AutflashMenuViewModel()
-    
+    @StateObject private var viewModel: AutflashMenuViewModel
+
     init(viewModel: AutflashMenuViewModel = AutflashMenuViewModel()) {
-        self.viewModel = viewModel
+        _viewModel = StateObject(wrappedValue: viewModel)
     }
-    
+
     var body: some View {
         if #available(iOS 16.0, *) {
             List {
                 listContent()
             }
             .scrollContentBackground(.hidden)
+            .animation(.easeInOut, value: viewModel.shouldPresentBetatestAlert)
+            .animation(.default, value: viewModel.mirphoneAccessState)
         } else {
             ios15List()
         }
     }
-    
-    @ViewBuilder private func listContent() -> some View {
+
+    @ViewBuilder private func betaTestAlert() -> some View {
         Section {
             HStack {
                 Image(systemName: "exclamationmark.triangle.fill")
@@ -39,7 +49,7 @@ struct AutflashMenuViewSUI: View {
                 Text("This functionality is in beta-testing. After being tested it gonna became paid")
                     .font(.system(size: 18, weight: .regular, design: .rounded))
                     .padding([.bottom], 5)
-                    .padding([.top], 15)
+                    .padding([.top], 5)
                 Spacer()
                 VStack {
                     Image(systemName: "xmark.circle.fill")
@@ -48,39 +58,59 @@ struct AutflashMenuViewSUI: View {
                         .padding([.trailing], -7)
                         .padding([.top], 8)
                         .foregroundColor(.white.opacity(0.3))
+                        .onTapGesture {
+                            viewModel.shouldPresentBetatestAlert = false
+                        }
                     Spacer()
                 }
             }
             .listRowBackground(
                 RoundedRectangle(cornerRadius: 18)
-                    .fill(Color.black.opacity(0.1))
+                    .fill(Color.black.opacity(0.25))
             )
         }
+    }
+
+    @ViewBuilder private func listContent() -> some View {
+        if viewModel.shouldPresentBetatestAlert {
+            betaTestAlert()
+        }
         Section(
-            footer: Text("Mircophone is used to detect music rhytm and create color flashes")
-                .listRowBackground(Color.clear)
+            footer: Text("Microphone is used to detect music rhythm and create color flashes")
         ) {
             HStack {
                 Image(systemName: "microphone.fill")
                 Text("Microphone status:")
             }
-            .listRowBackground(Color.black.opacity(0.1))
-            ZStack {
-                
+            .listRowBackground(Color.black.opacity(0.25))
+            Button {
+                self.viewModel.didTapMircophoneAccessButtonHandler?()
+            } label: {
                 HStack {
-                    Text("Not provided (tap to enable)")
-                        .foregroundStyle(.red)
+                    Text(
+                        viewModel.mirphoneAccessState == .notProvided
+                            ? "Not provided (tap to enable)"
+                            : "Access is provided"
+                        
+                    )
+                    .foregroundStyle(
+                        viewModel.mirphoneAccessState == .notProvided
+                        ? Color.red
+                        : Color.green
+                    )
                     Spacer()
-                    Image(systemName: "chevron.forward")
-                        .font(.system(.caption).weight(.bold))
-                        .foregroundColor(Color(UIColor.tertiaryLabel))
-                   
-                }
-                Button("") {
-                    print("button")
+                    if viewModel.mirphoneAccessState == .notProvided {
+                        Image(systemName: "chevron.forward")
+                            .font(.system(.caption).weight(.bold))
+                            .foregroundColor(Color(UIColor.tertiaryLabel))
+                    }
                 }
             }
-            .listRowBackground(Color(uiColor: .red).opacity(0.25))
+            .listRowBackground(
+                viewModel.mirphoneAccessState == .notProvided
+                    ? Color.red.opacity(0.25)
+                    : Color.green.opacity(0.25)
+            )
         }
     }
 

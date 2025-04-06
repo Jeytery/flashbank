@@ -8,63 +8,7 @@
 import Foundation
 import UIKit
 
-//final class MainCoordinator: Coordinatable {
-//    private(set) var navigationController = UINavigationController()
-//    private let flashbankDispalyerViewController = FlashbankDisplayerViewController()
-//    private let menuCoordinator = __MenuCoordinator()
-//    
-//    override func startCoordinator() {
-//        super.startCoordinator()
-//        setupMenu()
-//        
-//        let testVC = UIViewController()
-//        testVC.view.backgroundColor = .systemBlue
-//        self.navigationController.setViewControllers([testVC], animated: false)
-//        
-//        showMenu(animated: false)
-//    }
-//    
-//    private func showMenu(animated: Bool = true) {
-//        self.navigationController.present(
-//            menuCoordinator.tabbarViewController,
-//            animated: animated
-//        )
-//        //self.flashbankDispalyerViewController.stopLoop()
-//        UIApplication.shared.isIdleTimerDisabled = false
-//    }
-//    
-//    private func setupMenu() {
-//        add(coordinatable: menuCoordinator)
-//        menuCoordinator.tabbarViewController.modalTransitionStyle = .crossDissolve
-//        menuCoordinator.tabbarViewController.view.backgroundColor = .clear
-//        menuCoordinator.tabbarViewController.modalPresentationStyle = .overCurrentContext
-//        //let tabBar = menuCoordinator.tabbarViewController.tabBar
-//        //tabBar.standardAppearance.backgroundEffect = UIBlurEffect(style: .systemThinMaterialDark)
-//        //let appearance = UITabBarAppearance()
-//        //appearance.configureWithDefaultBackground() // adds blur by default
-//        //appearance.backgroundEffect = UIBlurEffect(style: .systemChromeMaterial) // You can change the style
-//        //appearance.backgroundColor = .clear // Keep it transparent so blur shows
-//        //tabBar.standardAppearance = appearance
-//        
-//        let tabBarAppearance = UITabBarAppearance()
-//        tabBarAppearance.configureWithTransparentBackground()
-//        tabBarAppearance.backgroundEffect = UIBlurEffect(style: .systemChromeMaterialDark)
-//        tabBarAppearance.backgroundColor = .clear
-//        UITabBar.appearance().standardAppearance = tabBarAppearance
-//        UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
-//    }
-//    
-//    private func presentAutoflashDisplayer() {
-//        
-//    }
-//    
-//    private func presentFlashbankDisplayer() {
-//        
-//    }
-//    
-//}
-
-final class NoAnimationTabbarImpl: NSObject, UITabBarControllerDelegate, UIViewControllerAnimatedTransitioning {
+fileprivate final class NoAnimationTabbarImpl: NSObject, UITabBarControllerDelegate, UIViewControllerAnimatedTransitioning {
     func transitionDuration(using transitionContext: (any UIViewControllerContextTransitioning)?) -> TimeInterval {
         return .zero
     }
@@ -126,15 +70,17 @@ final class MainCoordinator: Coordinatable {
             guard let self = self else { return }
             self.tabbarViewController.tabBar.isHidden = !status
         }
-        autoflashCoordinator.navigationController.tabBarItem = .init(title: "Autoflash", image: UIImage(systemName: "microphone.fill"), tag: 1)
+        if #available(iOS 18.0, *) {
+            autoflashCoordinator.navigationController.tabBarItem = .init(title: "Autoflash", image: UIImage(systemName: "microphone.fill"), tag: 1)
+        } else {
+            autoflashCoordinator.navigationController.tabBarItem = .init(title: "Autoflash", image: UIImage(systemName: "camera.filters"), tag: 1)
+        }
+        
         tabbarViewController.viewControllers = [
             flashbankMenuCoordinator.navigationController, autoflashCoordinator.navigationController
         ]
         add(coordinatable: flashbankMenuCoordinator)
         add(coordinatable: autoflashCoordinator)
-        //flashbankMenuCoordinator.showMenu(animated: true)
-        
     }
-   
 }
 

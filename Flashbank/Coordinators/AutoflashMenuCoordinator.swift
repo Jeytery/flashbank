@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import SwiftUI
+import AVFoundation
 
 final class AutoflashCoordinator: Coordinatable {
     var menuBeingShowingStatusHandler: ((Bool) -> Void)?
@@ -16,7 +17,6 @@ final class AutoflashCoordinator: Coordinatable {
     private let tapTableViewInmpl = TapTableViewInmpl()
     private let autoflashSUIViewModel = AutflashMenuViewModel()
     private lazy var autoflashSUI: AutflashMenuViewSUI = AutflashMenuViewSUI(viewModel: autoflashSUIViewModel)
-//    private let menuViewController = AutoflashMenuViewController()
     
     private lazy var menuViewController = PluginableHostingViewController(
         rootView: autoflashSUI
@@ -27,7 +27,6 @@ final class AutoflashCoordinator: Coordinatable {
         }
     }
     
-    //AutoflashMenuViewController()
     private let displayerViewController = AutoflashDisplayerViewController()
     private(set) var navigationController = StatusBarHiddenNavigationController()
     
@@ -42,6 +41,7 @@ final class AutoflashCoordinator: Coordinatable {
         displayerViewController.view.addGestureRecognizer(tapGesture)
         setupMenu()
         showMenu()
+        autoflashSUIViewModel.mirphoneAccessState = isMicrophoneAccessGranted() ? .provided : .notProvided
     }
     
     @objc private func didTapMenu() {
@@ -51,7 +51,28 @@ final class AutoflashCoordinator: Coordinatable {
 }
 
 private extension AutoflashCoordinator {
+    func isMicrophoneAccessGranted() -> Bool {
+        return AVAudioSession.sharedInstance().recordPermission == .granted
+    }
+
     func setupMenu() {
+        autoflashSUIViewModel.didTapMircophoneAccessButtonHandler = {
+            [weak self] in
+            guard let self = self else { return }
+            if self.isMicrophoneAccessGranted() { return }
+            AVAudioSession.sharedInstance().requestRecordPermission { granted in
+                DispatchQueue.main.async {
+                    if granted {
+                        self.autoflashSUIViewModel.mirphoneAccessState = .provided
+                    } else {
+                        self.autoflashSUIViewModel.mirphoneAccessState = .notProvided
+                        if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
+                            UIApplication.shared.open(settingsURL)
+                        }
+                    }
+                }
+            }
+        }
         menuNavigationController.overrideUserInterfaceStyle = .dark
         menuNavigationController.viewControllers = [menuViewController]
         menuViewController.view.backgroundColor = .black.withAlphaComponent(0.8)
@@ -90,7 +111,7 @@ private extension AutoflashCoordinator {
     }
 }
 
-final class TapTableViewInmpl: NSObject, UIGestureRecognizerDelegate {
+fileprivate final class TapTableViewInmpl: NSObject, UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         let touchedView = touch.view
         var currentView = touchedView
