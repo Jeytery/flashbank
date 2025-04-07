@@ -9,6 +9,9 @@ import Foundation
 import UIKit
 
 fileprivate final class NoAnimationTabbarImpl: NSObject, UITabBarControllerDelegate, UIViewControllerAnimatedTransitioning {
+    private let settingsAP = StoredAppSettingsActionProvider()
+    private let settingsRep = StoredAppSettingsRepository()
+    
     func transitionDuration(using transitionContext: (any UIViewControllerContextTransitioning)?) -> TimeInterval {
         return .zero
     }
@@ -28,6 +31,12 @@ fileprivate final class NoAnimationTabbarImpl: NSObject, UITabBarControllerDeleg
     func tabBarController(_ tabBarController: UITabBarController, animationControllerForTransitionFrom fromVC: UIViewController,
                           to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return self
+    }
+    
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        var settings = settingsRep.load()
+        settings.lastTabbarIndex = tabBarController.selectedIndex ?? 0
+        settingsAP.store(settings)
     }
 }
 
@@ -79,6 +88,8 @@ final class MainCoordinator: Coordinatable {
         ]
         add(coordinatable: flashbankMenuCoordinator)
         add(coordinatable: autoflashCoordinator)
+        let settings = StoredAppSettingsRepository().load()
+        tabbarViewController.selectedIndex = settings.lastTabbarIndex
     }
 }
 

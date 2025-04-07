@@ -7,7 +7,7 @@
 
 import Foundation
 
-class FlashbombLocalRepository {
+final class FlashbombLocalRepository {
     enum LoadFlashBombError: Error {
         case dataNotFound(key: String)
         case decodingFailed(underlyingError: Error)

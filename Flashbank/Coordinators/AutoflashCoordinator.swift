@@ -49,6 +49,8 @@ final class AutoflashCoordinator: Coordinatable {
     
     private let displayerViewController = AutoflashDisplayerViewController()
     private(set) var navigationController = StatusBarHiddenNavigationController()
+    private let storedAppSettingsRep = StoredAppSettingsRepository()
+    private let storedAppSettingsAP = StoredAppSettingsActionProvider()
     
     override func startCoordinator() {
         super.startCoordinator()
@@ -58,6 +60,13 @@ final class AutoflashCoordinator: Coordinatable {
             self?.didTapMenu()
         }
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapMenu))
+        let settings = storedAppSettingsRep.load()
+        autoflashSUIViewModel.shouldPresentBetatestAlert = !settings.isBetaTestingAlertShown
+        if !settings.isBetaTestingAlertShown {
+            var settings = settings
+            settings.isBetaTestingAlertShown = true
+            _ = storedAppSettingsAP.store(settings)
+        }
         displayerViewController.view.addGestureRecognizer(tapGesture)
         setupMenu()
         showMenu()
@@ -108,6 +117,12 @@ private extension AutoflashCoordinator {
             menuNavigationController.view.leftAnchor.constraint(equalTo: navigationController.view.safeAreaLayoutGuide.leftAnchor)
         ])
         menuNavigationController.view.alpha = 0
+        let willAppearHandler = ViewWillAppearHandlerPlugin {
+            [weak self] in
+            guard let self = self else { return }
+            self.autoflashSUIViewModel.mirphoneAccessState = self.isMicrophoneAccessGranted() ? .provided : .notProvided
+        }
+        menuViewController.addPlugin(willAppearHandler)
         let addButtonPlug = AddNavigationButtonsPlugin(viewController: menuViewController)
             .systemImageButton(side: .right, imageName: "gear", action: {
                 let settingsViewController = UIHostingController(rootView: SettingsView())

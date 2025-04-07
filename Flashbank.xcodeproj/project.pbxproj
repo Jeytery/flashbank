@@ -59,6 +59,8 @@
 		3EDEF7AC2B8FC0FA00D7BE5B /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EDEF7AB2B8FC0FA00D7BE5B /* MenuView.swift */; };
 		3EED35DE2D9EFA76003E30E6 /* AutflashMenuViewSUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EED35DD2D9EFA76003E30E6 /* AutflashMenuViewSUI.swift */; };
 		3EED35E02DA2C804003E30E6 /* AudioAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EED35DF2DA2C804003E30E6 /* AudioAnalyzer.swift */; };
+		3EED35E22DA4634F003E30E6 /* ViewWillAppearHandlerPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EED35E12DA4634F003E30E6 /* ViewWillAppearHandlerPlugin.swift */; };
+		3EED35E62DA46470003E30E6 /* StoredAppSettingsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EED35E52DA46470003E30E6 /* StoredAppSettingsRepository.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -112,6 +114,8 @@
 		3EDEF7AB2B8FC0FA00D7BE5B /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
 		3EED35DD2D9EFA76003E30E6 /* AutflashMenuViewSUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutflashMenuViewSUI.swift; sourceTree = "<group>"; };
 		3EED35DF2DA2C804003E30E6 /* AudioAnalyzer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioAnalyzer.swift; sourceTree = "<group>"; };
+		3EED35E12DA4634F003E30E6 /* ViewWillAppearHandlerPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewWillAppearHandlerPlugin.swift; sourceTree = "<group>"; };
+		3EED35E52DA46470003E30E6 /* StoredAppSettingsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredAppSettingsRepository.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -231,6 +235,7 @@
 				3E700D4C2B90B10100F4B30D /* AddSUIViewPlugin.swift */,
 				3E700D4D2B90B10100F4B30D /* AddLargeTitlePlugin.swift */,
 				3E28F7C62B9117B40005DE9C /* ViewDidLoadActionPlugin.swift */,
+				3EED35E12DA4634F003E30E6 /* ViewWillAppearHandlerPlugin.swift */,
 			);
 			path = Plugins;
 			sourceTree = "<group>";
@@ -251,6 +256,7 @@
 		3E92FD222B933F08009BFCB6 /* Repository */ = {
 			isa = PBXGroup;
 			children = (
+				3EED35E42DA46468003E30E6 /* StoredAppSettings */,
 				3E92FD362B951310009BFCB6 /* NamedColors */,
 				3E92FD232B933F19009BFCB6 /* Flashbomb */,
 			);
@@ -343,6 +349,14 @@
 				3EDEF7A32B8FBBB500D7BE5B /* Info.plist */,
 			);
 			path = Flashbank;
+			sourceTree = "<group>";
+		};
+		3EED35E42DA46468003E30E6 /* StoredAppSettings */ = {
+			isa = PBXGroup;
+			children = (
+				3EED35E52DA46470003E30E6 /* StoredAppSettingsRepository.swift */,
+			);
+			path = StoredAppSettings;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -456,11 +470,13 @@
 				3E700D562B90B10100F4B30D /* AddSearchPlugin.swift in Sources */,
 				3EDEF7AA2B8FBED500D7BE5B /* FlashbankDisplayerViewController.swift in Sources */,
 				3E700D3C2B90B0BB00F4B30D /* FlashbankCoordinator.swift in Sources */,
+				3EED35E62DA46470003E30E6 /* StoredAppSettingsRepository.swift in Sources */,
 				3E700D552B90B10100F4B30D /* NavigationBackButtonAction.swift in Sources */,
 				3EED35E02DA2C804003E30E6 /* AudioAnalyzer.swift in Sources */,
 				3E012FE52B965AC0003FECA9 /* NamedColorTableViewCell.swift in Sources */,
 				3E700D5A2B90B10100F4B30D /* PluginableViewController.swift in Sources */,
 				3E700D572B90B10100F4B30D /* AddSUIViewPlugin.swift in Sources */,
+				3EED35E22DA4634F003E30E6 /* ViewWillAppearHandlerPlugin.swift in Sources */,
 				3E700D432B90B0F600F4B30D /* Coordinatable.swift in Sources */,
 				3E92FD312B94EE38009BFCB6 /* ClosableNavigationController.swift in Sources */,
 				3E45D21A2CA9C9F60057ED19 /* MenuEmptyView.swift in Sources */,
