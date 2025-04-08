@@ -10,7 +10,7 @@ import UIKit
 import AVFoundation
 
 final class AutoflashDisplayerViewController: UIViewController {
-    private let audioAnalyzer = AudioAnalyzer()
+    // ui
     private var animator: UIViewPropertyAnimator!
     private let debugStackView = UIStackView()
     private let bassPowerLabel: UILabel = {
@@ -20,6 +20,28 @@ final class AutoflashDisplayerViewController: UIViewController {
         label.textAlignment = .right
         return label
     }()
+    private let decibelLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .systemBlue
+        label.numberOfLines = 0
+        label.textAlignment = .right
+        return label
+    }()
+    private let bassSensitivityLevelLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .systemBlue
+        label.numberOfLines = 0
+        label.textAlignment = .right
+        return label
+    }()
+    
+    // anylizars
+    private let audioAnalyzer = AudioAnalyzer()
+    private let bassPowerSensitivities = BassPowerSensitivities()
+    private var bassSensitivityLevel: BassSensitivityLevel = .medium
+    
+    // state
+    private var currentDBPower: Float = 0
     
     override var prefersHomeIndicatorAutoHidden: Bool {
         return true
@@ -38,27 +60,37 @@ final class AutoflashDisplayerViewController: UIViewController {
             debugStackView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -5),
             debugStackView.widthAnchor.constraint(equalToConstant: 220)
         ])
+        debugStackView.axis = .vertical
         debugStackView.layer.borderColor = UIColor.systemBlue.cgColor
         debugStackView.layer.borderWidth = 1
         debugStackView.addArrangedSubview(bassPowerLabel)
+        debugStackView.addArrangedSubview(decibelLabel)
+        debugStackView.addArrangedSubview(bassSensitivityLevelLabel)
         view.backgroundColor = .black
+        bassPowerSensitivities.onSensitivitiesChange = {
+            [weak self] bassSensitivityLevel in
+            guard let self = self else { return }
+            self.bassSensitivityLevel = bassSensitivityLevel
+            self.bassSensitivityLevelLabel.text = "sensitivities: \(bassSensitivityLevel)"
+        }
+        audioAnalyzer.onDBPowerUpdate = { [weak self] dbPower in
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                self.currentDBPower = dbPower
+                self.decibelLabel.text = String(format: "dbPower: %.2f", dbPower) + " db"
+                self.bassPowerSensitivities.updateDb(self.currentDBPower)
+            }
+        }
         audioAnalyzer.onBassPowerUpdate = { [weak self] bassPower in
             DispatchQueue.main.async {
                 guard let self = self else { return }
                 self.bassPowerLabel.text = String(format: "bass power: %.2f", bassPower)
-                let strangeLevelToLight: Float = 7
                 self.animator?.stopAnimation(true)
                 self.animator = nil
-//                if bassPower >= self.bassSensitivityLevel.rangeValue.low {
-//                    self.view.backgroundColor = .red
-//                }
-//                if bassPower >= self.bassSensitivityLevel.rangeValue.medium {
-//                    self.view.backgroundColor = .green
-//                }
-//                if bassPower >= self.bassSensitivityLevel.rangeValue.high {
-//                    self.view.backgroundColor = .white
-//                }
-                if bassPower >= strangeLevelToLight {
+                if bassPower >= self.bassSensitivityLevel.rangeValue.medium {
+                    self.view.backgroundColor = UIColor.init(red: 45/255, green: 255/255, blue: 79/255, alpha: 1)
+                }
+                if bassPower >= self.bassSensitivityLevel.rangeValue.high {
                     self.view.backgroundColor = .white
                 }
                 DispatchQueue.main.async {

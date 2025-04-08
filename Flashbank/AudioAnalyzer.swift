@@ -9,7 +9,61 @@ import Foundation
 import Accelerate
 import AVFoundation
 
-class AudioAnalyzer {
+enum BassSensitivityLevel: Int {
+    case low
+    case medium
+    case high
+    
+    struct RangeValue {
+        let low: Float
+        let medium: Float
+        let high: Float
+    }
+    
+    var rangeValue: RangeValue {
+        switch self {
+        case .low:
+            return .init(
+                low: 0.2,
+                medium: 0.3,
+                high: 0.4
+            )
+        case .medium:
+            return .init(
+                low: 2,
+                medium: 4,
+                high: 6
+            )
+        case .high:
+            return .init(
+                low: 6,
+                medium: 8,
+                high: 10
+            )
+        }
+    }
+}
+
+final class BassPowerSensitivities {
+    
+    var onSensitivitiesChange: ((BassSensitivityLevel) -> Void)?
+    
+    func updateDb(_ db: Float) {
+        // db -160 to 0
+        switch db {
+        case -160 ... -25:
+            onSensitivitiesChange?(.medium)
+        case -25 ... -20:
+            onSensitivitiesChange?(.medium)
+        case -20 ... 0:
+            onSensitivitiesChange?(.high)
+        default:
+            break
+        }
+    }
+}
+
+final class AudioAnalyzer {
     private let audioEngine = AVAudioEngine()
     private let inputNode: AVAudioInputNode
     private let recordingFormat: AVAudioFormat
