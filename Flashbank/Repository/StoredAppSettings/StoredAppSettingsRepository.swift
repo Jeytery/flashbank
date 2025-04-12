@@ -10,12 +10,18 @@ import Foundation
 struct StoredAppSettings: Codable {
     var isBetaTestingAlertShown: Bool
     var lastTabbarIndex: Int
+    var isDebugMenuEnebled: Bool
     
     static var defaultValue: StoredAppSettings {
         .init(
             isBetaTestingAlertShown: false,
-            lastTabbarIndex: 0
+            lastTabbarIndex: 0,
+            isDebugMenuEnebled: false
         )
+    }
+    
+    func debugMenuEbenebled(isDebugMenuEnebled: Bool) -> Self {
+        return .init(isBetaTestingAlertShown: self.isBetaTestingAlertShown, lastTabbarIndex: self.lastTabbarIndex, isDebugMenuEnebled: isDebugMenuEnebled)
     }
 }
 

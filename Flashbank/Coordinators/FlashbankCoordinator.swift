@@ -91,8 +91,8 @@ private extension FlashbankCoordinator {
         NSLayoutConstraint.activate([
             menuCoordinator.navigationController.view.topAnchor.constraint(equalTo: navigationController.view.topAnchor),
             menuCoordinator.navigationController.view.bottomAnchor.constraint(equalTo: navigationController.view.bottomAnchor),
-            menuCoordinator.navigationController.view.rightAnchor.constraint(equalTo: navigationController.view.safeAreaLayoutGuide.rightAnchor),
-            menuCoordinator.navigationController.view.leftAnchor.constraint(equalTo: navigationController.view.safeAreaLayoutGuide.leftAnchor)
+            menuCoordinator.navigationController.view.rightAnchor.constraint(equalTo: navigationController.view.rightAnchor),
+            menuCoordinator.navigationController.view.leftAnchor.constraint(equalTo: navigationController.view.leftAnchor)
         ])
         menuCoordinator.navigationController.view.alpha = 1
         menuCoordinator.didClose = { [weak self] currentFlashbomb in

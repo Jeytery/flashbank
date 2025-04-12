@@ -17,8 +17,11 @@ final class AutflashMenuViewModel: ObservableObject {
     
     @Published var mirphoneAccessState: MirphoneAccessState = .notProvided
     @Published var shouldPresentBetatestAlert = true
+    @Published var isDebugMenuEnabled: Bool = false
+    
     var didTapViewHandler: (() -> Void)?
     var didTapMircophoneAccessButtonHandler: (() -> Void)?
+    var didChangeIsDebugMenuEnebled: ((Bool) -> Void)?
 }
 
 struct AutflashMenuViewSUI: View {
@@ -38,6 +41,8 @@ struct AutflashMenuViewSUI: View {
             .animation(.default, value: viewModel.mirphoneAccessState)
         } else {
             ios15List()
+                .animation(.easeInOut, value: viewModel.shouldPresentBetatestAlert)
+                .animation(.default, value: viewModel.mirphoneAccessState)
         }
     }
 
@@ -111,6 +116,17 @@ struct AutflashMenuViewSUI: View {
                     ? Color.red.opacity(0.25)
                     : Color.green.opacity(0.25)
             )
+        }
+        Section(
+            footer: Text("Blue square with extra information inside")
+        ) {
+            HStack {
+                Toggle("Show debug menu", isOn: $viewModel.isDebugMenuEnabled)
+                    .onChange(of: viewModel.isDebugMenuEnabled) { newValue in
+                        viewModel.didChangeIsDebugMenuEnebled?(newValue)
+                    }
+            }
+            .listRowBackground(Color.black.opacity(0.25))
         }
     }
 

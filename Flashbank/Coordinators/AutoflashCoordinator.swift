@@ -55,9 +55,20 @@ final class AutoflashCoordinator: Coordinatable {
     override func startCoordinator() {
         super.startCoordinator()
         navigationController.viewControllers = [displayerViewController]
-        autoflashSUIViewModel.didTapViewHandler = {
-            [weak self] in
+        autoflashSUIViewModel.didTapViewHandler = { [weak self] in
             self?.didTapMenu()
+        }
+        let isDebugMenuEnebled = storedAppSettingsRep.load().isDebugMenuEnebled
+        autoflashSUIViewModel.isDebugMenuEnabled = isDebugMenuEnebled
+        
+        autoflashSUIViewModel.didChangeIsDebugMenuEnebled = {
+            [weak self] newValue in
+            guard let self = self else { return }
+            self.displayerViewController.isDebugInfoShown(newValue)
+            _ = self.storedAppSettingsAP
+                .store(
+                    storedAppSettingsRep.load().debugMenuEbenebled(isDebugMenuEnebled: newValue)
+                )
         }
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapMenu))
         let settings = storedAppSettingsRep.load()
@@ -70,6 +81,7 @@ final class AutoflashCoordinator: Coordinatable {
         displayerViewController.view.addGestureRecognizer(tapGesture)
         setupMenu()
         showMenu()
+        self.displayerViewController.isDebugInfoShown(isDebugMenuEnebled)
         autoflashSUIViewModel.mirphoneAccessState = isMicrophoneAccessGranted() ? .provided : .notProvided
     }
     
@@ -113,8 +125,8 @@ private extension AutoflashCoordinator {
         NSLayoutConstraint.activate([
             menuNavigationController.view.topAnchor.constraint(equalTo: navigationController.view.topAnchor),
             menuNavigationController.view.bottomAnchor.constraint(equalTo: navigationController.view.bottomAnchor),
-            menuNavigationController.view.rightAnchor.constraint(equalTo: navigationController.view.safeAreaLayoutGuide.rightAnchor),
-            menuNavigationController.view.leftAnchor.constraint(equalTo: navigationController.view.safeAreaLayoutGuide.leftAnchor)
+            menuNavigationController.view.rightAnchor.constraint(equalTo: navigationController.view.rightAnchor),
+            menuNavigationController.view.leftAnchor.constraint(equalTo: navigationController.view.leftAnchor)
         ])
         menuNavigationController.view.alpha = 0
         let willAppearHandler = ViewWillAppearHandlerPlugin {

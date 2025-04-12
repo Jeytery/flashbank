@@ -55,14 +55,13 @@ final class AutoflashDisplayerViewController: UIViewController {
         return true
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    init() {
+        super.init(nibName: nil, bundle: nil)
         view.addSubview(debugStackView)
         debugStackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             debugStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            debugStackView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -5),
-            debugStackView.widthAnchor.constraint(equalToConstant: 220)
+            debugStackView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -5)
         ])
         debugStackView.axis = .vertical
         debugStackView.layer.borderColor = UIColor.systemBlue.cgColor
@@ -70,6 +69,17 @@ final class AutoflashDisplayerViewController: UIViewController {
         debugStackView.addArrangedSubview(bassPowerLabel)
         debugStackView.addArrangedSubview(decibelLabel)
         debugStackView.addArrangedSubview(bassSensitivityLevelLabel)
+        self.bassPowerLabel.text = "bass power: 0.0"
+        self.bassSensitivityLevelLabel.text = "sensitivities: \(bassSensitivityLevel)"
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
         view.backgroundColor = .black
         bassPowerSensitivities.onSensitivitiesChange = {
             [weak self] bassSensitivityLevel in
@@ -122,10 +132,6 @@ final class AutoflashDisplayerViewController: UIViewController {
         self.animator.addCompletion({ _ in
             self.startScreensaverTimer()
         })
-//        DispatchQueue.main.async { [weak self] in
-//            guard let self = self else { return }
-//
-//        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -154,7 +160,12 @@ extension AutoflashDisplayerViewController {
     func stopLoop() {
         audioAnalyzer.stopCapturingAudio()
         self.radialGradientView.explode()
+        self.screensaverTimer?.invalidate()
         self.screensaverTimer = nil
+    }
+    
+    func isDebugInfoShown(_ value: Bool) {
+        self.debugStackView.isHidden = !value
     }
 }
 
