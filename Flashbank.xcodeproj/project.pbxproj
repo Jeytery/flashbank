@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3E012FE52B965AC0003FECA9 /* NamedColorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E012FE42B965AC0003FECA9 /* NamedColorTableViewCell.swift */; };
+		3E09F29C2DAA83C1003BCB64 /* GradientAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E09F29B2DAA83C1003BCB64 /* GradientAnimationView.swift */; };
 		3E0AFF4A2B9C48C8009971C8 /* AlertKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3E0AFF492B9C48C8009971C8 /* AlertKit */; };
 		3E0CA76A2CAB285D007E09CD /* Pikko in Frameworks */ = {isa = PBXBuildFile; productRef = 3E0CA7692CAB285D007E09CD /* Pikko */; };
 		3E0CA76C2CAB287F007E09CD /* CustomColorPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E0CA76B2CAB287F007E09CD /* CustomColorPickerViewController.swift */; };
@@ -23,6 +24,7 @@
 		3E45D2182CA9B43B0057ED19 /* BPMSliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E45D2172CA9B43B0057ED19 /* BPMSliderView.swift */; };
 		3E45D21A2CA9C9F60057ED19 /* MenuEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E45D2192CA9C9F60057ED19 /* MenuEmptyView.swift */; };
 		3E5120302B9A41BC0095A7B5 /* EmptyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E51202F2B9A41BC0095A7B5 /* EmptyTableViewCell.swift */; };
+		3E6E12A32DA83A07005E8999 /* RadialGradientViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6E12A22DA83A07005E8999 /* RadialGradientViewController.swift */; };
 		3E700D3C2B90B0BB00F4B30D /* FlashbankCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E700D3B2B90B0BB00F4B30D /* FlashbankCoordinator.swift */; };
 		3E700D402B90B0DF00F4B30D /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E700D3F2B90B0DF00F4B30D /* Logger.swift */; };
 		3E700D432B90B0F600F4B30D /* Coordinatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E700D422B90B0F600F4B30D /* Coordinatable.swift */; };
@@ -65,6 +67,7 @@
 
 /* Begin PBXFileReference section */
 		3E012FE42B965AC0003FECA9 /* NamedColorTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NamedColorTableViewCell.swift; sourceTree = "<group>"; };
+		3E09F29B2DAA83C1003BCB64 /* GradientAnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientAnimationView.swift; sourceTree = "<group>"; };
 		3E0CA76B2CAB287F007E09CD /* CustomColorPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColorPickerViewController.swift; sourceTree = "<group>"; };
 		3E0E15A02B9645D4005A9977 /* ColorPaletteSUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPaletteSUI.swift; sourceTree = "<group>"; };
 		3E0EE4B32CAD9BD300B22621 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -76,6 +79,7 @@
 		3E45D2172CA9B43B0057ED19 /* BPMSliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BPMSliderView.swift; sourceTree = "<group>"; };
 		3E45D2192CA9C9F60057ED19 /* MenuEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuEmptyView.swift; sourceTree = "<group>"; };
 		3E51202F2B9A41BC0095A7B5 /* EmptyTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyTableViewCell.swift; sourceTree = "<group>"; };
+		3E6E12A22DA83A07005E8999 /* RadialGradientViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadialGradientViewController.swift; sourceTree = "<group>"; };
 		3E700D3B2B90B0BB00F4B30D /* FlashbankCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashbankCoordinator.swift; sourceTree = "<group>"; };
 		3E700D3F2B90B0DF00F4B30D /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		3E700D422B90B0F600F4B30D /* Coordinatable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coordinatable.swift; sourceTree = "<group>"; };
@@ -249,6 +253,8 @@
 				3EBD78832D906DE60059E2F0 /* AutoflashDisplayerViewController.swift */,
 				3EBD78892D906EE00059E2F0 /* AutoflashMenuViewController.swift */,
 				3EED35DD2D9EFA76003E30E6 /* AutflashMenuViewSUI.swift */,
+				3E6E12A22DA83A07005E8999 /* RadialGradientViewController.swift */,
+				3E09F29B2DAA83C1003BCB64 /* GradientAnimationView.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -446,6 +452,7 @@
 				3EBD787E2D90359F0059E2F0 /* MainCoordinator.swift in Sources */,
 				3E45D2182CA9B43B0057ED19 /* BPMSliderView.swift in Sources */,
 				3E92FD332B94EF47009BFCB6 /* GlassTableViewCell.swift in Sources */,
+				3E09F29C2DAA83C1003BCB64 /* GradientAnimationView.swift in Sources */,
 				3E92FD3A2B95132E009BFCB6 /* NamedColor.swift in Sources */,
 				3E0EE4B42CAD9BD300B22621 /* SettingsView.swift in Sources */,
 				3E700D512B90B10100F4B30D /* AddNavigationButtonsPlugin.swift in Sources */,
@@ -461,6 +468,7 @@
 				3E700D532B90B10100F4B30D /* AddEditButtonPlugin.swift in Sources */,
 				3E0CA76C2CAB287F007E09CD /* CustomColorPickerViewController.swift in Sources */,
 				3E92FD2B2B94C089009BFCB6 /* MenuViewController.swift in Sources */,
+				3E6E12A32DA83A07005E8999 /* RadialGradientViewController.swift in Sources */,
 				3E92FD382B95131E009BFCB6 /* NamedColorsRepository.swift in Sources */,
 				3E700D542B90B10100F4B30D /* SearchLogicPlugin.swift in Sources */,
 				3EDEF7962B8FBBB400D7BE5B /* AppDelegate.swift in Sources */,

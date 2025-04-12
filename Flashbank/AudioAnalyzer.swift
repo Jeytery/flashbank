@@ -42,6 +42,29 @@ enum BassSensitivityLevel: Int {
             )
         }
     }
+    
+//    var rangeValue: RangeValue {
+//        switch self {
+//        case .low:
+//            return .init(
+//                low: 0.2,
+//                medium: 0.3,
+//                high: 0.4
+//            )
+//        case .medium:
+//            return .init(
+//                low: 2,
+//                medium: 2,
+//                high: 2
+//            )
+//        case .high:
+//            return .init(
+//                low: 2,
+//                medium: 2,
+//                high: 2
+//            )
+//        }
+//    }
 }
 
 final class BassPowerSensitivities {
@@ -90,7 +113,7 @@ final class AudioAnalyzer {
 
     private func analyzeAudioBuffer(buffer: AVAudioPCMBuffer) {
         onBassPowerUpdate?(calculateBassStrength(from: buffer))
-        onDBPowerUpdate?(calculateDecibels(from: buffer))
+        //onDBPowerUpdate?(calculateDecibels(from: buffer))
     }
 
     func calculateDecibels(from buffer: AVAudioPCMBuffer) -> Float {
