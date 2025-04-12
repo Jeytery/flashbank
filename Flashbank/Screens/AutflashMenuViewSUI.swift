@@ -22,6 +22,7 @@ final class AutflashMenuViewModel: ObservableObject {
     var didTapViewHandler: (() -> Void)?
     var didTapMircophoneAccessButtonHandler: (() -> Void)?
     var didChangeIsDebugMenuEnebled: ((Bool) -> Void)?
+    var didCloseAlert: (() -> Void)?
 }
 
 struct AutflashMenuViewSUI: View {
@@ -65,6 +66,7 @@ struct AutflashMenuViewSUI: View {
                         .foregroundColor(.white.opacity(0.3))
                         .onTapGesture {
                             viewModel.shouldPresentBetatestAlert = false
+                            viewModel.didCloseAlert?()
                         }
                     Spacer()
                 }

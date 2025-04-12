@@ -58,7 +58,8 @@ final class AutoflashCoordinator: Coordinatable {
         autoflashSUIViewModel.didTapViewHandler = { [weak self] in
             self?.didTapMenu()
         }
-        let isDebugMenuEnebled = storedAppSettingsRep.load().isDebugMenuEnebled
+        let settings = storedAppSettingsRep.load()
+        let isDebugMenuEnebled = settings.isDebugMenuEnebled
         autoflashSUIViewModel.isDebugMenuEnabled = isDebugMenuEnebled
         
         autoflashSUIViewModel.didChangeIsDebugMenuEnebled = {
@@ -71,13 +72,8 @@ final class AutoflashCoordinator: Coordinatable {
                 )
         }
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapMenu))
-        let settings = storedAppSettingsRep.load()
+        
         autoflashSUIViewModel.shouldPresentBetatestAlert = !settings.isBetaTestingAlertShown
-        if !settings.isBetaTestingAlertShown {
-            var settings = settings
-            settings.isBetaTestingAlertShown = true
-            _ = storedAppSettingsAP.store(settings)
-        }
         displayerViewController.view.addGestureRecognizer(tapGesture)
         setupMenu()
         showMenu()
@@ -97,6 +93,13 @@ private extension AutoflashCoordinator {
     }
 
     func setupMenu() {
+        autoflashSUIViewModel.didCloseAlert = {
+            [weak self] in
+            guard let self = self else { return }
+            var settings = self.storedAppSettingsRep.load()
+            settings.isBetaTestingAlertShown = true
+            _ = storedAppSettingsAP.store(settings)
+        }
         autoflashSUIViewModel.didTapMircophoneAccessButtonHandler = {
             [weak self] in
             guard let self = self else { return }
