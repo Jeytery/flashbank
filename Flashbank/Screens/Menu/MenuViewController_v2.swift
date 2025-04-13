@@ -223,12 +223,22 @@ private extension MenuViewController_v2 {
         let bottomPaddingValue: CGFloat = 10
         let bottomPadding: CGFloat = view.safeAreaInsets.bottom == 0 ? bottomPaddingValue : 0
         let topSliderPadding: CGFloat = 5
-        NSLayoutConstraint.activate([
-            bottomToolBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -70),
-            bottomToolBar.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 10),
-            bottomToolBar.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10),
-            bottomToolBar.heightAnchor.constraint(equalToConstant: bottomToolBarHeight)
-        ])
+        if isIPhone {
+            NSLayoutConstraint.activate([
+                bottomToolBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -70),
+                bottomToolBar.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 10),
+                bottomToolBar.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10),
+                bottomToolBar.heightAnchor.constraint(equalToConstant: bottomToolBarHeight)
+            ])
+        } else {
+            let width = min(view.bounds.width / 2, 600) // Set a max width (e.g., 400 points) for the table view
+            NSLayoutConstraint.activate([
+                bottomToolBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -70),
+                bottomToolBar.widthAnchor.constraint(equalToConstant: width),
+                bottomToolBar.heightAnchor.constraint(equalToConstant: bottomToolBarHeight),
+                bottomToolBar.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            ])
+        }
         bottomToolBar.addSubview(sliderView)
         sliderView.translatesAutoresizingMaskIntoConstraints = false
         sliderView.backgroundColor = .clear
@@ -236,7 +246,9 @@ private extension MenuViewController_v2 {
         NSLayoutConstraint.activate([
             sliderView.bottomAnchor.constraint(equalTo: bottomToolBar.bottomAnchor, constant: -bottomPadding),
             sliderView.centerXAnchor.constraint(equalTo: bottomToolBar.centerXAnchor),
-            sliderView.widthAnchor.constraint(equalTo: bottomToolBar.widthAnchor, multiplier: sliderWidthMultiplier),
+            //sliderView.widthAnchor.constraint(equalTo: bottomToolBar.widthAnchor, multiplier: sliderWidthMultiplier),
+            sliderView.leftAnchor.constraint(equalTo: bottomToolBar.leftAnchor, constant: 20),
+            sliderView.rightAnchor.constraint(equalTo: bottomToolBar.rightAnchor, constant: -20),
             sliderView.topAnchor.constraint(equalTo: bottomToolBar.topAnchor, constant: topSliderPadding)
         ])
     }
@@ -329,7 +341,7 @@ extension MenuViewController_v2: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let action1 = UIContextualAction(style: .normal, title: "Edit") { 
             [weak self] (action, view, handler) in
-            let cell = tableView.cellForRow(at: indexPath)
+            //let cell = tableView.cellForRow(at: indexPath)
             tableView.isEditing = false
             self?.eventOutputHandler?(.didTapEditWithIndexPath(indexPath))
         }

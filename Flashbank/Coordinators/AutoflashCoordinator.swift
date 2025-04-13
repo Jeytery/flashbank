@@ -92,6 +92,14 @@ private extension AutoflashCoordinator {
         return AVAudioSession.sharedInstance().recordPermission == .granted
     }
 
+    func requestMicrophonePermission(completion: @escaping (Bool) -> Void) {
+        AVCaptureDevice.requestAccess(for: .audio) { granted in
+            DispatchQueue.main.async {
+                completion(granted)
+            }
+        }
+    }
+    
     func setupMenu() {
         autoflashSUIViewModel.didCloseAlert = {
             [weak self] in

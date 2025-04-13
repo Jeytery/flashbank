@@ -36,6 +36,7 @@ final class GradientAnimationView: UIView {
     }
 
     private func setupGradient() {
+        gradientLayer.locations = [0.2, 1.0]
         gradientLayer.frame = bounds
         gradientLayer.colors = [UIColor.black.cgColor, UIColor.black.cgColor]
         layer.addSublayer(gradientLayer)
@@ -58,6 +59,7 @@ final class GradientAnimationView: UIView {
         step2.beginTime = step1.beginTime + step1.duration
         step2.duration = 2.0
         step2.fillMode = .forwards
+        
         step2.isRemovedOnCompletion = false
 
         let step3 = CABasicAnimation(keyPath: "colors")
@@ -89,7 +91,7 @@ final class GradientAnimationView: UIView {
         gradientLayer.removeAllAnimations()
         gradientLayer.removeFromSuperlayer()
         setupGradient()
-        let colors: [UIColor] = [.red, .green, .yellow]
+        let colors: [UIColor] = [.red, .green, .white]
         animateGradientSequence(color: colors.randomElement()!)
     }
 

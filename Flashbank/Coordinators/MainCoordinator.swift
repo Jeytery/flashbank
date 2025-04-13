@@ -8,6 +8,15 @@
 import Foundation
 import UIKit
 
+final class OldStyleTabBarController: UITabBarController {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        if #available(iOS 17.0, *) {
+            traitOverrides.horizontalSizeClass = .compact
+        }
+    }
+}
+
 fileprivate final class NoAnimationTabbarImpl: NSObject, UITabBarControllerDelegate, UIViewControllerAnimatedTransitioning {
     private let settingsAP = StoredAppSettingsActionProvider()
     private let settingsRep = StoredAppSettingsRepository()
@@ -35,13 +44,13 @@ fileprivate final class NoAnimationTabbarImpl: NSObject, UITabBarControllerDeleg
     
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         var settings = settingsRep.load()
-        settings.lastTabbarIndex = tabBarController.selectedIndex ?? 0
-        settingsAP.store(settings)
+        settings.lastTabbarIndex = tabBarController.selectedIndex
+        _ = settingsAP.store(settings)
     }
 }
 
 final class MainCoordinator: Coordinatable {
-    private(set) var tabbarViewController: UITabBarController = UITabBarController()
+    private(set) var tabbarViewController: OldStyleTabBarController = OldStyleTabBarController()
     
     private func setupTabbar() {
         let tabBarAppearance = UITabBarAppearance()
@@ -60,6 +69,12 @@ final class MainCoordinator: Coordinatable {
         if #available(iOS 18.0, *) {
             tabbarViewController.delegate = noAnimationTabbarImpl
         }
+        if #available(iOS 15.0, *) {
+            let appearance = UITabBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            UITabBar.appearance().standardAppearance = appearance
+            UITabBar.appearance().scrollEdgeAppearance = appearance
+        }
         let flashbankMenuCoordinator = FlashbankCoordinator()
         let autoflashCoordinator = AutoflashCoordinator()
         setupTabbar()
@@ -72,11 +87,15 @@ final class MainCoordinator: Coordinatable {
             [weak self] status in
             guard let self = self else { return }
             self.tabbarViewController.tabBar.isHidden = !status
+            self.tabbarViewController.tabBar.alpha = status ? 1 : 0
+            
         }
         autoflashCoordinator.menuBeingShowingStatusHandler = {
             [weak self] status in
             guard let self = self else { return }
             self.tabbarViewController.tabBar.isHidden = !status
+            self.tabbarViewController.tabBar.alpha = status ? 1 : 0
+           
         }
         if #available(iOS 18.0, *) {
             autoflashCoordinator.navigationController.tabBarItem = .init(title: "Autoflash", image: UIImage(systemName: "microphone.fill"), tag: 1)

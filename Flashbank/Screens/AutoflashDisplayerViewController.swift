@@ -5,9 +5,7 @@
 //  Created by Dmytro Ostapchenko on 23.03.2025.
 //
 
-import Foundation
 import UIKit
-import AVFoundation
 
 final class AutoflashDisplayerViewController: UIViewController {
     // ui
@@ -158,10 +156,10 @@ extension AutoflashDisplayerViewController {
     }
     
     func stopLoop() {
-        audioAnalyzer.stopCapturingAudio()
         self.radialGradientView.explode()
         self.screensaverTimer?.invalidate()
         self.screensaverTimer = nil
+        audioAnalyzer.stopCapturingAudio()
     }
     
     func isDebugInfoShown(_ value: Bool) {

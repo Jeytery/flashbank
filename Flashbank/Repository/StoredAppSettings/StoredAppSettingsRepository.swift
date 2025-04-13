@@ -54,6 +54,7 @@ final class StoredAppSettingsActionProvider {
     
     private let key = "StoredAppSettingsRepository.key"
     
+    @discardableResult
     func store(_ settings: StoredAppSettings) -> StoreError? {
         let encoder = JSONEncoder()
         do {

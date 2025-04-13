@@ -36,9 +36,9 @@ enum BassSensitivityLevel: Int {
             )
         case .high:
             return .init(
-                low: 6,
-                medium: 8,
-                high: 10
+                low: 2,
+                medium: 4,
+                high: 6
             )
         }
     }
@@ -86,36 +86,60 @@ final class BassPowerSensitivities {
     }
 }
 
-final class AudioAnalyzer {
-    private let audioEngine = AVAudioEngine()
-    private let inputNode: AVAudioInputNode
-    private let recordingFormat: AVAudioFormat
+/*
+    crushes on iOS16 simulator if you connect headphones
+ */
 
+final class AudioAnalyzer {
     var onBassPowerUpdate: ((Float) -> Void)?
     var onDBPowerUpdate: ((Float) -> Void)?
-
+    
+    private let audioEngine = AVAudioEngine()
+    
     init() {
-        inputNode = audioEngine.inputNode
-        recordingFormat = inputNode.outputFormat(forBus: 0)
+        let session = AVAudioSession.sharedInstance()
+        try? session.setCategory(.playAndRecord, options: .defaultToSpeaker)
+        try? session.setActive(true)	
+        let inputNode = audioEngine.inputNode
+        let format = inputNode.outputFormat(forBus: 0)
+        inputNode.removeTap(onBus: 0)
+        inputNode.installTap(onBus: 0, bufferSize: 1024, format: format) { buffer, time in
+        }
     }
-
     func startCapturingAudio() {
+        let session = AVAudioSession.sharedInstance()
+        try? session.setCategory(.playAndRecord, options: .defaultToSpeaker)
+        try? session.setActive(true)
+        let inputNode = audioEngine.inputNode
+        inputNode.reset()
+        inputNode.removeTap(onBus: 0)
+        audioEngine.stop()
+        let recordingFormat = inputNode.outputFormat(forBus: 0)
         inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { buffer, _ in
             self.analyzeAudioBuffer(buffer: buffer)
         }
-        try? audioEngine.start()
+        do {
+            try audioEngine.start()
+        } catch {
+            print("Failed to start audio engine: \(error)")
+        }
     }
 
     func stopCapturingAudio() {
+        let inputNode = audioEngine.inputNode
+        inputNode.reset()
         inputNode.removeTap(onBus: 0)
+        let format = inputNode.outputFormat(forBus: 0)
+        inputNode.installTap(onBus: 0, bufferSize: 1024, format: format) { buffer, time in
+        }
         audioEngine.stop()
     }
 
     private func analyzeAudioBuffer(buffer: AVAudioPCMBuffer) {
         onBassPowerUpdate?(calculateBassStrength(from: buffer))
-        //onDBPowerUpdate?(calculateDecibels(from: buffer))
+        onDBPowerUpdate?(calculateDecibels(from: buffer))
     }
-
+    
     func calculateDecibels(from buffer: AVAudioPCMBuffer) -> Float {
         guard let channelData = buffer.floatChannelData else { return -160.0 }
         let channelCount = Int(buffer.format.channelCount)

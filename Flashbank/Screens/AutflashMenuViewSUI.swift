@@ -23,6 +23,14 @@ final class AutflashMenuViewModel: ObservableObject {
     var didTapMircophoneAccessButtonHandler: (() -> Void)?
     var didChangeIsDebugMenuEnebled: ((Bool) -> Void)?
     var didCloseAlert: (() -> Void)?
+    
+    var isIPhone: Bool {
+        return UIDevice.current.userInterfaceIdiom == .phone
+    }
+    
+    var tableViewWidth: CGFloat {
+        return min(UIScreen.main.bounds.width / 2, 600)
+    }
 }
 
 struct AutflashMenuViewSUI: View {
@@ -31,19 +39,36 @@ struct AutflashMenuViewSUI: View {
     init(viewModel: AutflashMenuViewModel = AutflashMenuViewModel()) {
         _viewModel = StateObject(wrappedValue: viewModel)
     }
-
+    
     var body: some View {
         if #available(iOS 16.0, *) {
-            List {
-                listContent()
-            }
-            .scrollContentBackground(.hidden)
-            .animation(.easeInOut, value: viewModel.shouldPresentBetatestAlert)
-            .animation(.default, value: viewModel.mirphoneAccessState)
-        } else {
-            ios15List()
+            if viewModel.isIPhone {
+                List {
+                    listContent()
+                }
+                .scrollContentBackground(.hidden)
                 .animation(.easeInOut, value: viewModel.shouldPresentBetatestAlert)
                 .animation(.default, value: viewModel.mirphoneAccessState)
+            } else {
+                List {
+                    listContent()
+                }
+                .frame(width: viewModel.tableViewWidth)
+                .scrollContentBackground(.hidden)
+                .animation(.easeInOut, value: viewModel.shouldPresentBetatestAlert)
+                .animation(.default, value: viewModel.mirphoneAccessState)
+            }
+        } else {
+            if viewModel.isIPhone {
+                ios15List()
+                    .animation(.easeInOut, value: viewModel.shouldPresentBetatestAlert)
+                    .animation(.default, value: viewModel.mirphoneAccessState)
+            } else {
+                ios15List()
+                    .frame(width: viewModel.tableViewWidth)
+                    .animation(.easeInOut, value: viewModel.shouldPresentBetatestAlert)
+                    .animation(.default, value: viewModel.mirphoneAccessState)
+            }
         }
     }
 
@@ -136,9 +161,9 @@ struct AutflashMenuViewSUI: View {
         List {
             listContent()
         }
-        .listStyle(.plain)
+        .listStyle(.insetGrouped)
         .introspect(.list, on: .iOS(.v13, .v14, .v15)) { tableView in
-            tableView.backgroundColor = .black.withAlphaComponent(0.4)
+            tableView.backgroundColor = .clear//.black.withAlphaComponent(0.4)
         }
         .introspect(.list, on: .iOS(.v16, .v17, .v18)) { collectionView in
             collectionView.backgroundColor = .clear
