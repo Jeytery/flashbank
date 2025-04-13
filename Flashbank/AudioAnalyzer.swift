@@ -36,9 +36,9 @@ enum BassSensitivityLevel: Int {
             )
         case .high:
             return .init(
-                low: 2,
-                medium: 4,
-                high: 6
+                low: 4,
+                medium: 6,
+                high: 8
             )
         }
     }
@@ -76,9 +76,9 @@ final class BassPowerSensitivities {
         switch db {
         case -160 ... -25:
             onSensitivitiesChange?(.medium)
-        case -25 ... -20:
+        case -25 ... -12:
             onSensitivitiesChange?(.medium)
-        case -20 ... 0:
+        case -12 ... 0:
             onSensitivitiesChange?(.high)
         default:
             break
