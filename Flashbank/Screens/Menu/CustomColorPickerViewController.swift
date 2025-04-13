@@ -46,7 +46,7 @@ class CustomPickerCoordinator: Coordinatable {
         coreNavigationController.pushViewController(pickerViewController, animated: false)
         pickerViewController.navigationItem.rightBarButtonItem = .init(title: "Done", style: .done, target: self, action: #selector(didTapDone))
         if ProcessInfo.processInfo.isiOSAppOnMac {
-            coreNavigationController.modalPresentationStyle = .fullScreen
+            coreNavigationController.modalPresentationStyle = .overFullScreen
         }
         parentNavigationController.present(coreNavigationController, animated: true)
     }
