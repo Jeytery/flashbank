@@ -9,8 +9,8 @@ import Foundation
 import UIKit
 import SwiftUI
 import AVFoundation
-
-fileprivate final class TapTableViewInmpl: NSObject, UIGestureRecognizerDelegate {
+ 
+final class TapTableViewInmpl: NSObject, UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         let touchedView = touch.view
         var currentView = touchedView

@@ -14,13 +14,14 @@ class FlashbankCoordinator: Coordinatable {
     var menuBeingShowingStatusHandler: ((Bool) -> Void)?
     
     private(set) lazy var navigationController = StatusBarHiddenNavigationController(
-        rootViewController: flashbankViewController
+        rootViewController: flashbankDisplayerViewController
     )
-    private lazy var flashbankViewController = FlashbankDisplayerViewController()
+    private lazy var flashbankDisplayerViewController = FlashbankDisplayerViewController()
     private unowned var menuCoordinator: FlashbankMenuCoordinator!
     
     private let flashbombRep = FlashbombLocalRepository()
     private let flashbombRepProvider = FlashbombLRActionProvider()
+    private let tapTableViewInmpl = TapTableViewInmpl()
     
     // state
     private var isMenuShown = false {
@@ -43,7 +44,7 @@ class FlashbankCoordinator: Coordinatable {
     
     func showMenu(animated: Bool = true) {
         self.menuCoordinator.navigationController.view.alpha = 1
-        self.flashbankViewController.stopLoop()
+        self.flashbankDisplayerViewController.stopLoop()
         UIApplication.shared.isIdleTimerDisabled = false
     }
 }
@@ -65,13 +66,17 @@ private extension FlashbankCoordinator {
     }
     
     func displayFlashbank() {
-        navigationController.viewControllers = [flashbankViewController]
-        flashbankViewController.displayFlashbomb(currentFlashbomb)
+        navigationController.viewControllers = [flashbankDisplayerViewController]
+        flashbankDisplayerViewController.displayFlashbomb(currentFlashbomb)
     }
     
     func addTapGesture() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(coreViewDidTap))
-        navigationController.view.addGestureRecognizer(tap)
+        tap.delegate = tapTableViewInmpl
+        let tap2 = UITapGestureRecognizer(target: self, action: #selector(coreViewDidTap))
+        tap2.delegate = tapTableViewInmpl
+        flashbankDisplayerViewController.view.addGestureRecognizer(tap)
+        menuCoordinator.menuViewController.view.addGestureRecognizer(tap2)
     }
     
     @objc func coreViewDidTap() {
@@ -81,7 +86,7 @@ private extension FlashbankCoordinator {
   
     func hideMenu() {
         self.menuCoordinator.navigationController.view.alpha = 0
-        self.flashbankViewController.startLoop(flashbomb: self.currentFlashbomb)
+        self.flashbankDisplayerViewController.startLoop(flashbomb: self.currentFlashbomb)
         UIApplication.shared.isIdleTimerDisabled = true
     }
     
@@ -99,7 +104,7 @@ private extension FlashbankCoordinator {
             guard let self = self else { return }
             self.isMenuShown = false
             self.menuCoordinator.navigationController.view.alpha = 0
-            self.flashbankViewController.displayFlashbomb(currentFlashbomb)
+            self.flashbankDisplayerViewController.displayFlashbomb(currentFlashbomb)
             if let error = self.flashbombRepProvider.storeFlashbomb(currentFlashbomb) {
                 AlertKitAPI.present(
                     title: error.localizedDescription,

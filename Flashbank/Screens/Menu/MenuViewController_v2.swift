@@ -210,9 +210,9 @@ private extension MenuViewController_v2 {
         tapView.addGestureRecognizer(tap)
         tableView.backgroundView = tapView
         tableView.allowsSelection = true
-        let tap2 = UITapGestureRecognizer(target: self, action: #selector(didTapTableView2))
-        tap2.delegate = self
-        self.view.addGestureRecognizer(tap2)
+//        let tap2 = UITapGestureRecognizer(target: self, action: #selector(didTapTableView2))
+//        tap2.delegate = self
+//        self.view.addGestureRecognizer(tap2)
         tableView.contentInset = .init(top: 20, left: 0, bottom: 110, right: 0)
     }
         
@@ -357,11 +357,11 @@ extension MenuViewController_v2: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-extension MenuViewController_v2: UIGestureRecognizerDelegate {
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        if touch.view?.isDescendant(of: self.tableView) == true {
-            return false
-        }
-        return true
-    }
-}
+//extension MenuViewController_v2: UIGestureRecognizerDelegate {
+//    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+//        if touch.view?.isDescendant(of: self.tableView) == true {
+//            return false
+//        }
+//        return true
+//    }
+//}

@@ -69,6 +69,7 @@ final class AutoflashDisplayerViewController: UIViewController {
         debugStackView.addArrangedSubview(bassSensitivityLevelLabel)
         self.bassPowerLabel.text = "bass power: 0.0"
         self.bassSensitivityLevelLabel.text = "sensitivities: \(bassSensitivityLevel)"
+        self.decibelLabel.text = "dbPower: 0.0 db"
     }
     
     required init?(coder: NSCoder) {

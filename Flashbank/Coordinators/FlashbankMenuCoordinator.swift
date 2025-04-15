@@ -29,7 +29,7 @@ final class FlashbankMenuCoordinator: Coordinatable {
     
     private let flashbomb: Flashbomb
     
-    private var menuViewController: MenuViewController_v2
+    private(set) var menuViewController: MenuViewController_v2
     private lazy var getColorAdapter = GetColorAdapter()
     
     private var pickerCoordinator: CustomPickerCoordinator!
