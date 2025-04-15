@@ -100,7 +100,7 @@ final class MainCoordinator: Coordinatable {
         if #available(iOS 18.0, *) {
             autoflashCoordinator.navigationController.tabBarItem = .init(title: "Autoflash", image: UIImage(systemName: "microphone.fill"), tag: 1)
         } else {
-            autoflashCoordinator.navigationController.tabBarItem = .init(title: "Autoflash", image: UIImage(systemName: "camera.filters"), tag: 1)
+            autoflashCoordinator.navigationController.tabBarItem = .init(title: "Autoflash", image: UIImage(systemName: "speaker.wave.3.fill"), tag: 1)
         }
         tabbarViewController.viewControllers = [
             flashbankMenuCoordinator.navigationController, autoflashCoordinator.navigationController

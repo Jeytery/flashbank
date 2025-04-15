@@ -161,11 +161,13 @@ private extension AutoflashCoordinator {
     
     func showMenu(animated: Bool = true) {
         menuNavigationController.view.alpha = 1
+        UIApplication.shared.isIdleTimerDisabled = false
         displayerViewController.stopLoop()
     }
     
     func hideMenu(animated: Bool = true) {
         menuNavigationController.view.alpha = 0
+        UIApplication.shared.isIdleTimerDisabled = true
         displayerViewController.startLoop()
     }
 }

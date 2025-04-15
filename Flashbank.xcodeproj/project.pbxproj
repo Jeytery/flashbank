@@ -251,8 +251,8 @@
 				3E92FD2C2B94C08B009BFCB6 /* Menu */,
 				3EDEF7A92B8FBED500D7BE5B /* FlashbankDisplayerViewController.swift */,
 				3EBD78832D906DE60059E2F0 /* AutoflashDisplayerViewController.swift */,
-				3EBD78892D906EE00059E2F0 /* AutoflashMenuViewController.swift */,
 				3EED35DD2D9EFA76003E30E6 /* AutflashMenuViewSUI.swift */,
+				3EBD78892D906EE00059E2F0 /* AutoflashMenuViewController.swift */,
 				3E6E12A22DA83A07005E8999 /* RadialGradientViewController.swift */,
 				3E09F29B2DAA83C1003BCB64 /* GradientAnimationView.swift */,
 			);

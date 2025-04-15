@@ -91,7 +91,7 @@ final class GradientAnimationView: UIView {
         gradientLayer.removeAllAnimations()
         gradientLayer.removeFromSuperlayer()
         setupGradient()
-        let colors: [UIColor] = [.red, .green, .white]
+        let colors: [UIColor] = [.red, .green, .magenta]
         animateGradientSequence(color: colors.randomElement()!)
     }
 
