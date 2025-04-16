@@ -64,7 +64,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "83"
             endingLineNumber = "83"
-            landmarkName = "coreViewDidTap()"
+            landmarkName = "addTapGesture()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -178,22 +178,6 @@
             endingLineNumber = "27"
             landmarkName = "prefersHomeIndicatorAutoHidden"
             landmarkType = "24">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "3DD68D8F-0EE2-4DA9-9E48-B15D8035949C"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Flashbank/Coordinators/FlashbankCoordinator.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "46"
-            endingLineNumber = "46"
-            landmarkName = "showMenu(animated:)"
-            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

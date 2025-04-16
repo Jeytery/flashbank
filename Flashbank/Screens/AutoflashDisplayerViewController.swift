@@ -78,7 +78,6 @@ final class AutoflashDisplayerViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         view.backgroundColor = .black
         bassPowerSensitivities.onSensitivitiesChange = {
             [weak self] bassSensitivityLevel in
