@@ -107,4 +107,5 @@ final class GradientAnimationView: UIView {
         super.layoutSubviews()
         gradientLayer.frame = bounds
     }
+    
 }
