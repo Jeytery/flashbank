@@ -39,9 +39,17 @@ final class AutoflashDisplayerViewController: UIViewController {
     private let audioAnalyzer = AudioAnalyzer()
     private let flashView = UIView()
     
+    /// Flash colors: white plus a couple of bright accents. No red on purpose.
+    private let flashColors: [UIColor] = [
+        .white,
+        UIColor(red: 0, green: 1, blue: 1, alpha: 1),  // cyan
+        UIColor(red: 1, green: 0, blue: 1, alpha: 1)   // magenta
+    ]
+
     // state
     private var currentDBPower: Float = 0
     private var screensaverTimer: Timer!
+    private var lastFlashColorIndex: Int?
     
     override var prefersHomeIndicatorAutoHidden: Bool {
         return true
@@ -95,19 +103,10 @@ final class AutoflashDisplayerViewController: UIViewController {
                 self.bassSensitivityLevelLabel.text = String(format: "onset z: %.2f / %.1f", z, threshold)
             }
         }
-        audioAnalyzer.onBeat = { [weak self] beat in
+        audioAnalyzer.onBeat = { [weak self] _ in
             DispatchQueue.main.async {
                 guard let self = self else { return }
-                let color: UIColor
-                switch beat.intensity {
-                case ..<0.4:
-                    color = .green
-                case ..<0.75:
-                    color = .red
-                default:
-                    color = .white
-                }
-                self.flash(color: color)
+                self.flash(color: self.nextFlashColor())
             }
         }
         radialGradientView = .init(frame: view.bounds)
@@ -117,6 +116,18 @@ final class AutoflashDisplayerViewController: UIViewController {
         view.insertSubview(flashView, at: 1)
     }
     
+    /// Random color that never repeats the previous one — two identical flashes
+    /// in a row would read as a single long one.
+    private func nextFlashColor() -> UIColor {
+        var candidates = Array(flashColors.indices)
+        if let last = lastFlashColorIndex, candidates.count > 1 {
+            candidates.removeAll { $0 == last }
+        }
+        let index = candidates.randomElement() ?? 0
+        lastFlashColorIndex = index
+        return flashColors[index]
+    }
+
     private func flash(color: UIColor) {
         self.animator?.stopAnimation(true)
         self.animator = nil

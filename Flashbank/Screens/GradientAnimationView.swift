@@ -83,7 +83,7 @@ final class GradientAnimationView: UIView {
         group.duration = step1.duration + step2.duration + step3.duration + step4.duration
         group.fillMode = .forwards
         group.repeatCount = .infinity
-        gradientLayer.add(group, forKey: "gradualRed")
+        gradientLayer.add(group, forKey: "gradualColor")
     }
 
     func start() {
@@ -91,8 +91,7 @@ final class GradientAnimationView: UIView {
         gradientLayer.removeAllAnimations()
         gradientLayer.removeFromSuperlayer()
         setupGradient()
-        let colors: [UIColor] = [.red, .green, .magenta]
-        animateGradientSequence(color: colors.randomElement()!)
+        animateGradientSequence(color: .white)
     }
 
     func explode() {
