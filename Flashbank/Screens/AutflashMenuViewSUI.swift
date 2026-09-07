@@ -18,11 +18,17 @@ final class AutflashMenuViewModel: ObservableObject {
     @Published var mirphoneAccessState: MirphoneAccessState = .notProvided
     @Published var shouldPresentBetatestAlert = true
     @Published var isDebugMenuEnabled: Bool = false
-    
+    /// 0...1 — higher flashes more often
+    @Published var beatSensitivity: Double = StoredAppSettings.defaultBeatSensitivity
+
     var didTapViewHandler: (() -> Void)?
     var didTapStartHandler: (() -> Void)?
     var didTapMircophoneAccessButtonHandler: (() -> Void)?
     var didChangeIsDebugMenuEnebled: ((Bool) -> Void)?
+    /// Fires on every slider movement — apply it live.
+    var didChangeBeatSensitivity: ((Double) -> Void)?
+    /// Fires once the slider is released — persist it here.
+    var didCommitBeatSensitivity: ((Double) -> Void)?
     var didCloseAlert: (() -> Void)?
     
     var isIPhone: Bool {
@@ -123,8 +129,43 @@ struct AutflashMenuViewSUI: View {
             }
             .listRowBackground(
                 RoundedRectangle(cornerRadius: 18)
-                    .fill(Color.blue.opacity(0.65))
+                    .fill(Color.black.opacity(0.25))
             )
+        }
+    }
+
+    @ViewBuilder private func sensitivitySection() -> some View {
+        Section(
+            footer: Text("Higher sensitivity makes the screen flash on quieter and more frequent beats")
+        ) {
+            VStack(alignment: .leading, spacing: 4) {
+                HStack {
+                    Image(systemName: "waveform")
+                    Text("Sensitivity")
+                    Spacer()
+                    Text("\(Int((viewModel.beatSensitivity * 100).rounded()))%")
+                        .foregroundStyle(Color(UIColor.secondaryLabel))
+                }
+                HStack {
+                    Image(systemName: "tortoise.fill")
+                        .foregroundStyle(Color(UIColor.tertiaryLabel))
+                    Slider(
+                        value: $viewModel.beatSensitivity,
+                        in: 0...1,
+                        onEditingChanged: { isEditing in
+                            guard !isEditing else { return }
+                            viewModel.didCommitBeatSensitivity?(viewModel.beatSensitivity)
+                        }
+                    )
+                    .onChange(of: viewModel.beatSensitivity) { newValue in
+                        viewModel.didChangeBeatSensitivity?(newValue)
+                    }
+                    Image(systemName: "hare.fill")
+                        .foregroundStyle(Color(UIColor.tertiaryLabel))
+                }
+            }
+            .padding(.vertical, 4)
+            .listRowBackground(Color.black.opacity(0.25))
         }
     }
 
@@ -133,6 +174,7 @@ struct AutflashMenuViewSUI: View {
             betaTestAlert()
         }
         startButton()
+        sensitivitySection()
         Section(
             footer: Text("Microphone is used to detect music rhythm and create color flashes")
         ) {

@@ -88,8 +88,22 @@ final class AutoflashCoordinator: Coordinatable {
                     storedAppSettingsRep.load().debugMenuEbenebled(isDebugMenuEnebled: newValue)
                 )
         }
+        autoflashSUIViewModel.beatSensitivity = settings.beatSensitivity
+        displayerViewController.setSensitivity(settings.beatSensitivity)
+        autoflashSUIViewModel.didChangeBeatSensitivity = {
+            [weak self] newValue in
+            self?.displayerViewController.setSensitivity(newValue)
+        }
+        autoflashSUIViewModel.didCommitBeatSensitivity = {
+            [weak self] newValue in
+            guard let self = self else { return }
+            _ = self.storedAppSettingsAP
+                .store(
+                    self.storedAppSettingsRep.load().beatSensitivity(newValue)
+                )
+        }
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapMenu))
-        
+
         autoflashSUIViewModel.shouldPresentBetatestAlert = !settings.isBetaTestingAlertShown
         displayerViewController.view.addGestureRecognizer(tapGesture)
         setupMenu()

@@ -166,5 +166,10 @@ extension AutoflashDisplayerViewController {
     func isDebugInfoShown(_ value: Bool) {
         self.debugStackView.isHidden = !value
     }
+
+    /// - Parameter value: 0...1, higher flashes more often.
+    func setSensitivity(_ value: Double) {
+        audioAnalyzer.sensitivity = Float(value)
+    }
 }
 

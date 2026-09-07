@@ -36,8 +36,21 @@ final class AudioAnalyzer {
         return w
     }()
 
+    static let defaultSensitivity: Float = 0.6
+
+    /// 0...1 — user facing knob. Higher means a lower threshold, so more beats pass.
+    var sensitivity: Float = AudioAnalyzer.defaultSensitivity {
+        didSet { zThreshold = Self.threshold(for: sensitivity) }
+    }
+
     /// Beat fires when onset flux exceeds mean + zThreshold * stddev of recent history
-    private let zThreshold: Float = 1.6
+    private var zThreshold: Float = AudioAnalyzer.threshold(for: AudioAnalyzer.defaultSensitivity)
+
+    /// Maps sensitivity 0...1 onto a z-score threshold of 2.8 (picky) ... 0.8 (twitchy).
+    private static func threshold(for sensitivity: Float) -> Float {
+        let clamped = min(1, max(0, sensitivity))
+        return 2.8 - clamped * 2.0
+    }
     /// Minimum interval between flashes (~250 BPM cap)
     private let refractoryInterval: TimeInterval = 0.16
     /// Ignore everything quieter than this (dB, full-scale mean-square)
