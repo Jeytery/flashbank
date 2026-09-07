@@ -18,11 +18,13 @@ final class AutflashMenuViewModel: ObservableObject {
     @Published var mirphoneAccessState: MirphoneAccessState = .notProvided
     @Published var shouldPresentBetatestAlert = true
     @Published var isDebugMenuEnabled: Bool = false
-    
+    @Published var beatSensitivity: Double = 0.75
+
     var didTapViewHandler: (() -> Void)?
     var didTapStartHandler: (() -> Void)?
     var didTapMircophoneAccessButtonHandler: (() -> Void)?
     var didChangeIsDebugMenuEnebled: ((Bool) -> Void)?
+    var didChangeBeatSensitivity: ((Double) -> Void)?
     var didCloseAlert: (() -> Void)?
     
     var isIPhone: Bool {
@@ -169,6 +171,24 @@ struct AutflashMenuViewSUI: View {
                     ? Color.red.opacity(0.25)
                     : Color.green.opacity(0.25)
             )
+        }
+        Section(
+            footer: Text("How easily a beat triggers a flash")
+        ) {
+            VStack(alignment: .leading) {
+                Text("Beat sensitivity")
+                Slider(value: $viewModel.beatSensitivity, in: 0...1) {
+                    Text("Beat sensitivity")
+                } minimumValueLabel: {
+                    Image(systemName: "minus")
+                } maximumValueLabel: {
+                    Image(systemName: "plus")
+                }
+                .onChange(of: viewModel.beatSensitivity) { newValue in
+                    viewModel.didChangeBeatSensitivity?(newValue)
+                }
+            }
+            .listRowBackground(Color.black.opacity(0.25))
         }
         Section(
             footer: Text("Blue square with extra information inside")

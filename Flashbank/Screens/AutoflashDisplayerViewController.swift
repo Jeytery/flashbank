@@ -32,6 +32,13 @@ final class AutoflashDisplayerViewController: UIViewController {
         label.textAlignment = .right
         return label
     }()
+    private let bpmLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .systemBlue
+        label.numberOfLines = 0
+        label.textAlignment = .right
+        return label
+    }()
     
     private var radialGradientView: GradientAnimationView!
     
@@ -42,6 +49,7 @@ final class AutoflashDisplayerViewController: UIViewController {
     // state
     private var currentDBPower: Float = 0
     private var screensaverTimer: Timer!
+    private var currentHue: CGFloat = .random(in: 0...1)
     
     override var prefersHomeIndicatorAutoHidden: Bool {
         return true
@@ -65,9 +73,11 @@ final class AutoflashDisplayerViewController: UIViewController {
         debugStackView.addArrangedSubview(bassPowerLabel)
         debugStackView.addArrangedSubview(decibelLabel)
         debugStackView.addArrangedSubview(bassSensitivityLevelLabel)
+        debugStackView.addArrangedSubview(bpmLabel)
         self.bassPowerLabel.text = "bass power: 0.0"
         self.bassSensitivityLevelLabel.text = "onset z: 0.0"
         self.decibelLabel.text = "dbPower: 0.0 db"
+        self.bpmLabel.text = "bpm: --"
     }
     
     required init?(coder: NSCoder) {
@@ -95,19 +105,19 @@ final class AutoflashDisplayerViewController: UIViewController {
                 self.bassSensitivityLevelLabel.text = String(format: "onset z: %.2f / %.1f", z, threshold)
             }
         }
+        audioAnalyzer.onBPMUpdate = { [weak self] bpm in
+            DispatchQueue.main.async {
+                guard let self, !self.debugStackView.isHidden else { return }
+                if let bpm {
+                    self.bpmLabel.text = String(format: "bpm: %.0f", bpm)
+                } else {
+                    self.bpmLabel.text = "bpm: --"
+                }
+            }
+        }
         audioAnalyzer.onBeat = { [weak self] beat in
             DispatchQueue.main.async {
-                guard let self = self else { return }
-                let color: UIColor
-                switch beat.intensity {
-                case ..<0.4:
-                    color = .green
-                case ..<0.75:
-                    color = .red
-                default:
-                    color = .white
-                }
-                self.flash(color: color)
+                self?.handleBeat(beat)
             }
         }
         radialGradientView = .init(frame: view.bounds)
@@ -117,20 +127,68 @@ final class AutoflashDisplayerViewController: UIViewController {
         view.insertSubview(flashView, at: 1)
     }
     
-    private func flash(color: UIColor) {
+    private func handleBeat(_ beat: AudioAnalyzer.Beat) {
+        currentHue = (currentHue + 0.618).truncatingRemainder(dividingBy: 1)
+        let color = UIColor(hue: currentHue, saturation: 0.85, brightness: 1, alpha: 1)
+        screensaverTimer?.invalidate()
+        screensaverTimer = nil
+        radialGradientView.explode()
+        if beat.isPredicted {
+            pulse(color: color, intensity: 0.5)
+            startScreensaverTimer()
+        } else {
+            flash(color: beat.intensity > 0.85 ? .white : color, intensity: beat.intensity)
+            pulse(color: color, intensity: beat.intensity)
+        }
+    }
+
+    private func flash(color: UIColor, intensity: Float) {
         self.animator?.stopAnimation(true)
         self.animator = nil
         self.flashView.backgroundColor = color
-        self.screensaverTimer?.invalidate()
-        self.screensaverTimer = nil
-        self.radialGradientView.explode()
-        self.animator = UIViewPropertyAnimator(duration: 0.35, curve: .easeOut) {
-            self.flashView.backgroundColor = .clear
+        self.flashView.alpha = CGFloat(0.35 + 0.65 * intensity)
+        self.animator = UIViewPropertyAnimator(
+            duration: 0.28 + 0.22 * Double(intensity),
+            curve: .easeOut
+        ) {
+            self.flashView.alpha = 0
         }
-        self.animator.startAnimation()
         self.animator.addCompletion({ _ in
             self.startScreensaverTimer()
         })
+        self.animator.startAnimation()
+    }
+
+    private func pulse(color: UIColor, intensity: Float) {
+        let size = max(view.bounds.width, view.bounds.height) * 1.2
+        let layer = CAGradientLayer()
+        layer.type = .radial
+        layer.colors = [
+            color.withAlphaComponent(0.85).cgColor,
+            color.withAlphaComponent(0).cgColor
+        ]
+        layer.startPoint = CGPoint(x: 0.5, y: 0.5)
+        layer.endPoint = CGPoint(x: 1, y: 1)
+        layer.frame = CGRect(x: 0, y: 0, width: size, height: size)
+        layer.position = CGPoint(x: view.bounds.midX, y: view.bounds.midY)
+        view.layer.insertSublayer(layer, above: flashView.layer)
+        let scale = CABasicAnimation(keyPath: "transform.scale")
+        scale.fromValue = 0.25
+        scale.toValue = 0.8 + CGFloat(intensity)
+        let fade = CABasicAnimation(keyPath: "opacity")
+        fade.fromValue = 0.9
+        fade.toValue = 0
+        let group = CAAnimationGroup()
+        group.animations = [scale, fade]
+        group.duration = 0.45
+        group.timingFunction = CAMediaTimingFunction(name: .easeOut)
+        group.fillMode = .forwards
+        group.isRemovedOnCompletion = false
+        layer.opacity = 0
+        layer.add(group, forKey: "pulse")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            layer.removeFromSuperlayer()
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -165,6 +223,10 @@ extension AutoflashDisplayerViewController {
     
     func isDebugInfoShown(_ value: Bool) {
         self.debugStackView.isHidden = !value
+    }
+
+    func setBeatZThreshold(_ value: Float) {
+        audioAnalyzer.setZThreshold(value)
     }
 }
 

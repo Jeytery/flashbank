@@ -78,6 +78,19 @@ final class AutoflashCoordinator: Coordinatable {
         let settings = storedAppSettingsRep.load()
         let isDebugMenuEnebled = settings.isDebugMenuEnebled
         autoflashSUIViewModel.isDebugMenuEnabled = isDebugMenuEnebled
+
+        let storedZThreshold = settings.beatZThreshold ?? 1.6
+        displayerViewController.setBeatZThreshold(storedZThreshold)
+        autoflashSUIViewModel.beatSensitivity = Double((2.5 - storedZThreshold) / 1.2)
+        autoflashSUIViewModel.didChangeBeatSensitivity = {
+            [weak self] sensitivity in
+            guard let self = self else { return }
+            let zThreshold = Float(2.5 - 1.2 * sensitivity)
+            self.displayerViewController.setBeatZThreshold(zThreshold)
+            var settings = self.storedAppSettingsRep.load()
+            settings.beatZThreshold = zThreshold
+            self.storedAppSettingsAP.store(settings)
+        }
         
         autoflashSUIViewModel.didChangeIsDebugMenuEnebled = {
             [weak self] newValue in

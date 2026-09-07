@@ -13,18 +13,77 @@ import AVFoundation
     crushes on iOS16 simulator if you connect headphones
  */
 
+final class TempoTracker {
+    private(set) var period: Double = 0
+    private(set) var isLocked = false
+    private var onsetTimes: [Double] = []
+
+    func addOnset(at time: Double) {
+        onsetTimes.append(time)
+        onsetTimes.removeAll { time - $0 > 6 }
+        estimate()
+    }
+
+    func reset() {
+        onsetTimes.removeAll()
+        period = 0
+        isLocked = false
+    }
+
+    private func estimate() {
+        guard onsetTimes.count >= 4 else {
+            isLocked = false
+            return
+        }
+        var intervals: [Double] = []
+        for i in 1..<onsetTimes.count {
+            for j in max(0, i - 3)..<i {
+                var d = onsetTimes[i] - onsetTimes[j]
+                while d > 1.0 { d /= 2 }
+                if d >= 0.24 { intervals.append(d) }
+            }
+        }
+        guard intervals.count >= 6 else {
+            isLocked = false
+            return
+        }
+        let binWidth = 0.02
+        var bins: [Int: [Double]] = [:]
+        for d in intervals {
+            bins[Int(d / binWidth), default: []].append(d)
+        }
+        var bestBin = -1
+        var bestCount = 0
+        for bin in bins.keys {
+            let count = (bins[bin]?.count ?? 0) + (bins[bin - 1]?.count ?? 0) + (bins[bin + 1]?.count ?? 0)
+            if count > bestCount {
+                bestCount = count
+                bestBin = bin
+            }
+        }
+        guard bestCount >= 5, bestBin >= 0 else {
+            isLocked = false
+            return
+        }
+        let cluster = (bins[bestBin] ?? []) + (bins[bestBin - 1] ?? []) + (bins[bestBin + 1] ?? [])
+        period = cluster.reduce(0, +) / Double(cluster.count)
+        isLocked = period > 0.2
+    }
+}
+
 final class AudioAnalyzer {
     struct Beat {
-        /// 0...1 — how strong the onset is relative to the recent average
         let intensity: Float
+        let isPredicted: Bool
     }
 
     var onBassPowerUpdate: ((Float) -> Void)?
     var onDBPowerUpdate: ((Float) -> Void)?
-    /// Fired on a detected musical onset (beat). Called on the audio queue.
+    /// Fired on a detected musical onset (beat). Called on the detection queue.
     var onBeat: ((Beat) -> Void)?
-    /// Debug: current onset z-score vs threshold. Called on the audio queue.
+    /// Debug: current onset z-score vs threshold. Called on the detection queue.
     var onBeatDebugUpdate: ((_ zScore: Float, _ threshold: Float) -> Void)?
+    var onBPMUpdate: ((Double?) -> Void)?
 
     // MARK: FFT / detection constants
     private let chunkSize = 1024                    // ~21ms @ 48kHz
@@ -37,19 +96,31 @@ final class AudioAnalyzer {
     }()
 
     /// Beat fires when onset flux exceeds mean + zThreshold * stddev of recent history
-    private let zThreshold: Float = 1.6
+    private var zThresholdValue: Float = 1.6
     /// Minimum interval between flashes (~250 BPM cap)
     private let refractoryInterval: TimeInterval = 0.16
     /// Ignore everything quieter than this (dB, full-scale mean-square)
     private let silenceFloorDB: Float = -60
     private let fluxHistorySize = 64                // ~1.4s of history
 
-    // MARK: state (audio thread only)
+    // MARK: state (detection queue only)
+    private let detectionQueue = DispatchQueue(label: "AudioAnalyzer.detection")
     private var prevMagnitudes = [Float](repeating: 0, count: 512)
     private var fluxHistory: [Float] = []
     private var lastBeatTime: CFTimeInterval = 0
+    private var lastLoudTime: CFTimeInterval = 0
+    private var lastRealOnsetTime: CFTimeInterval = 0
+    private let tempoTracker = TempoTracker()
+    private var beatAnchor: CFTimeInterval = 0
+    private var predictionTimer: DispatchSourceTimer?
 
     private let audioEngine = AVAudioEngine()
+
+    func setZThreshold(_ value: Float) {
+        detectionQueue.async {
+            self.zThresholdValue = min(max(value, 1.0), 3.0)
+        }
+    }
 
     func startCapturingAudio() {
         configureSession()
@@ -58,11 +129,19 @@ final class AudioAnalyzer {
         audioEngine.stop()
         let recordingFormat = inputNode.outputFormat(forBus: 0)
         guard recordingFormat.sampleRate > 0 else { return }
-        prevMagnitudes = [Float](repeating: 0, count: chunkSize / 2)
-        fluxHistory.removeAll()
+        detectionQueue.async {
+            self.prevMagnitudes = [Float](repeating: 0, count: self.chunkSize / 2)
+            self.fluxHistory.removeAll()
+            self.tempoTracker.reset()
+            self.predictionTimer?.cancel()
+            self.predictionTimer = nil
+        }
         inputNode.installTap(onBus: 0, bufferSize: AVAudioFrameCount(chunkSize), format: recordingFormat) {
-            [weak self] buffer, _ in
-            self?.analyzeAudioBuffer(buffer: buffer)
+            [weak self] buffer, time in
+            guard let self = self else { return }
+            self.detectionQueue.async {
+                self.analyzeAudioBuffer(buffer: buffer, time: time)
+            }
         }
         do {
             try audioEngine.start()
@@ -74,6 +153,11 @@ final class AudioAnalyzer {
     func stopCapturingAudio() {
         audioEngine.inputNode.removeTap(onBus: 0)
         audioEngine.stop()
+        detectionQueue.async {
+            self.predictionTimer?.cancel()
+            self.predictionTimer = nil
+            self.tempoTracker.reset()
+        }
         try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
     }
 
@@ -99,20 +183,31 @@ final class AudioAnalyzer {
 
     // MARK: - Analysis
 
-    private func analyzeAudioBuffer(buffer: AVAudioPCMBuffer) {
+    private func analyzeAudioBuffer(buffer: AVAudioPCMBuffer, time: AVAudioTime) {
         guard let channelData = buffer.floatChannelData?[0] else { return }
         let frameCount = Int(buffer.frameLength)
-        let sampleRate = Float(buffer.format.sampleRate)
+        let sampleRate = buffer.format.sampleRate
+        guard sampleRate > 0 else { return }
 
         let db = calculateDecibels(from: buffer)
         onDBPowerUpdate?(db)
-        onBassPowerUpdate?(bassStrength(samples: channelData, frameCount: frameCount, sampleRate: sampleRate))
+        onBassPowerUpdate?(bassStrength(sampleRate: Float(sampleRate)))
+
+        let loudEnough = db > silenceFloorDB
+        if loudEnough {
+            lastLoudTime = CACurrentMediaTime()
+        }
+
+        let bufferStart = time.isHostTimeValid
+            ? AVAudioTime.seconds(forHostTime: time.hostTime)
+            : CACurrentMediaTime()
 
         // The tap usually delivers ~100ms buffers regardless of the requested
         // size — walk it in 1024-sample chunks to keep onset resolution ~21ms.
         var offset = 0
         while offset + chunkSize <= frameCount {
-            processChunk(samples: channelData + offset, loudEnough: db > silenceFloorDB)
+            let chunkTime = bufferStart + Double(offset) / sampleRate
+            processChunk(samples: channelData + offset, at: chunkTime, loudEnough: loudEnough)
             offset += chunkSize
         }
     }
@@ -120,7 +215,7 @@ final class AudioAnalyzer {
     /// Spectral flux onset detection with an adaptive (mean + z*stddev) threshold.
     /// Full-spectrum flux works better than bass-band energy on iPhone: the
     /// built-in mic rolls off below ~100Hz, so pure bass energy is unreliable.
-    private func processChunk(samples: UnsafePointer<Float>, loudEnough: Bool) {
+    private func processChunk(samples: UnsafePointer<Float>, at chunkTime: Double, loudEnough: Bool) {
         let halfN = chunkSize / 2
         var windowed = [Float](repeating: 0, count: chunkSize)
         vDSP_vmul(samples, 1, window, 1, &windowed, 1, vDSP_Length(chunkSize))
@@ -163,14 +258,53 @@ final class AudioAnalyzer {
         guard stddev > 0 else { return }
 
         let z = (flux - mean) / stddev
-        onBeatDebugUpdate?(z, zThreshold)
+        onBeatDebugUpdate?(z, zThresholdValue)
 
-        let now = CACurrentMediaTime()
-        if z > zThreshold, now - lastBeatTime > refractoryInterval {
-            lastBeatTime = now
-            let intensity = min(1, max(0, (z - zThreshold) / 5 + 0.3))
-            onBeat?(Beat(intensity: intensity))
+        if z > zThresholdValue, chunkTime - lastBeatTime > refractoryInterval {
+            registerOnset(at: chunkTime, z: z)
         }
+    }
+
+    private func registerOnset(at time: Double, z: Float) {
+        lastBeatTime = time
+        lastRealOnsetTime = time
+        beatAnchor = time
+        tempoTracker.addOnset(at: time)
+        let intensity = min(1, max(0, (z - zThresholdValue) / 5 + 0.3))
+        onBeat?(Beat(intensity: intensity, isPredicted: false))
+        onBPMUpdate?(tempoTracker.isLocked ? 60.0 / tempoTracker.period : nil)
+        schedulePrediction()
+    }
+
+    private func schedulePrediction() {
+        predictionTimer?.cancel()
+        predictionTimer = nil
+        guard tempoTracker.isLocked else { return }
+        let now = CACurrentMediaTime()
+        guard now - lastRealOnsetTime < 6 else {
+            onBPMUpdate?(nil)
+            return
+        }
+        let period = tempoTracker.period
+        var next = beatAnchor + period
+        while next <= now + 0.02 { next += period }
+        let timer = DispatchSource.makeTimerSource(queue: detectionQueue)
+        timer.schedule(deadline: .now() + (next - now), leeway: .milliseconds(5))
+        timer.setEventHandler { [weak self] in
+            self?.firePredictedBeat(at: next)
+        }
+        timer.resume()
+        predictionTimer = timer
+    }
+
+    private func firePredictedBeat(at time: Double) {
+        beatAnchor = time
+        let now = CACurrentMediaTime()
+        if now - lastLoudTime < 2.0, now - lastBeatTime > refractoryInterval {
+            lastBeatTime = now
+            onBeat?(Beat(intensity: 0.3, isPredicted: true))
+        }
+        schedulePrediction()
     }
 
     func calculateDecibels(from buffer: AVAudioPCMBuffer) -> Float {
@@ -189,8 +323,8 @@ final class AudioAnalyzer {
     }
 
     /// Average magnitude in the 20–250Hz band, kept for the debug overlay.
-    private func bassStrength(samples: UnsafePointer<Float>, frameCount: Int, sampleRate: Float) -> Float {
-        guard frameCount >= chunkSize, sampleRate > 0 else { return 0 }
+    private func bassStrength(sampleRate: Float) -> Float {
+        guard sampleRate > 0 else { return 0 }
         let halfN = chunkSize / 2
         let binSize = sampleRate / Float(chunkSize)
         let lowBin = max(Int(20 / binSize), 1)
@@ -204,6 +338,7 @@ final class AudioAnalyzer {
     }
 
     deinit {
+        predictionTimer?.cancel()
         vDSP_destroy_fftsetup(fftSetup)
     }
 }

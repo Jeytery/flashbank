@@ -11,17 +11,21 @@ struct StoredAppSettings: Codable {
     var isBetaTestingAlertShown: Bool
     var lastTabbarIndex: Int
     var isDebugMenuEnebled: Bool
-    
+    var beatZThreshold: Float?
+
     static var defaultValue: StoredAppSettings {
         .init(
             isBetaTestingAlertShown: false,
             lastTabbarIndex: 0,
-            isDebugMenuEnebled: false
+            isDebugMenuEnebled: false,
+            beatZThreshold: nil
         )
     }
-    
+
     func debugMenuEbenebled(isDebugMenuEnebled: Bool) -> Self {
-        return .init(isBetaTestingAlertShown: self.isBetaTestingAlertShown, lastTabbarIndex: self.lastTabbarIndex, isDebugMenuEnebled: isDebugMenuEnebled)
+        var copy = self
+        copy.isDebugMenuEnebled = isDebugMenuEnebled
+        return copy
     }
 }
 
