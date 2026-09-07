@@ -37,8 +37,6 @@ final class AutoflashDisplayerViewController: UIViewController {
     
     // anylizars
     private let audioAnalyzer = AudioAnalyzer()
-    private let bassPowerSensitivities = BassPowerSensitivities()
-    private var bassSensitivityLevel: BassSensitivityLevel = .medium
     private let flashView = UIView()
     
     // state
@@ -68,7 +66,7 @@ final class AutoflashDisplayerViewController: UIViewController {
         debugStackView.addArrangedSubview(decibelLabel)
         debugStackView.addArrangedSubview(bassSensitivityLevelLabel)
         self.bassPowerLabel.text = "bass power: 0.0"
-        self.bassSensitivityLevelLabel.text = "sensitivities: \(bassSensitivityLevel)"
+        self.bassSensitivityLevelLabel.text = "onset z: 0.0"
         self.decibelLabel.text = "dbPower: 0.0 db"
     }
     
@@ -79,34 +77,37 @@ final class AutoflashDisplayerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
-        bassPowerSensitivities.onSensitivitiesChange = {
-            [weak self] bassSensitivityLevel in
-            guard let self = self else { return }
-            self.bassSensitivityLevel = bassSensitivityLevel
-            self.bassSensitivityLevelLabel.text = "sensitivities: \(bassSensitivityLevel)"
-        }
         audioAnalyzer.onDBPowerUpdate = { [weak self] dbPower in
             DispatchQueue.main.async {
                 guard let self = self else { return }
                 self.currentDBPower = dbPower
                 self.decibelLabel.text = String(format: "dbPower: %.2f", dbPower) + " db"
-                self.bassPowerSensitivities.updateDb(self.currentDBPower)
             }
         }
         audioAnalyzer.onBassPowerUpdate = { [weak self] bassPower in
             DispatchQueue.main.async {
+                self?.bassPowerLabel.text = String(format: "bass power: %.2f", bassPower)
+            }
+        }
+        audioAnalyzer.onBeatDebugUpdate = { [weak self] z, threshold in
+            DispatchQueue.main.async {
+                guard let self, !self.debugStackView.isHidden else { return }
+                self.bassSensitivityLevelLabel.text = String(format: "onset z: %.2f / %.1f", z, threshold)
+            }
+        }
+        audioAnalyzer.onBeat = { [weak self] beat in
+            DispatchQueue.main.async {
                 guard let self = self else { return }
-                self.bassPowerLabel.text = String(format: "bass power: %.2f", bassPower)
-                if bassPower >= self.bassSensitivityLevel.rangeValue.medium {
-                    self.flash(color: .green)
+                let color: UIColor
+                switch beat.intensity {
+                case ..<0.4:
+                    color = .green
+                case ..<0.75:
+                    color = .red
+                default:
+                    color = .white
                 }
-                if bassPower >= self.bassSensitivityLevel.rangeValue.medium {
-                    self.flash(color: .red)
-                    
-                }
-                if bassPower >= self.bassSensitivityLevel.rangeValue.high {
-                    self.flash(color: .white)
-                }
+                self.flash(color: color)
             }
         }
         radialGradientView = .init(frame: view.bounds)

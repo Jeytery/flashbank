@@ -58,6 +58,23 @@ final class AutoflashCoordinator: Coordinatable {
         autoflashSUIViewModel.didTapViewHandler = { [weak self] in
             self?.didTapMenu()
         }
+        autoflashSUIViewModel.didTapStartHandler = { [weak self] in
+            guard let self = self else { return }
+            if self.isMicrophoneAccessGranted() {
+                self.hideMenu()
+                self.isMenuShown = false
+            } else {
+                AVAudioSession.sharedInstance().requestRecordPermission { granted in
+                    DispatchQueue.main.async {
+                        self.autoflashSUIViewModel.mirphoneAccessState = granted ? .provided : .notProvided
+                        if granted {
+                            self.hideMenu()
+                            self.isMenuShown = false
+                        }
+                    }
+                }
+            }
+        }
         let settings = storedAppSettingsRep.load()
         let isDebugMenuEnebled = settings.isDebugMenuEnebled
         autoflashSUIViewModel.isDebugMenuEnabled = isDebugMenuEnebled

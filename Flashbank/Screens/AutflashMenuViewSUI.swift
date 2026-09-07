@@ -20,6 +20,7 @@ final class AutflashMenuViewModel: ObservableObject {
     @Published var isDebugMenuEnabled: Bool = false
     
     var didTapViewHandler: (() -> Void)?
+    var didTapStartHandler: (() -> Void)?
     var didTapMircophoneAccessButtonHandler: (() -> Void)?
     var didChangeIsDebugMenuEnebled: ((Bool) -> Void)?
     var didCloseAlert: (() -> Void)?
@@ -103,10 +104,35 @@ struct AutflashMenuViewSUI: View {
         }
     }
 
+    @ViewBuilder private func startButton() -> some View {
+        Section(
+            footer: Text("Screen will flash to the music. Tap anywhere to come back to this menu")
+        ) {
+            Button {
+                viewModel.didTapStartHandler?()
+            } label: {
+                HStack {
+                    Spacer()
+                    Image(systemName: "play.fill")
+                    Text("Start")
+                        .font(.system(size: 20, weight: .semibold, design: .rounded))
+                    Spacer()
+                }
+                .foregroundStyle(.white)
+                .padding(.vertical, 8)
+            }
+            .listRowBackground(
+                RoundedRectangle(cornerRadius: 18)
+                    .fill(Color.blue.opacity(0.65))
+            )
+        }
+    }
+
     @ViewBuilder private func listContent() -> some View {
         if viewModel.shouldPresentBetatestAlert {
             betaTestAlert()
         }
+        startButton()
         Section(
             footer: Text("Microphone is used to detect music rhythm and create color flashes")
         ) {

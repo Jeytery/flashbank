@@ -9,114 +9,60 @@ import Foundation
 import Accelerate
 import AVFoundation
 
-enum BassSensitivityLevel: Int {
-    case low
-    case medium
-    case high
-    
-    struct RangeValue {
-        let low: Float
-        let medium: Float
-        let high: Float
-    }
-    
-    var rangeValue: RangeValue {
-        switch self {
-        case .low:
-            return .init(
-                low: 0.2,
-                medium: 0.3,
-                high: 0.4
-            )
-        case .medium:
-            return .init(
-                low: 2,
-                medium: 4,
-                high: 6
-            )
-        case .high:
-            return .init(
-                low: 4,
-                medium: 6,
-                high: 8
-            )
-        }
-    }
-    
-//    var rangeValue: RangeValue {
-//        switch self {
-//        case .low:
-//            return .init(
-//                low: 0.2,
-//                medium: 0.3,
-//                high: 0.4
-//            )
-//        case .medium:
-//            return .init(
-//                low: 2,
-//                medium: 2,
-//                high: 2
-//            )
-//        case .high:
-//            return .init(
-//                low: 2,
-//                medium: 2,
-//                high: 2
-//            )
-//        }
-//    }
-}
-
-final class BassPowerSensitivities {
-    
-    var onSensitivitiesChange: ((BassSensitivityLevel) -> Void)?
-    
-    func updateDb(_ db: Float) {
-        // db -160 to 0
-        switch db {
-        case -160 ... -25:
-            onSensitivitiesChange?(.medium)
-        case -25 ... -12:
-            onSensitivitiesChange?(.medium)
-        case -12 ... 0:
-            onSensitivitiesChange?(.high)
-        default:
-            break
-        }
-    }
-}
-
 /*
     crushes on iOS16 simulator if you connect headphones
  */
 
 final class AudioAnalyzer {
+    struct Beat {
+        /// 0...1 — how strong the onset is relative to the recent average
+        let intensity: Float
+    }
+
     var onBassPowerUpdate: ((Float) -> Void)?
     var onDBPowerUpdate: ((Float) -> Void)?
-    
+    /// Fired on a detected musical onset (beat). Called on the audio queue.
+    var onBeat: ((Beat) -> Void)?
+    /// Debug: current onset z-score vs threshold. Called on the audio queue.
+    var onBeatDebugUpdate: ((_ zScore: Float, _ threshold: Float) -> Void)?
+
+    // MARK: FFT / detection constants
+    private let chunkSize = 1024                    // ~21ms @ 48kHz
+    private let fftLog2n: vDSP_Length = 10
+    private lazy var fftSetup = vDSP_create_fftsetup(fftLog2n, FFTRadix(kFFTRadix2))!
+    private lazy var window: [Float] = {
+        var w = [Float](repeating: 0, count: chunkSize)
+        vDSP_hann_window(&w, vDSP_Length(chunkSize), Int32(vDSP_HANN_NORM))
+        return w
+    }()
+
+    /// Beat fires when onset flux exceeds mean + zThreshold * stddev of recent history
+    private let zThreshold: Float = 1.6
+    /// Minimum interval between flashes (~250 BPM cap)
+    private let refractoryInterval: TimeInterval = 0.16
+    /// Ignore everything quieter than this (dB, full-scale mean-square)
+    private let silenceFloorDB: Float = -60
+    private let fluxHistorySize = 64                // ~1.4s of history
+
+    // MARK: state (audio thread only)
+    private var prevMagnitudes = [Float](repeating: 0, count: 512)
+    private var fluxHistory: [Float] = []
+    private var lastBeatTime: CFTimeInterval = 0
+
     private let audioEngine = AVAudioEngine()
-    
-    init() {
-        let session = AVAudioSession.sharedInstance()
-        try? session.setCategory(.playAndRecord, options: .defaultToSpeaker)
-        try? session.setActive(true)	
-        let inputNode = audioEngine.inputNode
-        let format = inputNode.outputFormat(forBus: 0)
-        inputNode.removeTap(onBus: 0)
-        inputNode.installTap(onBus: 0, bufferSize: 1024, format: format) { buffer, time in
-        }
-    }
+
     func startCapturingAudio() {
-        let session = AVAudioSession.sharedInstance()
-        try? session.setCategory(.playAndRecord, options: .defaultToSpeaker)
-        try? session.setActive(true)
+        configureSession()
         let inputNode = audioEngine.inputNode
-        inputNode.reset()
         inputNode.removeTap(onBus: 0)
         audioEngine.stop()
         let recordingFormat = inputNode.outputFormat(forBus: 0)
-        inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { buffer, _ in
-            self.analyzeAudioBuffer(buffer: buffer)
+        guard recordingFormat.sampleRate > 0 else { return }
+        prevMagnitudes = [Float](repeating: 0, count: chunkSize / 2)
+        fluxHistory.removeAll()
+        inputNode.installTap(onBus: 0, bufferSize: AVAudioFrameCount(chunkSize), format: recordingFormat) {
+            [weak self] buffer, _ in
+            self?.analyzeAudioBuffer(buffer: buffer)
         }
         do {
             try audioEngine.start()
@@ -126,77 +72,138 @@ final class AudioAnalyzer {
     }
 
     func stopCapturingAudio() {
-        let inputNode = audioEngine.inputNode
-        inputNode.reset()
-        inputNode.removeTap(onBus: 0)
-        let format = inputNode.outputFormat(forBus: 0)
-        inputNode.installTap(onBus: 0, bufferSize: 1024, format: format) { buffer, time in
-        }
+        audioEngine.inputNode.removeTap(onBus: 0)
         audioEngine.stop()
+        try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
     }
 
-    private func analyzeAudioBuffer(buffer: AVAudioPCMBuffer) {
-        onBassPowerUpdate?(calculateBassStrength(from: buffer))
-        onDBPowerUpdate?(calculateDecibels(from: buffer))
+    private func configureSession() {
+        let session = AVAudioSession.sharedInstance()
+        do {
+            // .measurement — disables iOS voice processing (AGC, noise suppression)
+            // that otherwise filters music out of the mic signal.
+            // .mixWithOthers — don't pause music playing on this same device.
+            try session.setCategory(
+                .playAndRecord,
+                mode: .measurement,
+                options: [.mixWithOthers, .defaultToSpeaker]
+            )
+            try session.setActive(true)
+            if session.isInputGainSettable {
+                try session.setInputGain(1.0)
+            }
+        } catch {
+            print("Failed to configure audio session: \(error)")
+        }
     }
-    
+
+    // MARK: - Analysis
+
+    private func analyzeAudioBuffer(buffer: AVAudioPCMBuffer) {
+        guard let channelData = buffer.floatChannelData?[0] else { return }
+        let frameCount = Int(buffer.frameLength)
+        let sampleRate = Float(buffer.format.sampleRate)
+
+        let db = calculateDecibels(from: buffer)
+        onDBPowerUpdate?(db)
+        onBassPowerUpdate?(bassStrength(samples: channelData, frameCount: frameCount, sampleRate: sampleRate))
+
+        // The tap usually delivers ~100ms buffers regardless of the requested
+        // size — walk it in 1024-sample chunks to keep onset resolution ~21ms.
+        var offset = 0
+        while offset + chunkSize <= frameCount {
+            processChunk(samples: channelData + offset, loudEnough: db > silenceFloorDB)
+            offset += chunkSize
+        }
+    }
+
+    /// Spectral flux onset detection with an adaptive (mean + z*stddev) threshold.
+    /// Full-spectrum flux works better than bass-band energy on iPhone: the
+    /// built-in mic rolls off below ~100Hz, so pure bass energy is unreliable.
+    private func processChunk(samples: UnsafePointer<Float>, loudEnough: Bool) {
+        let halfN = chunkSize / 2
+        var windowed = [Float](repeating: 0, count: chunkSize)
+        vDSP_vmul(samples, 1, window, 1, &windowed, 1, vDSP_Length(chunkSize))
+
+        var realOutput = [Float](repeating: 0, count: halfN)
+        var imagOutput = [Float](repeating: 0, count: halfN)
+        var magnitudes = [Float](repeating: 0, count: halfN)
+        realOutput.withUnsafeMutableBufferPointer { realPtr in
+            imagOutput.withUnsafeMutableBufferPointer { imagPtr in
+                var splitComplex = DSPSplitComplex(realp: realPtr.baseAddress!, imagp: imagPtr.baseAddress!)
+                windowed.withUnsafeBufferPointer { input in
+                    input.baseAddress!.withMemoryRebound(to: DSPComplex.self, capacity: halfN) {
+                        vDSP_ctoz($0, 2, &splitComplex, 1, vDSP_Length(halfN))
+                    }
+                }
+                vDSP_fft_zrip(fftSetup, &splitComplex, 1, fftLog2n, FFTDirection(FFT_FORWARD))
+                vDSP_zvmags(&splitComplex, 1, &magnitudes, 1, vDSP_Length(halfN))
+            }
+        }
+        var count = Int32(halfN)
+        vvsqrtf(&magnitudes, magnitudes, &count)
+
+        // positive spectral flux: how much each bin *grew* since the last chunk
+        var flux: Float = 0
+        for i in 1..<halfN {
+            let diff = magnitudes[i] - prevMagnitudes[i]
+            if diff > 0 { flux += diff }
+        }
+        prevMagnitudes = magnitudes
+
+        fluxHistory.append(flux)
+        if fluxHistory.count > fluxHistorySize {
+            fluxHistory.removeFirst()
+        }
+        guard loudEnough, fluxHistory.count >= 16 else { return }
+
+        var mean: Float = 0
+        var stddev: Float = 0
+        vDSP_normalize(fluxHistory, 1, nil, 1, &mean, &stddev, vDSP_Length(fluxHistory.count))
+        guard stddev > 0 else { return }
+
+        let z = (flux - mean) / stddev
+        onBeatDebugUpdate?(z, zThreshold)
+
+        let now = CACurrentMediaTime()
+        if z > zThreshold, now - lastBeatTime > refractoryInterval {
+            lastBeatTime = now
+            let intensity = min(1, max(0, (z - zThreshold) / 5 + 0.3))
+            onBeat?(Beat(intensity: intensity))
+        }
+    }
+
     func calculateDecibels(from buffer: AVAudioPCMBuffer) -> Float {
         guard let channelData = buffer.floatChannelData else { return -160.0 }
         let channelCount = Int(buffer.format.channelCount)
         let frameLength = Int(buffer.frameLength)
-        var rms: Float = 0
+        guard frameLength > 0 else { return -160.0 }
+        var meanSquare: Float = 0
         for channel in 0..<channelCount {
-            let data = channelData[channel]
-            for frame in 0..<frameLength {
-                rms += data[frame] * data[frame]
-            }
+            var channelMS: Float = 0
+            vDSP_measqv(channelData[channel], 1, &channelMS, vDSP_Length(frameLength))
+            meanSquare += channelMS
         }
-        rms = rms / Float(frameLength * channelCount)
-        return 10.0 * log10f(rms + 0.000001)
+        meanSquare /= Float(channelCount)
+        return 10.0 * log10f(meanSquare + 0.000001)
     }
 
-    func calculateBassStrength(from buffer: AVAudioPCMBuffer) -> Float {
-        guard let channelData = buffer.floatChannelData?[0] else { return 0 }
-        let frameCount = Int(buffer.frameLength)
-        let sampleRate = Float(buffer.format.sampleRate)
-        let log2n = UInt(ceil(log2(Float(frameCount))))
-        let n = Int(1 << log2n)
-        var realInput = [Float](repeating: 0, count: n)
-        for i in 0..<min(frameCount, n) {
-            realInput[i] = channelData[i]
-        }
-        var window = [Float](repeating: 0, count: n)
-        vDSP_hann_window(&window, vDSP_Length(n), Int32(vDSP_HANN_NORM))
-        vDSP_vmul(realInput, 1, window, 1, &realInput, 1, vDSP_Length(n))
-        let fftSetup = vDSP_create_fftsetup(log2n, FFTRadix(kFFTRadix2))
-        let halfN = n / 2
-        var realOutput = [Float](repeating: 0, count: halfN)
-        var imagOutput = [Float](repeating: 0, count: halfN)
-        var splitComplex = DSPSplitComplex(realp: &realOutput, imagp: &imagOutput)
-        var tempComplex = [DSPComplex](repeating: DSPComplex(), count: halfN)
-        for i in 0..<halfN {
-            tempComplex[i].real = realInput[i * 2]
-            tempComplex[i].imag = realInput[i * 2 + 1]
-        }
-        tempComplex.withUnsafeBufferPointer {
-            vDSP_ctoz($0.baseAddress!, 2, &splitComplex, 1, vDSP_Length(halfN))
-        }
-        vDSP_fft_zrip(fftSetup!, &splitComplex, 1, log2n, FFTDirection(FFT_FORWARD))
-        var magnitudes = [Float](repeating: 0, count: halfN)
-        vDSP_zvmags(&splitComplex, 1, &magnitudes, 1, vDSP_Length(halfN))
-        var normalizedMagnitudes = [Float](repeating: 0, count: halfN)
-        var scaleFactor = 1 / Float(n)
-        vDSP_vsmul(magnitudes, 1, &scaleFactor, &normalizedMagnitudes, 1, vDSP_Length(halfN))
-        vDSP_destroy_fftsetup(fftSetup)
-        let binSize = sampleRate / Float(n)
-        let lowBin = Int(20 / binSize)
+    /// Average magnitude in the 20–250Hz band, kept for the debug overlay.
+    private func bassStrength(samples: UnsafePointer<Float>, frameCount: Int, sampleRate: Float) -> Float {
+        guard frameCount >= chunkSize, sampleRate > 0 else { return 0 }
+        let halfN = chunkSize / 2
+        let binSize = sampleRate / Float(chunkSize)
+        let lowBin = max(Int(20 / binSize), 1)
         let highBin = min(Int(250 / binSize), halfN - 1)
         guard lowBin < highBin else { return 0 }
         var bassSum: Float = 0
         for i in lowBin...highBin {
-            bassSum += normalizedMagnitudes[i]
+            bassSum += prevMagnitudes[i]
         }
-        let bassStrength = bassSum / Float(highBin - lowBin + 1)
-        return min(bassStrength * 10, 10)
+        return min(bassSum / Float(highBin - lowBin + 1) * 10, 10)
+    }
+
+    deinit {
+        vDSP_destroy_fftsetup(fftSetup)
     }
 }
