@@ -46,10 +46,21 @@ final class AutoflashDisplayerViewController: UIViewController {
         UIColor(red: 1, green: 0, blue: 1, alpha: 1)   // magenta
     ]
 
+    // effect tuning
+    /// Beats weaker than this never trigger a special effect.
+    private let strongBeatIntensity: Float = 0.7
+    /// Chance a qualifying strong beat turns into an effect instead of a plain flash.
+    private let effectProbability: Double = 0.6
+    /// Keeps effects occasional even during a long run of strong beats.
+    private let effectCooldown: TimeInterval = 6
+
     // state
     private var currentDBPower: Float = 0
     private var screensaverTimer: Timer!
     private var lastFlashColorIndex: Int?
+    private var strobeTimer: Timer?
+    private var isPlayingEffect = false
+    private var lastEffectTime: CFTimeInterval = 0
     
     override var prefersHomeIndicatorAutoHidden: Bool {
         return true
@@ -103,10 +114,17 @@ final class AutoflashDisplayerViewController: UIViewController {
                 self.bassSensitivityLevelLabel.text = String(format: "onset z: %.2f / %.1f", z, threshold)
             }
         }
-        audioAnalyzer.onBeat = { [weak self] _ in
+        audioAnalyzer.onBeat = { [weak self] beat in
             DispatchQueue.main.async {
-                guard let self = self else { return }
-                self.flash(color: self.nextFlashColor())
+                guard let self = self, !self.isPlayingEffect else { return }
+                if self.shouldPlayEffect(for: beat) {
+                    self.lastEffectTime = CACurrentMediaTime()
+                    Bool.random()
+                        ? self.holdFlash(color: self.nextFlashColor())
+                        : self.strobeBurst()
+                } else {
+                    self.flash(color: self.nextFlashColor())
+                }
             }
         }
         radialGradientView = .init(frame: view.bounds)
@@ -129,12 +147,8 @@ final class AutoflashDisplayerViewController: UIViewController {
     }
 
     private func flash(color: UIColor) {
-        self.animator?.stopAnimation(true)
-        self.animator = nil
+        prepareForFlash()
         self.flashView.backgroundColor = color
-        self.screensaverTimer?.invalidate()
-        self.screensaverTimer = nil
-        self.radialGradientView.explode()
         self.animator = UIViewPropertyAnimator(duration: 0.35, curve: .easeOut) {
             self.flashView.backgroundColor = .clear
         }
@@ -142,6 +156,64 @@ final class AutoflashDisplayerViewController: UIViewController {
         self.animator.addCompletion({ _ in
             self.startScreensaverTimer()
         })
+    }
+
+    /// Stops whatever is on screen right now so a new flash starts from a clean state.
+    private func prepareForFlash() {
+        self.animator?.stopAnimation(true)
+        self.animator = nil
+        self.strobeTimer?.invalidate()
+        self.strobeTimer = nil
+        self.screensaverTimer?.invalidate()
+        self.screensaverTimer = nil
+        self.radialGradientView.explode()
+    }
+
+    private func shouldPlayEffect(for beat: AudioAnalyzer.Beat) -> Bool {
+        guard beat.intensity >= strongBeatIntensity else { return false }
+        guard CACurrentMediaTime() - lastEffectTime > effectCooldown else { return false }
+        return Double.random(in: 0...1) < effectProbability
+    }
+
+    /// The light freezes on screen for about a second, then fades away.
+    private func holdFlash(color: UIColor) {
+        prepareForFlash()
+        isPlayingEffect = true
+        flashView.backgroundColor = color
+        animator = UIViewPropertyAnimator(duration: 0.7, curve: .easeIn) {
+            self.flashView.backgroundColor = .clear
+        }
+        animator.addCompletion({ [weak self] _ in
+            guard let self = self else { return }
+            self.isPlayingEffect = false
+            self.startScreensaverTimer()
+        })
+        animator.startAnimation(afterDelay: 1.0)
+    }
+
+    /// About a second of very fast strobing, switching color on every blink.
+    private func strobeBurst() {
+        prepareForFlash()
+        isPlayingEffect = true
+        var ticksLeft = 16          // 16 * 0.06s ≈ 1s, so ~8 blinks
+        var isLit = false
+        flashView.backgroundColor = .clear
+        strobeTimer = Timer.scheduledTimer(withTimeInterval: 0.06, repeats: true) {
+            [weak self] timer in
+            guard let self = self else {
+                timer.invalidate()
+                return
+            }
+            isLit.toggle()
+            self.flashView.backgroundColor = isLit ? self.nextFlashColor() : .clear
+            ticksLeft -= 1
+            guard ticksLeft <= 0 else { return }
+            timer.invalidate()
+            self.strobeTimer = nil
+            self.flashView.backgroundColor = .clear
+            self.isPlayingEffect = false
+            self.startScreensaverTimer()
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -171,6 +243,12 @@ extension AutoflashDisplayerViewController {
         self.radialGradientView.explode()
         self.screensaverTimer?.invalidate()
         self.screensaverTimer = nil
+        self.strobeTimer?.invalidate()
+        self.strobeTimer = nil
+        self.animator?.stopAnimation(true)
+        self.animator = nil
+        self.flashView.backgroundColor = .clear
+        self.isPlayingEffect = false
         audioAnalyzer.stopCapturingAudio()
     }
     
